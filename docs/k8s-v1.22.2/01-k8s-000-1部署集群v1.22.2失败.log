@@ -1,0 +1,96 @@
+# 安装失败日志
+[root@master01.k8s.freedom.org ~ 19:36]# 1> kubeadm init --kubernetes-version v1.22.2 --pod-network-cidr 10.244.0.0/16 --control-plane-endpoint "192.168.2.2:6443" --upload-certs
+[init] Using Kubernetes version: v1.22.2
+[preflight] Running pre-flight checks
+[preflight] Pulling images required for setting up a Kubernetes cluster
+[preflight] This might take a minute or two, depending on the speed of your internet connection
+[preflight] You can also perform this action in beforehand using 'kubeadm config images pull'
+[certs] Using certificateDir folder "/etc/kubernetes/pki"
+[certs] Generating "ca" certificate and key
+[certs] Generating "apiserver" certificate and key
+[certs] apiserver serving cert is signed for DNS names [kubernetes kubernetes.default kubernetes.default.svc kubernetes.default.svc.cluster.local master01.k8s.freedom.org] and IPs [10.96.0.1 192.168.2.11 192.168.2.2]
+[certs] Generating "apiserver-kubelet-client" certificate and key
+[certs] Generating "front-proxy-ca" certificate and key
+[certs] Generating "front-proxy-client" certificate and key
+[certs] Generating "etcd/ca" certificate and key
+[certs] Generating "etcd/server" certificate and key
+[certs] etcd/server serving cert is signed for DNS names [localhost master01.k8s.freedom.org] and IPs [192.168.2.11 127.0.0.1 ::1]
+[certs] Generating "etcd/peer" certificate and key
+[certs] etcd/peer serving cert is signed for DNS names [localhost master01.k8s.freedom.org] and IPs [192.168.2.11 127.0.0.1 ::1]
+[certs] Generating "etcd/healthcheck-client" certificate and key
+[certs] Generating "apiserver-etcd-client" certificate and key
+[certs] Generating "sa" key and public key
+[kubeconfig] Using kubeconfig folder "/etc/kubernetes"
+[kubeconfig] Writing "admin.conf" kubeconfig file
+[kubeconfig] Writing "kubelet.conf" kubeconfig file
+[kubeconfig] Writing "controller-manager.conf" kubeconfig file
+[kubeconfig] Writing "scheduler.conf" kubeconfig file
+[kubelet-start] Writing kubelet environment file with flags to file "/var/lib/kubelet/kubeadm-flags.env"
+[kubelet-start] Writing kubelet configuration to file "/var/lib/kubelet/config.yaml"
+[kubelet-start] Starting the kubelet
+[control-plane] Using manifest folder "/etc/kubernetes/manifests"
+[control-plane] Creating static Pod manifest for "kube-apiserver"
+[control-plane] Creating static Pod manifest for "kube-controller-manager"
+[control-plane] Creating static Pod manifest for "kube-scheduler"
+[etcd] Creating static Pod manifest for local etcd in "/etc/kubernetes/manifests"
+[wait-control-plane] Waiting for the kubelet to boot up the control plane as static Pods from directory "/etc/kubernetes/manifests". This can take up to 4m0s
+[kubelet-check] Initial timeout of 40s passed.
+[kubelet-check] It seems like the kubelet isn't running or healthy.
+[kubelet-check] The HTTP call equal to 'curl -sSL http://localhost:10248/healthz' failed with error: Get "http://localhost:10248/healthz": dial tcp [::1]:10248: connect: connection refused.
+[kubelet-check] It seems like the kubelet isn't running or healthy.
+[kubelet-check] The HTTP call equal to 'curl -sSL http://localhost:10248/healthz' failed with error: Get "http://localhost:10248/healthz": dial tcp [::1]:10248: connect: connection refused.
+[kubelet-check] It seems like the kubelet isn't running or healthy.
+[kubelet-check] The HTTP call equal to 'curl -sSL http://localhost:10248/healthz' failed with error: Get "http://localhost:10248/healthz": dial tcp [::1]:10248: connect: connection refused.
+[kubelet-check] It seems like the kubelet isn't running or healthy.
+[kubelet-check] The HTTP call equal to 'curl -sSL http://localhost:10248/healthz' failed with error: Get "http://localhost:10248/healthz": dial tcp [::1]:10248: connect: connection refused.
+[kubelet-check] It seems like the kubelet isn't running or healthy.
+[kubelet-check] The HTTP call equal to 'curl -sSL http://localhost:10248/healthz' failed with error: Get "http://localhost:10248/healthz": dial tcp [::1]:10248: connect: connection refused.
+
+        Unfortunately, an error has occurred:
+                timed out waiting for the condition
+
+        This error is likely caused by:
+                - The kubelet is not running
+                - The kubelet is unhealthy due to a misconfiguration of the node in some way (required cgroups disabled)
+
+        If you are on a systemd-powered system, you can try to troubleshoot the error with the following commands:
+                - 'systemctl status kubelet'
+                - 'journalctl -xeu kubelet'
+
+        Additionally, a control plane component may have crashed or exited when started by the container runtime.
+        To troubleshoot, list all containers using your preferred container runtimes CLI.
+
+        Here is one example how you may list all Kubernetes containers running in docker:
+                - 'docker ps -a | grep kube | grep -v pause'
+                Once you have found the failing container, you can inspect its logs with:
+                - 'docker logs CONTAINERID'
+
+error execution phase wait-control-plane: couldn't initialize a Kubernetes cluster
+To see the stack trace of this error execute with --v=5 or higher
+[root@master01.k8s.freedom.org ~ 19:38]# 2>
+
+
+
+# 错误日志
+Oct  3 19:47:25 master01 kubelet: E1003 19:47:25.388873    6989 server.go:294] "Failed to run kubelet" err="failed to run Kubelet: misconfiguration: kubelet cgroup driver: \"systemd\" is different from docker cgroup driver: \"cgroupfs\""
+Oct  3 19:47:25 master01 systemd: kubelet.service: main process exited, code=exited, status=1/FAILURE
+Oct  3 19:47:25 master01 systemd: Unit kubelet.service entered failed state.
+Oct  3 19:47:25 master01 systemd: kubelet.service failed.
+
+
+
+# 解决方法
+https://blog.csdn.net/u012586326/article/details/112343824，即修改docker启动配置，将cgroupdriver改为systemd，解决方法放在ansible_playbooks仓库中的docker角色中了。
+
+
+
+# 第二次安装也失败了，错误日志，不管是在master01，还是master02上执行都失败了，看cni报错，所以先尝试安装Cilium网络插件。
+Oct  3 21:17:07 master01 kubelet: E1003 21:17:07.502208    2048 kubelet.go:2332] "Container runtime network not ready" networkReady="NetworkReady=false reason:NetworkPluginNotReady message:docker: network plugin is not ready: cni config uninitialized"
+
+Oct  3 20:17:40 master01 kubelet: I1003 20:17:40.707188   33141 kubelet_node_status.go:71] "Attempting to register node" node="master01.k8s.freedom.org"
+Oct  3 20:17:40 master01 kubelet: E1003 20:17:40.709807   33141 kubelet_node_status.go:93] "Unable to register node with API server" err="Post \"https://192.168.2.2:6443/api/v1/nodes\": EOF" node="master01.k8s.freedom.org"
+Oct  3 20:17:40 master01 kubelet: E1003 20:17:40.716883   33141 kubelet.go:2407] "Error getting node" err="node \"master01.k8s.freedom.org\" not found"
+Oct  3 20:17:40 master01 kubelet: E1003 20:17:40.817850   33141 kubelet.go:2407] "Error getting node" err="node \"master01.k8s.freedom.org\" not found"
+
+# 多次安装失败才无意看到docker报错，虽然docker进程已启动，但是在k8s部署时，需要检查日志服务器地址连通性，所以先部署fluentd服务。
+Oct  3 21:01:22 master01 dockerd: time="2021-10-03T21:01:22.964242223+08:00" level=error msg="Handler for POST /v1.41/containers/bbaf6e21f763a95e82afa0b166c7f1ccba3dde41e0f88b4f1511d6a6ba8cd3e0/start returned error: failed to initialize logging driver: dial tcp [::1]:24224: connect: connection refused"
