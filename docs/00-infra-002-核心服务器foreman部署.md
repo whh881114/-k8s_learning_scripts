@@ -78,13 +78,19 @@
     - https://theforeman.org/plugins/foreman_discovery/15.0/index.html
 - 安装命令：
     ```shell
-    foreman-installer \
+    foreman-installer --scenario katello \
     --enable-foreman-plugin-discovery \
     --enable-foreman-plugin-ansible \
-    --enable-foreman-proxy-plugin-ansible \
-    --enable-foreman-plugin-discovery \
     --enable-foreman-plugin-puppetdb \
-    --foreman-proxy-tftp=true
+    --enable-foreman-plugin-remote-execution \
+    --foreman-proxy-dhcp true \
+    --foreman-proxy-dhcp-managed true \
+    --foreman-proxy-dhcp-interface ens192 \
+    --foreman-proxy-dhcp-range "10.255.0.200 10.255.3.250" \
+    --foreman-proxy-dhcp-gateway 10.255.3.254 \
+    --foreman-proxy-dhcp-nameservers 10.255.0.121,10.255.0.122 \
+    --foreman-proxy-tftp true \
+    --foreman-proxy-tftp-managed true 
     ```
 
 ## 配置foremna服务器插件--foreman_column_view
