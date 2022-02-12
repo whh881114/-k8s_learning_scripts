@@ -84,6 +84,7 @@
     --enable-foreman-proxy-plugin-ansible \
     --enable-foreman-plugin-puppetdb \
     --enable-foreman-plugin-remote-execution \
+    --enable-foreman-proxy-plugin-remote-execution-ssh \
     --foreman-proxy-dhcp true \
     --foreman-proxy-dhcp-managed true \
     --foreman-proxy-dhcp-interface ens192 \
