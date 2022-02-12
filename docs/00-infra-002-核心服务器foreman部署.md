@@ -134,7 +134,6 @@
     - docker-ce-stable, https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/7/x86_64/stable/
     - epel, https://mirrors.tuna.tsinghua.edu.cn/epel/7/x86_64/
     - extras, https://mirrors.tuna.tsinghua.edu.cn/centos/7/extras/x86_64/
-    - grafana, https://mirrors.tuna.tsinghua.edu.cn/grafana/yum/rpm/
     - kubernetes, https://mirrors.tuna.tsinghua.edu.cn/kubernetes/yum/repos/kubernetes-el7-x86_64/
     - mysql-5.7-community, https://mirrors.tuna.tsinghua.edu.cn/mysql/yum/mysql-5.7-community-el7-x86_64/
     - mysql-8.0-community, https://mirrors.tuna.tsinghua.edu.cn/mysql/yum/mysql-8.0-community-el7-x86_64/
