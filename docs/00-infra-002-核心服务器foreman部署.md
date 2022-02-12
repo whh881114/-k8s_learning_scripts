@@ -81,6 +81,7 @@
     foreman-installer --scenario katello \
     --enable-foreman-plugin-discovery \
     --enable-foreman-plugin-ansible \
+    --enable-foreman-proxy-plugin-ansible \
     --enable-foreman-plugin-puppetdb \
     --enable-foreman-plugin-remote-execution \
     --foreman-proxy-dhcp true \
