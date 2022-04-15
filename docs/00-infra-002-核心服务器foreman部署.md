@@ -103,9 +103,29 @@
     ```
     :column_view:
       :ipaddress:
-        :title: IP地址
+        :title: IP
         :after: name
         :content: facts_hash['ipaddress']
+      :processorcount:
+        :title: CPU
+        :after: ipaddress
+        :content: facts_hash["processorcount"]
+      :memorysize:
+        :title: MEM
+        :after: ipaddress
+        :content: facts_hash["memorysize"]
+      :sdasize:
+        :title: SDA-SIZE
+        :after: memorysize
+        :content: facts_hash['disks::sda::size']
+      :sdbsize:
+        :title: SDB-SIZE
+        :after: sdasize
+        :content: facts_hash['disks::sdb::size']
+      :uptime:
+        :title: UPTIME
+        :after: sdbsize
+        :content: facts_hash['uptime']
     ```
 - 重启服务`service foreman restart`。
 
@@ -155,9 +175,9 @@
 - 配置foreman-puppetdb-plugin：https://github.com/theforeman/puppetdb_foreman
 - 特别说明，默认puppetdb里使用的jetty的http端口为8080，可以自行修改，另外，配置foreman-puppetdb-plugin时，可以不配置https，
 如果要配置ssl时，可以使用参考以下信息。另外，发现配置DB后，两边的信息没有同步，不过这个无伤大雅，其实本来也没啥用，我的强迫症犯了。
-```shell
-puppetdb_address	        https://foreman.freedom.org:8081/pdb/cmd/v1
-puppetdb_ssl_ca_file	    /etc/puppetlabs/puppet/ssl/certs/ca.pem
-puppetdb_ssl_certificate	/etc/puppetlabs/puppet/ssl/certs/foreman.freedom.org.pem
-puppetdb_ssl_private_key	/etc/puppetlabs/puppet/ssl/private_keys/foreman.freedom.org.pem
-```
+    ```shell
+    puppetdb_address                https://foreman.freedom.org:8081/pdb/cmd/v1
+    puppetdb_ssl_ca_file            /etc/puppetlabs/puppet/ssl/certs/ca.pem
+    puppetdb_ssl_certificate        /etc/puppetlabs/puppet/ssl/certs/foreman.freedom.org.pem
+    puppetdb_ssl_private_key        /etc/puppetlabs/puppet/ssl/private_keys/foreman.freedom.org.pem
+    ```
