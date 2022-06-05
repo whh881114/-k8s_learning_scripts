@@ -4,7 +4,7 @@
 - cilium网站：https://docs.cilium.io
 - ingress-nginx网站：https://github.com/kubernetes/ingress-nginx
 - 等k8s集群安装好后，再装网络插件cilium和ingress-nginx。
-- 使用k8s-v1.22.2版本时，安装ingress时不能用3.x.x版本的chart了，需要改用4.x.x，当前使用的是4.0.3。
+- 使用k8s-v1.21.5版本时，安装ingress时不能用3.x.x版本的chart了，需要改用4.x.x，当前使用的是4.0.3。
 - 使用k8s-v1.18.20版本时，安装ingress时使用用3.x.x版本的chart了，当前使用的是3.38.0。
 
 ## 部署
