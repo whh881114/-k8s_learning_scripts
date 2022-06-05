@@ -31,7 +31,7 @@ spec:
   podMonitorSelector: {}
   probeNamespaceSelector: {}
   probeSelector: {}
-  replicas: 1
+  replicas: 2
   resources:
     requests:
       memory: 400Mi
@@ -60,6 +60,26 @@ spec:
         resources:
           requests:
             storage: 200Gi
+
+  # 增加调度
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: worker-role
+                operator: In
+                values:
+                  - prometheus
+  tolerations:
+    - effect: NoSchedule
+      key: worker-role
+      operator: Equal
+      value: prometheus
+    - effect: NoExecute
+      key: worker-role
+      operator: Equal
+      value: prometheus
 
   # 添加自定义监控
 #  additionalScrapeConfigs:
