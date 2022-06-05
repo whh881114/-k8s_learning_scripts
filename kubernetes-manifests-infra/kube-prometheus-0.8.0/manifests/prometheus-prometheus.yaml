@@ -48,22 +48,25 @@ spec:
   serviceMonitorSelector: {}
   version: 2.26.0
   # 自定义参数
-  retention: 30d
+  # 保存数据时间
+  retention: 1y
+  # 持久化
+  storage:
+    volumeClaimTemplate:
+      spec:
+        storageClassName: storageclass-nfs-infra
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 200Gi
+
   # 添加自定义监控
-  additionalScrapeConfigs:
-    name: additional-scrape-configs
-    key: prometheus-additional.yaml
+#  additionalScrapeConfigs:
+#    name: additional-scrape-configs
+#    key: prometheus-additional.yaml
   # 存储类型：remote
-  remoteWrite:
-    - name: mimir
-      url: http://mimir-distributor.observability:8080/api/v1/push
-# 存储类型：storageclass
-#  storage:
-#    volumeClaimTemplate:
-#      spec:
-#        storageClassName: cbs
-#        accessModes:
-#          - ReadWriteOnce
-#        resources:
-#          requests:
-#            storage: 200Gi
+#  remoteWrite:
+#    - name: mimir
+#      url: http://mimir-distributor.observability:8080/api/v1/push
+ # 存储类型：storageclass
