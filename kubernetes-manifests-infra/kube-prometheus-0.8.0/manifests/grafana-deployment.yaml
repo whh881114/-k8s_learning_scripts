@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
       - env: []
-        image: grafana/grafana:7.5.4
+        image: harbor.freedom.org/prometheus-operator/grafana:7.5.4
         name: grafana
         ports:
         - containerPort: 3000
