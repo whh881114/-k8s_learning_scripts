@@ -1,0 +1,68 @@
+﻿apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  annotations:
+    prometheus.tke.tencent.cloud.com/disable-labels-inject: ""
+  name: mesh-record
+  namespace: monitoring
+spec:
+  groups:
+  - name: service-mesh.rules
+    rules:
+  
+    # global request volumn
+    - expr: round(sum(irate(istio_requests_total{reporter="destination"}[1m])), 0.001)
+      record: global:istio_requests_total:sum_rate
+
+    # global success rate
+    - expr: sum(rate(istio_requests_total{reporter="destination", response_code!~"5.*"}[1m])) / sum(rate(istio_requests_total{reporter="destination"}[1m]))
+      record: global:istio_requests_total:success_ratio
+
+    # 4xxs
+    - expr: sum(irate(istio_requests_total{reporter="destination", response_code=~"4.*"}[1m]))
+      record: global:istio_requests_total:4xxs
+    
+    # 5xxs
+    - expr: sum(irate(istio_requests_total{reporter="destination", response_code=~"5.*"}[1m]))
+      record: global:istio_requests_total:5xxs
+
+    # 请求成功率-服务端上报
+    - expr: label_join(sum(rate(istio_requests_total{reporter="destination", response_code="200"}[1m])) by (destination_workload, destination_workload_namespace, destination_service), "destination_workload_var", ".", "destination_workload", "destination_workload_namespace", "destination_service")
+      record: destination_workload:istio_requests_total_destination_report:sum_rate
+    
+    - expr: label_join((histogram_quantile(0.95, sum(rate(istio_request_duration_milliseconds_bucket{reporter="destination"}[1m])) by (le, destination_workload, destination_workload_namespace, destination_service)) / 1000) or histogram_quantile(0.95, sum(rate(istio_request_duration_seconds_bucket{reporter="destination"}[1m])) by (le, destination_workload, destination_workload_namespace, destination_service)), "destination_workload_var", ".", "destination_workload", "destination_workload_namespace", "destination_service")
+      record: destination_workload:istio_request_duration_bucket_destination_report:p95
+
+    - expr: label_join((histogram_quantile(0.99, sum(rate(istio_request_duration_milliseconds_bucket{reporter="destination"}[1m])) by (le, destination_workload, destination_workload_namespace, destination_service)) / 1000) or histogram_quantile(0.99, sum(rate(istio_request_duration_seconds_bucket{reporter="destination"}[1m])) by (le, destination_workload, destination_workload_namespace, destination_service)), "destination_workload_var", ".", "destination_workload", "destination_workload_namespace", "destination_service")
+      record: destination_workload:istio_request_duration_bucket_destination_report:p99
+
+    - expr: label_join((sum(rate(istio_requests_total{reporter="destination", response_code!~"5.*"}[1m])) by (destination_workload, destination_workload_namespace, destination_service) / sum(rate(istio_requests_total{reporter="destination"}[1m])) by (destination_workload, destination_workload_namespace, destination_service)), "destination_workload_var", ".", "destination_workload", "destination_workload_namespace", "destination_service")
+      record: desitation_workload:istio_requests_total_destination_report:success_ratio
+
+    # 请求成功率-客户端上报
+    - expr: label_join(sum(rate(istio_requests_total{reporter="source", response_code="200"}[1m])) by (destination_workload, destination_workload_namespace, destination_service), "destination_workload_var", ".", "destination_workload", "destination_workload_namespace", "destination_service")
+      record: destination_workload:istio_requests_total_source_report:sum_rate
+    - expr: label_join((histogram_quantile(0.95, sum(rate(istio_request_duration_milliseconds_bucket{reporter="source"}[1m])) by (le, destination_workload, destination_workload_namespace, destination_service)) / 1000) or histogram_quantile(0.95, sum(rate(istio_request_duration_seconds_bucket{reporter="source"}[1m])) by (le, destination_workload, destination_workload_namespace, destination_service)), "destination_workload_var", ".", "destination_workload", "destination_workload_namespace", "destination_service")
+      record: desitation_workload:istio_request_duration_seconds_bucket_source_report:p95
+
+    - expr: label_join((histogram_quantile(0.99, sum(rate(istio_request_duration_milliseconds_bucket{reporter="source"}[1m])) by (le, destination_workload, destination_workload_namespace, destination_service)) / 1000) or histogram_quantile(0.99, sum(rate(istio_request_duration_seconds_bucket{reporter="source"}[1m])) by (le, destination_workload, destination_workload_namespace, destination_service)), "destination_workload_var", ".", "destination_workload", "destination_workload_namespace", "destination_service")
+      record: desitation_workload:istio_request_duration_seconds_bucket_source_report:p99
+
+    - expr: label_join((sum(rate(istio_requests_total{reporter="source", response_code!~"5.*"}[1m])) by (destination_workload, destination_workload_namespace, destination_service) / sum(rate(istio_requests_total{reporter="source"}[1m])) by (destination_workload, destination_workload_namespace, destination_service)), "destination_workload_var", ".", "destination_workload", "destination_workload_namespace", "destination_service")
+      record: desitation_workload:istio_requests_total_source_report:success_ratio
+
+    # tcp-服务端上报
+    - expr: label_join(sum(rate(istio_tcp_received_bytes_total{reporter="destination"}[1m])) by (destination_workload, destination_workload_namespace, destination_service), "destination_workload_var", ".", "destination_workload", "destination_workload_namespace", "destination_service")
+      record: destination_workload:istio_tcp_received_bytes_total_destination_report:sum_rate
+    - expr: label_join(sum(rate(istio_tcp_sent_bytes_total{reporter="destination"}[1m])) by (destination_workload, destination_workload_namespace, destination_service), "destination_workload_var", ".", "destination_workload", "destination_workload_namespace", "destination_service")
+      record: destination_workload:istio_tcp_sent_bytes_total_destination_report:sum_rate
+
+    # tcp-客户端上报
+    - expr: label_join(sum(rate(istio_tcp_received_bytes_total{reporter="source"}[1m])) by (destination_workload, destination_workload_namespace, destination_service), "destination_workload_var", ".", "destination_workload", "destination_workload_namespace", "destination_service")
+      record: destination_workload:istio_tcp_received_bytes_total_source_report:sum_rate
+    - expr: label_join(sum(rate(istio_tcp_sent_bytes_total{reporter="source"}[1m])) by (destination_workload, destination_workload_namespace, destination_service), "destination_workload_var", ".", "destination_workload", "destination_workload_namespace", "destination_service")
+      record: destination_workload:istio_tcp_sent_bytes_total_source_report:sum_rate
+
+    # sum(istio_build) by (kubernetes_namespace, tag)
+    - expr: sum(istio_build) by (kubernetes_namespace, tag)
+      record: namespace_tag:istio_component_count

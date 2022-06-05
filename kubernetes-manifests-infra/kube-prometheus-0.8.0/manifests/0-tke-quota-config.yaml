@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tke-quota-config
+  namespace: kube-system
+data:
+  monitoring: "10"
