@@ -54,7 +54,7 @@ spec:
     spec:
       containers:
         - name: elasticsearch-kibana
-          image: harbor.freedom.org/elastic/kibana:7.9.2
+          image: harbor.freedom.org/elastic/kibana:7.14.1
           env:
             - name: TZ
               value: Asia/Shanghai
