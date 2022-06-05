@@ -18,7 +18,7 @@ spec:
       port: web
   externalLabels: {}
   # image: quay.io/prometheus/prometheus:v2.26.0
-  image: ccr.ccs.tencentyun.com/docker-mirror/prometheus:2.26.0
+  image: harbor.freedom.org/prometheus-operator/prometheus:2.26.0
   nodeSelector:
     kubernetes.io/os: linux
   podMetadata:
