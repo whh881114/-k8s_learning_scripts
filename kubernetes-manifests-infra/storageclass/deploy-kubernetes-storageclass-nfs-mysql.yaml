@@ -84,9 +84,9 @@ spec:
             - name: PROVISIONER_NAME
               value: fuseim.pri/storageclass-nfs-mysql
             - name: NFS_SERVER
-              value: mysql.nfs.freedom.org
+              value: nfs.freedom.org
             - name: NFS_PATH
-              value: /data/kubernetes-datastorage-nfs-pvc/mysql
+              value: /data/k8s-pvc-nfs/mysql
       volumes:
         - name: nfs-client-root
           nfs:

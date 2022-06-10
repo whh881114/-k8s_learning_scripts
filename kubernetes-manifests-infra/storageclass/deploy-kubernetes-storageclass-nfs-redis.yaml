@@ -84,9 +84,9 @@ spec:
             - name: PROVISIONER_NAME
               value: fuseim.pri/storageclass-nfs-redis
             - name: NFS_SERVER
-              value: redis.nfs.freedom.org
+              value: nfs.freedom.org
             - name: NFS_PATH
-              value: /data/kubernetes-datastorage-nfs-pvc/redis
+              value: /data/k8s-pvc-nfs/redis
       volumes:
         - name: nfs-client-root
           nfs:

@@ -84,9 +84,9 @@ spec:
             - name: PROVISIONER_NAME
               value: fuseim.pri/storageclass-nfs-infra
             - name: NFS_SERVER
-              value: infra.nfs.freedom.org
+              value: nfs.freedom.org
             - name: NFS_PATH
-              value: /data/kubernetes-datastorage-nfs-pvc/infra
+              value: /data/k8s-pvc-nfs/infra
       volumes:
         - name: nfs-client-root
           nfs:
