@@ -43,7 +43,7 @@ spec:
             httpGet:
               port: 8080
               path: /
-              scheme: http
+              scheme: HTTP
             initialDelaySeconds: 60
             periodSeconds: 5
             timeoutSeconds: 60
@@ -51,7 +51,7 @@ spec:
             httpGet:
               port: 8080
               path: /
-              scheme: http
+              scheme: HTTP
             initialDelaySeconds: 10
             periodSeconds: 10
       volumes:
