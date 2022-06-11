@@ -33,7 +33,7 @@
       --set no_proxy=127.0.0.0/8\\,10.0.0.0/8\\,cattle-system.svc\\,172.16.0.0/12\\,192.168.0.0/16\\,.svc\\,.cluster.local
     ```
    
-   - 命令：在集群中部署rancher，指定版本使用rancherImageTag参数，另外要使用useBundledSystemChart参数才能使用自带的监控。
+   - 命令：在集群中部署rancher，指定版本使用rancherImageTag参数，另外要使用useBundledSystemChart参数才能使用自带的监控，现在使用了prometheus-operator，所以不需要此参数。
    ```
    helm repo add rancher-latest https://releases.rancher.com/server-charts/latest
    
@@ -43,10 +43,41 @@
     --namespace cattle-system \
     --set hostname=${proxy_host} \
     --set proxy=http://${proxy_host} \
-    --set no_proxy=127.0.0.0/8\\,10.0.0.0/8\\,cattle-system.svc\\,172.16.0.0/12\\,192.168.0.0/16\\,.svc\\,.cluster.local \
-   --set rancherImageTag=v2.4.17 \
-   --set useBundledSystemChart=true
+    --set no_proxy=127.0.0.0/8\\,10.0.0.0/8\\,cattle-system.svc\\,172.16.0.0/12\\,192.168.0.0/16\\,.svc\\,.cluster.local
    ```
+   
+   - 安装过程：
+   ```
+    Release "rancher" does not exist. Installing it now.
+    W0611 16:24:21.064871   51742 warnings.go:70] cert-manager.io/v1beta1 Issuer is deprecated in v1.4+, unavailable in v1.6+; use cert-manager.io/v1 Issuer
+    NAME: rancher
+    LAST DEPLOYED: Sat Jun 11 16:24:19 2022
+    NAMESPACE: cattle-system
+    STATUS: deployed
+    REVISION: 1
+    TEST SUITE: None
+    NOTES:
+    Rancher Server has been installed.
+    
+    NOTE: Rancher may take several minutes to fully initialize. Please standby while Certificates are being issued, Containers are started and the Ingress rule comes up.
+    
+    Check out our docs at https://rancher.com/docs/
+    
+    If you provided your own bootstrap password during installation, browse to https://rancher.k8s.freedom.org to get started.
+    
+    If this is the first time you installed Rancher, get started by running this command and clicking the URL it generates:
+    
+    # shell command
+    echo https://rancher.k8s.freedom.org/dashboard/?setup=$(kubectl get secret --namespace cattle-system bootstrap-secret -o go-template='{{.data.bootstrapPassword|base64decode}}')
+
+    
+    To get just the bootstrap password on its own, run:
+    
+    # shell command
+    kubectl get secret --namespace cattle-system bootstrap-secret -o go-template='{{.data.bootstrapPassword|base64decode}}{{ "\n" }}'
+
+    Happy Containering!
+    ```
    
    - 命令：需要给rancher的ingress添加注释。
    ```
