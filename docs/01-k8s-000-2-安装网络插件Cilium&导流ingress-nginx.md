@@ -12,52 +12,51 @@
 
 ## 集群状态
 ```shell
-[root@master01.k8s.freedom.org ~ 10:40]# 17> kubectl get nodes -o wide
-NAME                       STATUS   ROLES                  AGE   VERSION   INTERNAL-IP    EXTERNAL-IP   OS-IMAGE                KERNEL-VERSION               CONTAINER-RUNTIME
-master01.k8s.freedom.org   Ready    control-plane,master   30m   v1.21.5   192.168.2.11   <none>        CentOS Linux 7 (Core)   5.14.9-1.el7.elrepo.x86_64   docker://20.10.8
-master02.k8s.freedom.org   Ready    control-plane,master   27m   v1.21.5   192.168.2.12   <none>        CentOS Linux 7 (Core)   5.14.9-1.el7.elrepo.x86_64   docker://20.10.8
-master03.k8s.freedom.org   Ready    control-plane,master   27m   v1.21.5   192.168.2.13   <none>        CentOS Linux 7 (Core)   5.14.9-1.el7.elrepo.x86_64   docker://20.10.8
-worker01.k8s.freedom.org   Ready    <none>                 26m   v1.21.5   192.168.2.14   <none>        CentOS Linux 7 (Core)   5.14.9-1.el7.elrepo.x86_64   docker://20.10.8
-worker02.k8s.freedom.org   Ready    <none>                 25m   v1.21.5   192.168.2.15   <none>        CentOS Linux 7 (Core)   5.14.9-1.el7.elrepo.x86_64   docker://20.10.8
-worker03.k8s.freedom.org   Ready    <none>                 25m   v1.21.5   192.168.2.16   <none>        CentOS Linux 7 (Core)   5.14.9-1.el7.elrepo.x86_64   docker://20.10.8
-[root@master01.k8s.freedom.org ~ 10:41]# 18> 
+[root@master01.k8s.freedom.org /tmp 15:40]# 20> kubectl get nodes -o wide
+NAME                       STATUS   ROLES                  AGE    VERSION   INTERNAL-IP    EXTERNAL-IP   OS-IMAGE                KERNEL-VERSION                CONTAINER-RUNTIME
+master01.k8s.freedom.org   Ready    control-plane,master   130m   v1.22.2   192.168.2.11   <none>        CentOS Linux 7 (Core)   5.4.197-1.el7.elrepo.x86_64   docker://20.10.8
+master02.k8s.freedom.org   Ready    control-plane,master   129m   v1.22.2   192.168.2.12   <none>        CentOS Linux 7 (Core)   5.4.197-1.el7.elrepo.x86_64   docker://20.10.8
+master03.k8s.freedom.org   Ready    control-plane,master   128m   v1.22.2   192.168.2.13   <none>        CentOS Linux 7 (Core)   5.4.197-1.el7.elrepo.x86_64   docker://20.10.8
+worker01.k8s.freedom.org   Ready    <none>                 117m   v1.22.2   192.168.2.14   <none>        CentOS Linux 7 (Core)   5.4.197-1.el7.elrepo.x86_64   docker://20.10.8
+worker02.k8s.freedom.org   Ready    <none>                 116m   v1.22.2   192.168.2.15   <none>        CentOS Linux 7 (Core)   5.4.197-1.el7.elrepo.x86_64   docker://20.10.8
+worker03.k8s.freedom.org   Ready    <none>                 116m   v1.22.2   192.168.2.16   <none>        CentOS Linux 7 (Core)   5.4.197-1.el7.elrepo.x86_64   docker://20.10.8
+[root@master01.k8s.freedom.org /tmp 15:40]# 21> 
 ```
 
 ## POD状态
 ```shell
-[root@master01.k8s.freedom.org ~ 10:41]# 18> kubectl get pod --all-namespaces -o wide
-NAMESPACE       NAME                                               READY   STATUS    RESTARTS   AGE     IP             NODE                       NOMINATED NODE   READINESS GATES
-ingress-nginx   ingress-nginx-controller-77b8dc8f69-nnqjb          1/1     Running   0          5m23s   10.0.4.183     worker01.k8s.freedom.org   <none>           <none>
-kube-system     cilium-2zrpc                                       1/1     Running   1          15m     192.168.2.13   master03.k8s.freedom.org   <none>           <none>
-kube-system     cilium-5qgxb                                       1/1     Running   1          15m     192.168.2.14   worker01.k8s.freedom.org   <none>           <none>
-kube-system     cilium-8b67s                                       1/1     Running   1          15m     192.168.2.15   worker02.k8s.freedom.org   <none>           <none>
-kube-system     cilium-b29m6                                       1/1     Running   1          15m     192.168.2.16   worker03.k8s.freedom.org   <none>           <none>
-kube-system     cilium-operator-6bbdb895b5-x45bq                   1/1     Running   1          16m     192.168.2.16   worker03.k8s.freedom.org   <none>           <none>
-kube-system     cilium-qdcdh                                       1/1     Running   1          15m     192.168.2.12   master02.k8s.freedom.org   <none>           <none>
-kube-system     cilium-tl4ds                                       1/1     Running   1          15m     192.168.2.11   master01.k8s.freedom.org   <none>           <none>
-kube-system     coredns-558bd4d5db-7x5tl                           1/1     Running   1          30m     10.0.4.209     worker01.k8s.freedom.org   <none>           <none>
-kube-system     coredns-558bd4d5db-j7cmm                           1/1     Running   1          30m     10.0.1.165     worker02.k8s.freedom.org   <none>           <none>
-kube-system     etcd-master01.k8s.freedom.org                      1/1     Running   2          30m     192.168.2.11   master01.k8s.freedom.org   <none>           <none>
-kube-system     etcd-master02.k8s.freedom.org                      1/1     Running   2          27m     192.168.2.12   master02.k8s.freedom.org   <none>           <none>
-kube-system     etcd-master03.k8s.freedom.org                      1/1     Running   2          27m     192.168.2.13   master03.k8s.freedom.org   <none>           <none>
-kube-system     hubble-relay-84999fcb48-qrbf5                      1/1     Running   1          15m     10.0.1.49      worker02.k8s.freedom.org   <none>           <none>
-kube-system     hubble-ui-9b6d87f-k4fg8                            3/3     Running   3          15m     10.0.0.180     worker03.k8s.freedom.org   <none>           <none>
-kube-system     kube-apiserver-master01.k8s.freedom.org            1/1     Running   2          30m     192.168.2.11   master01.k8s.freedom.org   <none>           <none>
-kube-system     kube-apiserver-master02.k8s.freedom.org            1/1     Running   2          27m     192.168.2.12   master02.k8s.freedom.org   <none>           <none>
-kube-system     kube-apiserver-master03.k8s.freedom.org            1/1     Running   2          27m     192.168.2.13   master03.k8s.freedom.org   <none>           <none>
-kube-system     kube-controller-manager-master01.k8s.freedom.org   1/1     Running   3          30m     192.168.2.11   master01.k8s.freedom.org   <none>           <none>
-kube-system     kube-controller-manager-master02.k8s.freedom.org   1/1     Running   2          27m     192.168.2.12   master02.k8s.freedom.org   <none>           <none>
-kube-system     kube-controller-manager-master03.k8s.freedom.org   1/1     Running   2          27m     192.168.2.13   master03.k8s.freedom.org   <none>           <none>
-kube-system     kube-proxy-chhmz                                   1/1     Running   2          30m     192.168.2.11   master01.k8s.freedom.org   <none>           <none>
-kube-system     kube-proxy-cp4xd                                   1/1     Running   2          26m     192.168.2.14   worker01.k8s.freedom.org   <none>           <none>
-kube-system     kube-proxy-d9zs9                                   1/1     Running   2          26m     192.168.2.15   worker02.k8s.freedom.org   <none>           <none>
-kube-system     kube-proxy-gr9h5                                   1/1     Running   2          27m     192.168.2.12   master02.k8s.freedom.org   <none>           <none>
-kube-system     kube-proxy-j74jv                                   1/1     Running   2          26m     192.168.2.16   worker03.k8s.freedom.org   <none>           <none>
-kube-system     kube-proxy-xzhrd                                   1/1     Running   2          27m     192.168.2.13   master03.k8s.freedom.org   <none>           <none>
-kube-system     kube-scheduler-master01.k8s.freedom.org            1/1     Running   3          30m     192.168.2.11   master01.k8s.freedom.org   <none>           <none>
-kube-system     kube-scheduler-master02.k8s.freedom.org            1/1     Running   2          27m     192.168.2.12   master02.k8s.freedom.org   <none>           <none>
-kube-system     kube-scheduler-master03.k8s.freedom.org            1/1     Running   2          27m     192.168.2.13   master03.k8s.freedom.org   <none>           <none>
-[root@master01.k8s.freedom.org ~ 10:41]# 19> 
+[root@master01.k8s.freedom.org /tmp 15:41]# 25> kubectl get pod --all-namespaces -o wide
+NAMESPACE     NAME                                               READY   STATUS    RESTARTS       AGE     IP             NODE                       NOMINATED NODE   READINESS GATES
+kube-system   cilium-42qt4                                       1/1     Running   0              98s     192.168.2.15   worker02.k8s.freedom.org   <none>           <none>
+kube-system   cilium-5th2z                                       1/1     Running   0              97s     192.168.2.14   worker01.k8s.freedom.org   <none>           <none>
+kube-system   cilium-9x8mg                                       1/1     Running   0              98s     192.168.2.13   master03.k8s.freedom.org   <none>           <none>
+kube-system   cilium-brvn6                                       1/1     Running   0              98s     192.168.2.16   worker03.k8s.freedom.org   <none>           <none>
+kube-system   cilium-gd2hd                                       1/1     Running   0              97s     192.168.2.12   master02.k8s.freedom.org   <none>           <none>
+kube-system   cilium-jjxch                                       1/1     Running   0              97s     192.168.2.11   master01.k8s.freedom.org   <none>           <none>
+kube-system   cilium-operator-6bbdb895b5-lmwnl                   1/1     Running   0              4m41s   192.168.2.16   worker03.k8s.freedom.org   <none>           <none>
+kube-system   coredns-78fcd69978-fbn25                           1/1     Running   0              131m    10.0.1.114     master02.k8s.freedom.org   <none>           <none>
+kube-system   coredns-78fcd69978-hghzm                           1/1     Running   0              131m    10.0.1.170     master02.k8s.freedom.org   <none>           <none>
+kube-system   etcd-master01.k8s.freedom.org                      1/1     Running   0              131m    192.168.2.11   master01.k8s.freedom.org   <none>           <none>
+kube-system   etcd-master02.k8s.freedom.org                      1/1     Running   0              130m    192.168.2.12   master02.k8s.freedom.org   <none>           <none>
+kube-system   etcd-master03.k8s.freedom.org                      1/1     Running   0              129m    192.168.2.13   master03.k8s.freedom.org   <none>           <none>
+kube-system   hubble-relay-84999fcb48-7dqn6                      1/1     Running   0              98s     10.0.3.64      worker02.k8s.freedom.org   <none>           <none>
+kube-system   hubble-ui-9b6d87f-q6lnf                            3/3     Running   0              98s     10.0.5.165     worker01.k8s.freedom.org   <none>           <none>
+kube-system   kube-apiserver-master01.k8s.freedom.org            1/1     Running   0              131m    192.168.2.11   master01.k8s.freedom.org   <none>           <none>
+kube-system   kube-apiserver-master02.k8s.freedom.org            1/1     Running   0              130m    192.168.2.12   master02.k8s.freedom.org   <none>           <none>
+kube-system   kube-apiserver-master03.k8s.freedom.org            1/1     Running   0              129m    192.168.2.13   master03.k8s.freedom.org   <none>           <none>
+kube-system   kube-controller-manager-master01.k8s.freedom.org   1/1     Running   1 (130m ago)   131m    192.168.2.11   master01.k8s.freedom.org   <none>           <none>
+kube-system   kube-controller-manager-master02.k8s.freedom.org   1/1     Running   0              130m    192.168.2.12   master02.k8s.freedom.org   <none>           <none>
+kube-system   kube-controller-manager-master03.k8s.freedom.org   1/1     Running   0              128m    192.168.2.13   master03.k8s.freedom.org   <none>           <none>
+kube-system   kube-proxy-7gthg                                   1/1     Running   0              117m    192.168.2.16   worker03.k8s.freedom.org   <none>           <none>
+kube-system   kube-proxy-8tnfk                                   1/1     Running   0              129m    192.168.2.13   master03.k8s.freedom.org   <none>           <none>
+kube-system   kube-proxy-gwwpd                                   1/1     Running   0              130m    192.168.2.12   master02.k8s.freedom.org   <none>           <none>
+kube-system   kube-proxy-jq2hw                                   1/1     Running   0              131m    192.168.2.11   master01.k8s.freedom.org   <none>           <none>
+kube-system   kube-proxy-qgndq                                   1/1     Running   0              118m    192.168.2.14   worker01.k8s.freedom.org   <none>           <none>
+kube-system   kube-proxy-sf4dx                                   1/1     Running   0              117m    192.168.2.15   worker02.k8s.freedom.org   <none>           <none>
+kube-system   kube-scheduler-master01.k8s.freedom.org            1/1     Running   1 (130m ago)   131m    192.168.2.11   master01.k8s.freedom.org   <none>           <none>
+kube-system   kube-scheduler-master02.k8s.freedom.org            1/1     Running   0              130m    192.168.2.12   master02.k8s.freedom.org   <none>           <none>
+kube-system   kube-scheduler-master03.k8s.freedom.org            1/1     Running   0              129m    192.168.2.13   master03.k8s.freedom.org   <none>           <none>
+[root@master01.k8s.freedom.org /tmp 15:41]# 26> 
 ```
 
 ## 补充：ingress安装日志
@@ -68,7 +67,7 @@ ok: [master01.k8s.freedom.org] => {
         [
             "namespace/ingress-nginx created", 
             "NAME: ingress-nginx", 
-            "LAST DEPLOYED: Tue Oct  5 10:35:57 2021", 
+            "LAST DEPLOYED: Sat Jun 11 15:52:03 2022", 
             "NAMESPACE: ingress-nginx", 
             "STATUS: deployed", 
             "REVISION: 1", 
