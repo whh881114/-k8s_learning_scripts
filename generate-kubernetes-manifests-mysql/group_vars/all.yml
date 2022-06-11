@@ -1,5 +1,5 @@
 ---
-mysql_output_dir: /opt/ansible_playbooks
+mysql_output_dir: ../kubernetes-manifests-infra/mysql
 
 mysql_namespace: mysql
 
