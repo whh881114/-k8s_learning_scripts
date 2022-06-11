@@ -27,3 +27,13 @@ spec:
                 name: elasticsearch-client
                 port:
                   number: 9200
+    - host: es.k8s.freedom.org
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: elasticsearch-client
+                port:
+                  number: 9200
