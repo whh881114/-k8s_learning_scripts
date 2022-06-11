@@ -34,7 +34,6 @@ spec:
             - "-retry-join=node01.consul.freedom.org"
             - "-retry-join=node02.consul.freedom.org"
             - "-retry-join=node03.consul.freedom.org"
-            - "-data-dir=/consul/data"
             - "-config-dir=/consul/config"
             - "-log-level=info"
             - "-log-rotate-duration=86400s"
@@ -76,5 +75,12 @@ spec:
               scheme: HTTP
             initialDelaySeconds: 10
             periodSeconds: 10
-
+          volumeMounts:
+            - name: config
+              mountPath: /consul/config/agent.json
+              subPath: agent.json
+      volumes:
+        - name: config
+          configMap:
+            name: consul-agent
 
