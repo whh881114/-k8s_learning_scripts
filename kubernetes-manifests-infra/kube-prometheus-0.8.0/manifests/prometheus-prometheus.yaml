@@ -84,7 +84,7 @@ spec:
   # 添加自定义监控
   additionalScrapeConfigs:
     name: prometheus-additional-scrape-configs
-    key: prometheus-additional-scrape-configs.yaml
+    key: additional-scrape-configs.yaml
   # 存储类型：remote
 #  remoteWrite:
 #    - name: mimir
