@@ -1,7 +1,7 @@
 # consul自动发现配置，检查注册中心中的consul服务名。
 - job_name: consul-sd-vm-node-exporter
   consul_sd_configs:
-    - server: server01.node.freedom.org:8500 # 只能写一个地址
+    - server: node01.consul.freedom.org:8500 # 只能写一个地址
       services:
         - node-exporter # 根据注册的服务进行过滤。
   relabel_configs:
