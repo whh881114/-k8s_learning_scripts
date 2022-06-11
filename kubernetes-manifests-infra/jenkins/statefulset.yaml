@@ -32,13 +32,6 @@ spec:
             requests:
               cpu: 100m
               memory: 256Mi
-          volumeMounts:
-            - name: jenkins-data
-              mountPath: /data
-            # `docker run docker`配置。
-            - name: docker-socket
-              mountPath: /var/run/docker.sock
-              readOnly: true
           readinessProbe:
             httpGet:
               port: 8080
@@ -54,6 +47,13 @@ spec:
               scheme: HTTP
             initialDelaySeconds: 10
             periodSeconds: 10
+          volumeMounts:
+            - name: jenkins-data
+              mountPath: /data
+            # `docker run docker`配置。
+            - name: docker-socket
+              mountPath: /var/run/docker.sock
+              readOnly: true
       volumes:
         - name: docker-socket
           hostPath:
