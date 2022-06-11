@@ -38,11 +38,11 @@ spec:
               value: Asia/Shanghai
           resources:
             limits:
-              cpu: 2000m
+              cpu: 1000m
               memory: 2048Mi
             requests:
-              cpu: 1000m
-              memory: 1024Mi
+              cpu: 100m
+              memory: 256Mi
           volumeMounts:
             - name: zookeeper-data
               mountPath: /data
