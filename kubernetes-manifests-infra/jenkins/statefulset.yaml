@@ -32,19 +32,16 @@ spec:
             requests:
               cpu: 100m
               memory: 256Mi
+          # 健康检查改为tcp，因为jenkins配置了用户名和密码，返回状态为403，而当前httpGet只支持2xx/3xx。
           readinessProbe:
-            httpGet:
+            tcpSocket:
               port: 8080
-              path: /
-              scheme: HTTP
             initialDelaySeconds: 60
             periodSeconds: 5
             timeoutSeconds: 60
           livenessProbe:
-            httpGet:
+            tcpSocket:
               port: 8080
-              path: /
-              scheme: HTTP
             initialDelaySeconds: 10
             periodSeconds: 10
           volumeMounts:
