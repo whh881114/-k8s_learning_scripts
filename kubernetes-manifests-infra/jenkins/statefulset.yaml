@@ -39,6 +39,21 @@ spec:
             - name: docker-socket
               mountPath: /var/run/docker.sock
               readOnly: true
+          readinessProbe:
+            httpGet:
+              port: 8080
+              path: /
+              scheme: http
+            initialDelaySeconds: 60
+            periodSeconds: 5
+            timeoutSeconds: 60
+          livenessProbe:
+            httpGet:
+              port: 8080
+              path: /
+              scheme: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
       volumes:
         - name: docker-socket
           hostPath:
