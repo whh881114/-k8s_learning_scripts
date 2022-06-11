@@ -1,5 +1,5 @@
-[root@master01.k8s.freedom.org ~ 10:09]# 1> kubeadm init --kubernetes-version v1.21.5 --pod-network-cidr 10.244.0.0/16 --service-cidr=10.96.0.0/12 --control-plane-endpoint "apiserver.k8s.freedom.org:6443" --upload-certs
-[init] Using Kubernetes version: v1.21.5
+[root@master01.k8s.freedom.org ~ 13:29]# 1> kubeadm init --kubernetes-version v1.22.2 --pod-network-cidr 10.244.0.0/16 --service-cidr=10.96.0.0/12 --control-plane-endpoint "apiserver.k8s.freedom.org:6443" --upload-certs
+[init] Using Kubernetes version: v1.22.2
 [preflight] Running pre-flight checks
 [preflight] Pulling images required for setting up a Kubernetes cluster
 [preflight] This might take a minute or two, depending on the speed of your internet connection
@@ -33,15 +33,15 @@
 [control-plane] Creating static Pod manifest for "kube-scheduler"
 [etcd] Creating static Pod manifest for local etcd in "/etc/kubernetes/manifests"
 [wait-control-plane] Waiting for the kubelet to boot up the control plane as static Pods from directory "/etc/kubernetes/manifests". This can take up to 4m0s
-[apiclient] All control plane components are healthy after 20.540701 seconds
+[apiclient] All control plane components are healthy after 12.506382 seconds
 [upload-config] Storing the configuration used in ConfigMap "kubeadm-config" in the "kube-system" Namespace
-[kubelet] Creating a ConfigMap "kubelet-config-1.21" in namespace kube-system with the configuration for the kubelets in the cluster
+[kubelet] Creating a ConfigMap "kubelet-config-1.22" in namespace kube-system with the configuration for the kubelets in the cluster
 [upload-certs] Storing the certificates in Secret "kubeadm-certs" in the "kube-system" Namespace
 [upload-certs] Using certificate key:
-aeee4164a6a35499ec77ca6c2ba5fe70a0c279d0fd4c0de4588d0aa749380057
+2d6f9203bb91c6ea5e02694c11de69ff721f9476af15ace26841740ce4b46f11
 [mark-control-plane] Marking the node master01.k8s.freedom.org as control-plane by adding the labels: [node-role.kubernetes.io/master(deprecated) node-role.kubernetes.io/control-plane node.kubernetes.io/exclude-from-external-load-balancers]
 [mark-control-plane] Marking the node master01.k8s.freedom.org as control-plane by adding the taints [node-role.kubernetes.io/master:NoSchedule]
-[bootstrap-token] Using token: dwjuir.qhyzohbsa9qy6bcw
+[bootstrap-token] Using token: rjrnji.2ilio5dy7kzrryor
 [bootstrap-token] Configuring bootstrap tokens, cluster-info ConfigMap, RBAC Roles
 [bootstrap-token] configured RBAC rules to allow Node Bootstrap tokens to get nodes
 [bootstrap-token] configured RBAC rules to allow Node Bootstrap tokens to post CSRs in order for nodes to get long term certificate credentials
@@ -70,9 +70,9 @@ Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
 
 You can now join any number of the control-plane node running the following command on each as root:
 
-  kubeadm join apiserver.k8s.freedom.org:6443 --token dwjuir.qhyzohbsa9qy6bcw \
-        --discovery-token-ca-cert-hash sha256:9483f2782a326d30f7887ecc599ec3c6a7ccbe462a9622da8eeea1a4c883c4b6 \
-        --control-plane --certificate-key aeee4164a6a35499ec77ca6c2ba5fe70a0c279d0fd4c0de4588d0aa749380057
+  kubeadm join apiserver.k8s.freedom.org:6443 --token rjrnji.2ilio5dy7kzrryor \
+        --discovery-token-ca-cert-hash sha256:87bded450016d62427bc60745e217e8eb72c143af10fd202299a63e04cf70fd4 \
+        --control-plane --certificate-key 2d6f9203bb91c6ea5e02694c11de69ff721f9476af15ace26841740ce4b46f11
 
 Please note that the certificate-key gives access to cluster sensitive data, keep it secret!
 As a safeguard, uploaded-certs will be deleted in two hours; If necessary, you can use
@@ -80,6 +80,6 @@ As a safeguard, uploaded-certs will be deleted in two hours; If necessary, you c
 
 Then you can join any number of worker nodes by running the following on each as root:
 
-kubeadm join apiserver.k8s.freedom.org:6443 --token dwjuir.qhyzohbsa9qy6bcw \
-        --discovery-token-ca-cert-hash sha256:9483f2782a326d30f7887ecc599ec3c6a7ccbe462a9622da8eeea1a4c883c4b6
-[root@master01.k8s.freedom.org ~ 10:10]# 2>
+kubeadm join apiserver.k8s.freedom.org:6443 --token rjrnji.2ilio5dy7kzrryor \
+        --discovery-token-ca-cert-hash sha256:87bded450016d62427bc60745e217e8eb72c143af10fd202299a63e04cf70fd4
+[root@master01.k8s.freedom.org ~ 13:30]# 2>
