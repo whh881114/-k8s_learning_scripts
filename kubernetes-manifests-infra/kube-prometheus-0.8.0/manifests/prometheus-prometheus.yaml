@@ -62,29 +62,29 @@ spec:
             storage: 200Gi
 
   # 增加调度
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-          - matchExpressions:
-              - key: worker-role
-                operator: In
-                values:
-                  - prometheus
-  tolerations:
-    - effect: NoSchedule
-      key: worker-role
-      operator: Equal
-      value: prometheus
-    - effect: NoExecute
-      key: worker-role
-      operator: Equal
-      value: prometheus
+  # affinity:
+  #   nodeAffinity:
+  #     requiredDuringSchedulingIgnoredDuringExecution:
+  #       nodeSelectorTerms:
+  #         - matchExpressions:
+  #             - key: worker-role
+  #               operator: In
+  #               values:
+  #                 - prometheus
+  # tolerations:
+  #   - effect: NoSchedule
+  #     key: worker-role
+  #     operator: Equal
+  #     value: prometheus
+  #   - effect: NoExecute
+  #     key: worker-role
+  #     operator: Equal
+  #     value: prometheus
 
   # 添加自定义监控
   additionalScrapeConfigs:
-    name: additional-scrape-configs
-    key: prometheus-additional.yaml
+    name: prometheus-additional-scrape-configs
+    key: prometheus-additional-scrape-configs.yaml
   # 存储类型：remote
 #  remoteWrite:
 #    - name: mimir
