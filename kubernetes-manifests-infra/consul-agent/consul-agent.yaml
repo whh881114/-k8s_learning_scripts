@@ -83,8 +83,9 @@ spec:
             - name: config
               mountPath: /consul/config/agent.json
               subPath: agent.json
+      # 需要使用到主机网络，这样容器才能和同一网段宿主机通信。
+      hostNetwork: true
       volumes:
         - name: config
           configMap:
             name: consul-agent
-
