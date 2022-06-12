@@ -16,6 +16,7 @@ spec:
       labels:
         app: elasticsearch-filebeat
     spec:
+      serviceAccountName: elasticsearch-filebeat
       tolerations:
         - key: node-role.kubernetes.io/master
           operator: Exists
