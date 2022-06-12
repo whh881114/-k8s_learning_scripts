@@ -1,4 +1,8 @@
-# 参考：https://cloud.tencent.com/developer/news/717602
+# 参考：
+#   - https://cloud.tencent.com/developer/news/717602
+#   - https://blog.csdn.net/weixin_45015255/article/details/118712497
+#   - https://www.elastic.co/guide/en/beats/filebeat/current/configuration-autodiscover-hints.html
+# 个人总结：不配置自动发现就收集所有日志，但是配置自动发现则就需要大量精力，如果采用sidecar模式，就是省精力，但是要消耗集群资源。
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
