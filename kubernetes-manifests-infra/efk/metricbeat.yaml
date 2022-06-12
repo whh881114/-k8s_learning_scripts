@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: elasticsearch-metricbeat-conf
+  name: metricbeat-conf
   namespace: elasticsearch
 data:
   elasticsearch-xpack.yml: |
@@ -21,13 +21,13 @@ data:
 kind: StatefulSet
 apiVersion: apps/v1
 metadata:
-  name: elasticsearch-metricbeat
+  name: metricbeat
   namespace: elasticsearch
   labels:
     component: elasticsearch
     role: metricbeat
 spec:
-  serviceName: elasticsearch-metricbeat
+  serviceName: metricbeat
   replicas: 1
   selector:
     matchLabels:
@@ -40,20 +40,20 @@ spec:
         role: metricbeat
     spec:
       containers:
-        - name: elasticsearch-metricbeat
+        - name: metricbeat
           image: harbor.freedom.org/elastic/metricbeat:7.14.1
           env:
             - name: TZ
               value: Asia/Shanghai
           command: ["sh", "-c", "/usr/share/metricbeat/metricbeat -E setup.kibana.host=elasticsearch-kibana.elasticsearch.svc.cluster.local.:5601 -E output.elasticsearch.hosts=['elasticsearch-master.elasticsearch.svc.cluster.local.:9200']"]
           volumeMounts:
-            - name: elasticsearch-metricbeat-conf
+            - name: metricbeat-conf
               mountPath: /usr/share/metricbeat/modules.d/elasticsearch-xpack.yml
               subPath: elasticsearch-xpack.yml
               readOnly: true
       volumes:
-        - name: elasticsearch-metricbeat-conf
+        - name: metricbeat-conf
           configMap:
-            name: elasticsearch-metricbeat-conf
+            name: metricbeat-conf
 
 

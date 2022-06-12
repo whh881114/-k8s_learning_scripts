@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: elasticsearch-kibana
+  name: elasticsearch
   namespace: elasticsearch
   annotations:
     kubernetes.io/ingress.class: "nginx"
@@ -14,7 +14,7 @@ spec:
           pathType: Prefix
           backend:
             service:
-              name: elasticsearch-kibana
+              name: kibana
               port:
                 number: 5601
     - host: elasticsearch.k8s.freedom.org
@@ -24,7 +24,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: elasticsearch-client
+                name: client
                 port:
                   number: 9200
     - host: es.k8s.freedom.org
@@ -34,6 +34,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: elasticsearch-client
+                name: client
                 port:
                   number: 9200
