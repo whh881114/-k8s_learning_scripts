@@ -1,3 +1,4 @@
+# 参考：https://cloud.tencent.com/developer/news/717602
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
@@ -28,6 +29,8 @@ spec:
           args:
             - "-c"
             - "/usr/share/filebeat/filebeat.yml"
+          securityContext:
+            runAsUser: 0
           imagePullPolicy: IfNotPresent
           resources:
             limits:
@@ -40,7 +43,13 @@ spec:
             - name: config
               mountPath: /usr/share/filebeat/filebeat.yml
               subPath: filebeat.yml
+            - name: docker-log-dir
+              mountPath: /var/lib/docker/containers
+              readOnly: true
       volumes:
         - name: config
           configMap:
             name: elasticsearch-filebeat
+        - name: docker-log-dir
+          hostPath:
+            path: /var/lib/docker/containers
