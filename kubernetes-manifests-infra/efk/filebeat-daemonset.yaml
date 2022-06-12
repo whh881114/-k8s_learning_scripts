@@ -2,27 +2,27 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: elasticsearch-filebeat
+  name: filebeat
   namespace: elasticsearch
   labels:
-    app: elasticsearch-filebeat
+    app: filebeat
 spec:
   selector:
     matchLabels:
-      app: elasticsearch-filebeat
+      app: filebeat
   template:
     metadata:
-      name: elasticsearch-filebeat
+      name: filebeat
       labels:
-        app: elasticsearch-filebeat
+        app: filebeat
     spec:
-      serviceAccountName: elasticsearch-filebeat
+      serviceAccountName: filebeat
       tolerations:
         - key: node-role.kubernetes.io/master
           operator: Exists
           effect: NoSchedule
       containers:
-        - name: elasticsearch-filebeat
+        - name: filebeat
           env:
             - name: TZ
               value: Asia/Shanghai
@@ -50,7 +50,7 @@ spec:
       volumes:
         - name: config
           configMap:
-            name: elasticsearch-filebeat
+            name: filebeat
         - name: docker-log-dir
           hostPath:
             path: /var/lib/docker/containers
