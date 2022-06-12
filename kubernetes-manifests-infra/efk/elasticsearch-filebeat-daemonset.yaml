@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: elasticsearch-filebeat
+  namespace: elasticsearch
+  labels:
+    app: elasticsearch-filebeat
+spec:
+  selector:
+    matchLabels:
+      app: elasticsearch-filebeat
+  template:
+    metadata:
+      name: elasticsearch-filebeat
+      labels:
+        app: elasticsearch-filebeat
+    spec:
+      tolerations:
+        - key: node-role.kubernetes.io/master
+          operator: Exists
+          effect: NoSchedule
+      containers:
+        - name: elasticsearch-filebeat
+          env:
+            - name: TZ
+              value: Asia/Shanghai
+          image: harbor.freedom.org/elastic/filebeat:7.14.1
+          args:
+            - "-c"
+            - "/usr/share/filebeat/filebeat.yml"
+          imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              cpu: 500m
+              memory: 1024Mi
+            requests:
+              cpu: 50m
+              memory: 64Mi
+          volumeMounts:
+            - name: config
+              mountPath: /usr/share/filebeat/filebeat.yml
+              subPath: filebeat.yml
+      volumes:
+        - name: config
+          configMap:
+            name: elasticsearch-filebeat
