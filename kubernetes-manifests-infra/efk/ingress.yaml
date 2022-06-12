@@ -24,7 +24,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: client
+                name: elasticsearch-client
                 port:
                   number: 9200
     - host: es.k8s.freedom.org
@@ -34,6 +34,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: client
+                name: elasticsearch-client
                 port:
                   number: 9200
