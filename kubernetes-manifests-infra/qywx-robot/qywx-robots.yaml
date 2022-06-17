@@ -1,0 +1,147 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: devops
+
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: qywx-robots
+  namespace: devops
+data:
+  qywx_robots.cfg: |
+    server:
+      listen: "0.0.0.0"
+      port: 8080
+
+    robots:
+      - name: "default"
+        id: "4134b770-25dc-4242-a5c2-6f3177f6019c"
+        desc: "个人私有云zabbix告警"
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qywx-robots
+  namespace: devops
+  labels:
+    k8s-app: qywx-robots
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: qywx-robots
+  template:
+    metadata:
+      labels:
+        k8s-app: qywx-robots
+    spec:
+      containers:
+        - name: qywx-robots
+          image: harbor.freedom.org/freedom/qywx-robots:latest
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              cpu: 1000m
+              memory: 128Mi
+          ports:
+            - name: http
+              containerPort: 8080 # 此端口是根据配置文件中定义的，我使用的是8080。
+          volumeMounts:
+            - name: qywx-robots-cfg
+              mountPath: /etc/qywx_robots.cfg
+              subPath: qywx_robots.cfg
+              readOnly: true
+      volumes:
+        - name: qywx-robots-cfg
+          configMap:
+            name: qywx-robots
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qywx-robots
+  namespace: devops
+  labels:
+    k8s-app: qywx-robots
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+  selector:
+    k8s-app: qywx-robots
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qywx-robots-nodeport
+  namespace: devops
+  labels:
+    k8s-app: qywx-robots-nodeport
+spec:
+  type: NodePort
+  ports:
+    - name: port-8080
+      port: 8080
+      targetPort: 8080
+  selector:
+    k8s-app: qywx-robots-nodeport
+
+
+# 新版本的ingress写法
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: qywx-robots
+  namespace: devops
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+  labes:
+    k8s-app: qywx-robots
+spec:
+  rules:
+    - host: qywx-robots.k8s.freedom.org
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: qywx-robots
+              port:
+                number: 8080
+
+
+#旧版本的ingress写法
+#---
+#apiVersion: extensions/v1beta1
+#kind: Ingress
+#metadata:
+#  name: qywx-robots
+#  namespace: devops
+#  annotations:
+#    kubernetes.io/ingress.class: "nginx"
+#spec:
+#  rules:
+#    - host: qywx-robots.kdev.pagoda.com.cn
+#      http:
+#        paths:
+#        - path: /
+#          backend:
+#            serviceName: qywx-robots
+#            servicePort: 8080
