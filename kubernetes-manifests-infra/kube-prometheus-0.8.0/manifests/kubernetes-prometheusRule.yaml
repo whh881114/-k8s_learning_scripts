@@ -348,7 +348,7 @@ spec:
         sum(increase(container_cpu_cfs_throttled_periods_total{container!="", }[5m])) by (container, pod, namespace)
           /
         sum(increase(container_cpu_cfs_periods_total{}[5m])) by (container, pod, namespace)
-          > ( 25 / 100 )
+          > ( 90 / 100 )
       for: 15m
       labels:
         severity: info
@@ -434,48 +434,49 @@ spec:
         long: 1h
         severity: critical
         short: 5m
-    - alert: KubeAPIErrorBudgetBurn
-      annotations:
-        description: The API server is burning too much error budget.
-        runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/kubeapierrorbudgetburn
-        summary: The API server is burning too much error budget.
-      expr: |
-        sum(apiserver_request:burnrate6h) > (6.00 * 0.01000)
-        and
-        sum(apiserver_request:burnrate30m) > (6.00 * 0.01000)
-      for: 15m
-      labels:
-        long: 6h
-        severity: critical
-        short: 30m
-    - alert: KubeAPIErrorBudgetBurn
-      annotations:
-        description: The API server is burning too much error budget.
-        runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/kubeapierrorbudgetburn
-        summary: The API server is burning too much error budget.
-      expr: |
-        sum(apiserver_request:burnrate1d) > (3.00 * 0.01000)
-        and
-        sum(apiserver_request:burnrate2h) > (3.00 * 0.01000)
-      for: 1h
-      labels:
-        long: 1d
-        severity: warning
-        short: 2h
-    - alert: KubeAPIErrorBudgetBurn
-      annotations:
-        description: The API server is burning too much error budget.
-        runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/kubeapierrorbudgetburn
-        summary: The API server is burning too much error budget.
-      expr: |
-        sum(apiserver_request:burnrate3d) > (1.00 * 0.01000)
-        and
-        sum(apiserver_request:burnrate6h) > (1.00 * 0.01000)
-      for: 3h
-      labels:
-        long: 3d
-        severity: warning
-        short: 6h
+# 取消其他等级KubeAPIErrorBudgetBurn告警
+#    - alert: KubeAPIErrorBudgetBurn
+#      annotations:
+#        description: The API server is burning too much error budget.
+#        runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/kubeapierrorbudgetburn
+#        summary: The API server is burning too much error budget.
+#      expr: |
+#        sum(apiserver_request:burnrate6h) > (6.00 * 0.01000)
+#        and
+#        sum(apiserver_request:burnrate30m) > (6.00 * 0.01000)
+#      for: 15m
+#      labels:
+#        long: 6h
+#        severity: critical
+#        short: 30m
+#    - alert: KubeAPIErrorBudgetBurn
+#      annotations:
+#        description: The API server is burning too much error budget.
+#        runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/kubeapierrorbudgetburn
+#        summary: The API server is burning too much error budget.
+#      expr: |
+#        sum(apiserver_request:burnrate1d) > (3.00 * 0.01000)
+#        and
+#        sum(apiserver_request:burnrate2h) > (3.00 * 0.01000)
+#      for: 1h
+#      labels:
+#        long: 1d
+#        severity: warning
+#        short: 2h
+#    - alert: KubeAPIErrorBudgetBurn
+#      annotations:
+#        description: The API server is burning too much error budget.
+#        runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/kubeapierrorbudgetburn
+#        summary: The API server is burning too much error budget.
+#      expr: |
+#        sum(apiserver_request:burnrate3d) > (1.00 * 0.01000)
+#        and
+#        sum(apiserver_request:burnrate6h) > (1.00 * 0.01000)
+#      for: 3h
+#      labels:
+#        long: 3d
+#        severity: warning
+#        short: 6h
   - name: kubernetes-system-apiserver
     rules:
     - alert: KubeClientCertificateExpiration
@@ -669,30 +670,31 @@ spec:
       for: 15m
       labels:
         severity: critical
-  - name: kubernetes-system-scheduler
-    rules:
-    - alert: KubeSchedulerDown
-      annotations:
-        description: KubeScheduler has disappeared from Prometheus target discovery.
-        runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/kubeschedulerdown
-        summary: Target disappeared from Prometheus target discovery.
-      expr: |
-        absent(up{job="kube-scheduler"} == 1)
-      for: 15m
-      labels:
-        severity: critical
-  - name: kubernetes-system-controller-manager
-    rules:
-    - alert: KubeControllerManagerDown
-      annotations:
-        description: KubeControllerManager has disappeared from Prometheus target discovery.
-        runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/kubecontrollermanagerdown
-        summary: Target disappeared from Prometheus target discovery.
-      expr: |
-        absent(up{job="kube-controller-manager"} == 1)
-      for: 15m
-      labels:
-        severity: critical
+# 取消KubeSchedulerDown和KubeControllerManagerDown监控，未上线其监控。
+#  - name: kubernetes-system-scheduler
+#    rules:
+#    - alert: KubeSchedulerDown
+#      annotations:
+#        description: KubeScheduler has disappeared from Prometheus target discovery.
+#        runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/kubeschedulerdown
+#        summary: Target disappeared from Prometheus target discovery.
+#      expr: |
+#        absent(up{job="kube-scheduler"} == 1)
+#      for: 15m
+#      labels:
+#        severity: critical
+#  - name: kubernetes-system-controller-manager
+#    rules:
+#    - alert: KubeControllerManagerDown
+#      annotations:
+#        description: KubeControllerManager has disappeared from Prometheus target discovery.
+#        runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/kubecontrollermanagerdown
+#        summary: Target disappeared from Prometheus target discovery.
+#      expr: |
+#        absent(up{job="kube-controller-manager"} == 1)
+#      for: 15m
+#      labels:
+#        severity: critical
   - name: kube-apiserver.rules
     rules:
     - expr: |
