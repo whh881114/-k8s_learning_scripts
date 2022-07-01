@@ -113,10 +113,11 @@ spec:
   endpoints:
     - port: metrics
   podMetricsEndpoints:
-    - sourceLabels:
-        - __meta_kubernetes_pod_container_port_number
-      regex: 9104
-      action: keep
+    - relabelings:
+        - action: keep
+          regex: "mysqld-exporter"
+          sourceLabels:
+            - __meta_kubernetes_pod_container_name
 
 ---
 apiVersion: apps/v1
