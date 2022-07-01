@@ -109,7 +109,7 @@ spec:
       - mysql
   selector:
     matchLabels:
-      name: mysql
+      name: zabbix
   endpoints:
     - port: metrics
 
