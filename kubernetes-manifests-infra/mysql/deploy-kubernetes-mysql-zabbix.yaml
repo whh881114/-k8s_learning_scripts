@@ -97,7 +97,7 @@ spec:
 
 ---
 apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
+kind: PodMonitor
 metadata:
   name: zabbix
   namespace: mysql
@@ -112,6 +112,11 @@ spec:
       name: zabbix
   endpoints:
     - port: metrics
+  podMetricsEndpoints:
+    - sourceLabels:
+        - __meta_kubernetes_pod_container_name
+      regex: zabbix-mysqld-exporter
+      action: keep
 
 ---
 apiVersion: apps/v1
@@ -137,7 +142,7 @@ spec:
         # CREATE USER 'exporter'@'localhost' IDENTIFIED BY 'XXXXXXXX';
         # GRANT PROCESS, REPLICATION CLIENT ON *.* TO 'exporter'@'localhost';
         # GRANT SELECT ON performance_schema.* TO 'exporter'@'localhost';
-        - name: mysqld-exporter
+        - name: zabbix-mysqld-exporter
           image: harbor.freedom.org/prometheus-operator/mysqld-exporter:v0.14.0
           imagePullPolicy: IfNotPresent
           env:
