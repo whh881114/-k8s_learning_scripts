@@ -9,5 +9,6 @@
         dest: "{{ mysql_output_dir }}/deploy-kubernetes-mysql-{{ item.name }}.yaml"
       with_items:
         - name: zabbix
+          namespace: mysql
           password: kz2zv&eoynpneQbyeowebyu0beGxkgvy
           storageclass_capacity: 50G

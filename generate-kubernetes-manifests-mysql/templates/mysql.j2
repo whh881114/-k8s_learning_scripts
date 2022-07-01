@@ -3,7 +3,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ item.name }}
-  namespace: {{ mysql_namespace }}
+  namespace: {{ item.namespace }}
 data:
   MYSQL_ROOT_PASSWORD: "{{ item.password }}"
 
@@ -59,7 +59,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ item.name }}
-  namespace: {{ mysql_namespace }}
+  namespace: {{ item.namespace }}
   labels:
     name: {{ item.name }}
 spec:
@@ -80,7 +80,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ item.name }}-nodeport
-  namespace: {{ mysql_namespace }}
+  namespace: {{ item.namespace }}
   labels:
     name: {{ item.name }}
 spec:
@@ -100,16 +100,16 @@ apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
   name: {{ item.name }}
-  namespace: {{ mysql_namespace }}
+  namespace: {{ item.namespace }}
   labels:
     name: {{ item.name }}
 spec:
   namespaceSelector:
     matchNames:
-      - {{ mysql_namespace }}
+      - {{ item.namespace }}
   selector:
     matchLabels:
-      name: {{ mysql_namespace }}
+      name: {{ item.namespace }}
   endpoints:
     - port: metrics
   podMetricsEndpoints:
@@ -124,7 +124,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ item.name }}
-  namespace: {{ mysql_namespace }}
+  namespace: {{ item.namespace }}
   labels:
     name: {{ item.name }}
 spec:
@@ -139,10 +139,6 @@ spec:
         name: {{ item.name }}
     spec:
       containers:
-        # https://hub.docker.com/r/prom/mysqld-exporter
-        # CREATE USER 'exporter'@'localhost' IDENTIFIED BY 'XXXXXXXX';
-        # GRANT PROCESS, REPLICATION CLIENT ON *.* TO 'exporter'@'localhost';
-        # GRANT SELECT ON performance_schema.* TO 'exporter'@'localhost';
         - name: mysqld-exporter
           image: harbor.freedom.org/prometheus-operator/mysqld-exporter:v0.14.0
           imagePullPolicy: IfNotPresent
@@ -163,7 +159,8 @@ spec:
                   name: {{ item.name }}
                   key: MYSQL_ROOT_PASSWORD
           ports:
-            - containerPort: 3306
+            - name: mysql
+              containerPort: 3306
           resources:
             requests:
               cpu: {{ item.requests_cpu | default("100m") }}
