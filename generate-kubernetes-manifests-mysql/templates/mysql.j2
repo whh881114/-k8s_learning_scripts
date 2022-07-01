@@ -65,8 +65,12 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-    - port: 3306
+    - name: mysql
+      port: 3306
       targetPort: 3306
+    - name: metrics
+      port: 9104
+      targetPort: 9104
   selector:
     name: {{ item.name }}
 
@@ -82,11 +86,38 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: 3306
+    - name: mysql
+      port: 3306
       targetPort: 3306
+    - name: metrics
+      port: 9104
+      targetPort: 9104
   selector:
     name: {{ item.name }}
 
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: {{ item.name }}
+  namespace: {{ mysql_namespace }}
+  labels:
+    name: {{ item.name }}
+spec:
+  namespaceSelector:
+    matchNames:
+      - {{ mysql_namespace }}
+  selector:
+    matchLabels:
+      name: {{ mysql_namespace }}
+  endpoints:
+    - port: metrics
+  podMetricsEndpoints:
+    - relabelings:
+        - action: keep
+          regex: "mysqld-exporter"
+          sourceLabels:
+            - __meta_kubernetes_pod_container_name
 
 ---
 apiVersion: apps/v1
@@ -108,6 +139,19 @@ spec:
         name: {{ item.name }}
     spec:
       containers:
+        # https://hub.docker.com/r/prom/mysqld-exporter
+        # CREATE USER 'exporter'@'localhost' IDENTIFIED BY 'XXXXXXXX';
+        # GRANT PROCESS, REPLICATION CLIENT ON *.* TO 'exporter'@'localhost';
+        # GRANT SELECT ON performance_schema.* TO 'exporter'@'localhost';
+        - name: mysqld-exporter
+          image: harbor.freedom.org/prometheus-operator/mysqld-exporter:v0.14.0
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: DATA_SOURCE_NAME
+              value: "exporter:pJwtdho13jLipiyquxldnqialgrpkvl~@(localhost:3306)/"
+          ports:
+            - name: metrics
+              containerPort: 9104
         - name: {{ item.name }}
           image: {{ mysql_image }}
           env:
