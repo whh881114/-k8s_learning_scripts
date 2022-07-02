@@ -95,7 +95,7 @@ metadata:
   name: {{ item.name }}-nodeport
   namespace: {{ item.namespace | default(namespace) }}
   labels:
-    name: {{ item.name }}
+    name: {{ item.name }}-nodeport
 spec:
   type: NodePort
   ports:
