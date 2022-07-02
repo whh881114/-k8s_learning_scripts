@@ -74,6 +74,8 @@ kind: Service
 metadata:
   name: {{ item.name }}
   namespace: {{ item.namespace | default(namespace) }}
+  labels:
+    name: {{ item.name }}
 spec:
   type: ClusterIP
   ports:
@@ -92,6 +94,8 @@ kind: Service
 metadata:
   name: {{ item.name }}-nodeport
   namespace: {{ item.namespace | default(namespace) }}
+  labels:
+    name: {{ item.name }}
 spec:
   type: NodePort
   ports:

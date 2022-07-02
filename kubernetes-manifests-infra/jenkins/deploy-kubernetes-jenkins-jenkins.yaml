@@ -74,6 +74,8 @@ kind: Service
 metadata:
   name: jenkins
   namespace: jenkins
+  labels:
+    name: jenkins
 spec:
   type: ClusterIP
   ports:
@@ -92,6 +94,8 @@ kind: Service
 metadata:
   name: jenkins-nodeport
   namespace: jenkins
+  labels:
+    name: jenkins
 spec:
   type: NodePort
   ports:
