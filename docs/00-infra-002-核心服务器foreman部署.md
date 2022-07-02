@@ -1,11 +1,8 @@
 # 核心服务器：foreman.freedom.org
 
-## 安装epel源
-- 使用清华镜像源，地址：https://mirrors.tuna.tsinghua.edu.cn/help/epel/
-
 ## 安装配置ansible
 - 配置ssh key，命令为：`ssh-keygen`。
-- 安装ansible，命令为：`yum -y install ansible`。
+- 安装ansible，命令为：`yum -y install epel-release && yum -y install ansible`。
 - 编辑ansible配置文件/etc/ansible/ansible.cfg，修改内容如下：
     ```
     roles_path = /etc/ansible/roles:/opt/ansible_playbooks/roles
