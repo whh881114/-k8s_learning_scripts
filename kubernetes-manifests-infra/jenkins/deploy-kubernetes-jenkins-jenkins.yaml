@@ -22,6 +22,11 @@ spec:
           ports:
             - name: metrics
               containerPort: 9118
+          env:
+            - name: JENKINS_USER
+              value: admin
+            - name: JENKINS_PASSWORD
+              value: admin
         - name: jenkins
           image: harbor.freedom.org/freedom/jenkins-centos7:2.319.1-1.1
           imagePullPolicy: Always

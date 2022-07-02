@@ -22,6 +22,11 @@ spec:
           ports:
             - name: metrics
               containerPort: 9118
+          env:
+            - name: JENKINS_USER
+              value: {{ item.jenkins_user | default("admin") }}
+            - name: JENKINS_PASSWORD
+              value: {{ item.jenkins_password | default("admin") }}
         - name: {{ item.name }}
           image: {{ item.image | default(image) }}
           imagePullPolicy: Always
