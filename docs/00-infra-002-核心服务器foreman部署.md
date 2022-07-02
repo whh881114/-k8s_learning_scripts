@@ -1,5 +1,8 @@
 # 核心服务器：foreman.freedom.org
 
+## 安装epel源
+- 使用清华镜像源，地址：https://mirrors.tuna.tsinghua.edu.cn/help/epel/
+
 ## 安装配置ansible
 - 配置ssh key，命令为：`ssh-keygen`。
 - 安装ansible，命令为：`yum -y install ansible`。
@@ -12,7 +15,6 @@
 
 ## 配置foreman服务器
 - 初始化主机。使用ansible部署，命令为：`cd /opt/ansible_playbooks && ansible-playbook deploy-foreman.yml -t common`。
-- 安装配置DNS。使用ansible部署，命令为：`cd /opt/ansible_playbooks && ansible-playbook deploy-foreman.yml -t dns`。
 - 安装foreman和katello。按官方文档操作即可，本次使用2.5版本，katello配套版本为4.1。
     - katello可以管理yum源仓库，这个比写脚本高级些，所以安装了这个插件。
     - 文档地址：
