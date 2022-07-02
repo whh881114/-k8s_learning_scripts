@@ -95,7 +95,7 @@ metadata:
   name: jenkins-nodeport
   namespace: jenkins
   labels:
-    name: jenkins
+    name: jenkins-nodeport
 spec:
   type: NodePort
   ports:
