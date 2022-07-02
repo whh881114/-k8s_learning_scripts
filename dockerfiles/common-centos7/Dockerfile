@@ -3,12 +3,24 @@ FROM harbor.freedom.org/docker.io/centos:7.9.2009
 LABEL AUTHOR="Wanghaohao"
 LABEL DATACENTER="DELL-R620-PERSONAL-DATACENTER"
 
-# 注册内部yum源，安装基础包。
-RUN set -eux && yum -y install subscription-manager http://foreman.freedom.org/pub/katello-ca-consumer-latest.noarch.rpm
-RUN set -eux && subscription-manager register --force --org=Default_Organization --activationkey=CentOS-7-x86_64
+ENV LANG zh_CN.UTF-8
+ENV LC_CTYPE zh_CN.UTF-8
+
+WORKDIR /data
+
+ADD files/vimrc /root/.vimrc
+ADD files/el7-repo.tar.gz /etc/yum.repos.d
+ADD files/arthas-bin.zip .
+
 RUN set -eux && \
+    unzip arthas-bin.zip && \
+    rm -f arthas-bin.zip && \
     yum -y install curl \
+                   wget \
                    nc \
+                   gcc \
+                   make \
+                   unzip \
                    telnet \
                    java-1.8.0-openjdk \
                    java-1.8.0-openjdk-* \
@@ -19,7 +31,8 @@ RUN set -eux && \
                    unix2dos \
                    tree \
                    git \
-                   wget
-
-# 配置vim。
-ADD files/vim/vimrc /root/.vimrc
+                   supervisor \
+                   kde-l10n-Chinese && \
+    yum -y reinstall glibc-common && \
+    localedef -i zh_CN -c -f UTF-8 zh_CN.UTF-8 && \
+    echo "export LC_ALL=zh_CN.UTF-8" >> /etc/profile
