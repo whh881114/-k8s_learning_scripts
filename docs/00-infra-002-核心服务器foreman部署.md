@@ -25,8 +25,20 @@
         yum -y install https://yum.theforeman.org/katello/4.1/katello/el7/x86_64/katello-repos-latest.rpm
         yum -y install foreman-installer foreman-installer-katello
         
-        foreman-installer --list-scenarios
-        foreman-installer --scenario katello
+        foreman-installer --scenario katello \
+        --enable-foreman-plugin-ansible \
+        --enable-foreman-proxy-plugin-ansible \
+        --enable-foreman-plugin-puppetdb \
+        --enable-foreman-plugin-remote-execution \
+        --enable-foreman-proxy-plugin-remote-execution-ssh \
+        --foreman-proxy-dhcp true \
+        --foreman-proxy-dhcp-managed true \
+        --foreman-proxy-dhcp-interface ens192 \
+        --foreman-proxy-dhcp-range "10.255.0.200 10.255.3.250" \
+        --foreman-proxy-dhcp-gateway 10.255.3.254 \
+        --foreman-proxy-dhcp-nameservers 10.255.0.121,10.255.0.122 \
+        --foreman-proxy-tftp true \
+        --foreman-proxy-tftp-managed true 
         ```
     - 安装过程日志：
         ```
