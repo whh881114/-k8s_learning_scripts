@@ -139,6 +139,9 @@ spec:
   endpoints:
     - path: /metrics
       port: metrics
+  namespaceSelector:
+    matchNames:
+      - jenkins
   selector:
     matchLabels:
       name: jenkins
