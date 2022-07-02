@@ -3,7 +3,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ item.name }}
-  namespace: {{ item.namespace }}
+  namespace: {{ item.namespace | default(namespace) }}
 data:
   MYSQL_ROOT_PASSWORD: "{{ item.password }}"
 
@@ -59,7 +59,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ item.name }}
-  namespace: {{ item.namespace }}
+  namespace: {{ item.namespace | default(namespace) }}
   labels:
     name: {{ item.name }}
 spec:
@@ -80,7 +80,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ item.name }}-nodeport
-  namespace: {{ item.namespace }}
+  namespace: {{ item.namespace | default(namespace) }}
   labels:
     name: {{ item.name }}
 spec:
@@ -100,31 +100,32 @@ apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
   name: {{ item.name }}
-  namespace: {{ item.namespace }}
+  namespace: {{ item.namespace | default(namespace) }}
   labels:
     name: {{ item.name }}
 spec:
   namespaceSelector:
     matchNames:
-      - {{ item.namespace }}
+      - {{ item.namespace | default(namespace) }}
   selector:
     matchLabels:
-      name: {{ item.namespace }}
+      name: {{ item.name }}
   endpoints:
     - port: metrics
   podMetricsEndpoints:
     - relabelings:
-        - action: keep
-          regex: "mysqld-exporter"
-          sourceLabels:
+        - sourceLabels:
             - __meta_kubernetes_pod_container_name
+          regex: "mysqld-exporter"
+          action: keep
+          {# 此处的regex值为硬编码，对应statefulset中containers中的mysqld_exporter容器名字。 #}
 
 ---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ item.name }}
-  namespace: {{ item.namespace }}
+  namespace: {{ item.namespace | default(namespace) }}
   labels:
     name: {{ item.name }}
 spec:
@@ -140,16 +141,16 @@ spec:
     spec:
       containers:
         - name: mysqld-exporter
-          image: harbor.freedom.org/prometheus-operator/mysqld-exporter:v0.14.0
+          image: {{ item.mysqld_exporter_image | default(mysqld_exporter_image) }}
           imagePullPolicy: IfNotPresent
           env:
             - name: DATA_SOURCE_NAME
-              value: "exporter:pJwtdho13jLipiyquxldnqialgrpkvl~@(localhost:3306)/"
+              value: "{{ item.mysqld_exporter_username | default(mysqld_exporter_username) }}:{{ item.mysqld_exporter_password | default(mysqld_exporter_password)}}@(localhost:3306)/"
           ports:
             - name: metrics
               containerPort: 9104
         - name: {{ item.name }}
-          image: {{ mysql_image }}
+          image: {{ item.image | default(image) }}
           env:
             - name: TZ
               value: Asia/Shanghai
@@ -182,9 +183,9 @@ spec:
     - metadata:
         name: mysql-data
         annotations:
-          volume.beta.kubernetes.io/storage-class: {{ mysql_storageclass }}
+          volume.beta.kubernetes.io/storage-class: {{ item.storageclass | default(storageclass) }}
       spec:
         accessModes: ["ReadWriteOnce"]
         resources:
           requests:
-            storage: {{ item.storageclass_capacity }}
+            storage: {{ item.storageclass_capacity | default(storageclass_capacity) }}

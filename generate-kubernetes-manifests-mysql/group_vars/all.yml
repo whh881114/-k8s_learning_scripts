@@ -1,8 +1,16 @@
 ---
-mysql_output_dir: ../kubernetes-manifests-infra/mysql
+output_dir: ../kubernetes-manifests-infra/mysql
 
-mysql_namespace: mysql
+namespace: mysql
 
-mysql_image: harbor.freedom.org/docker.io/mysql:5.7.29
+image: harbor.freedom.org/docker.io/mysql:5.7.29
 
-mysql_storageclass: storageclass-nfs-mysql
+mysqld_exporter_image: harbor.freedom.org/prometheus-operator/mysqld-exporter:v0.14.0
+
+mysqld_exporter_username: exporter
+
+mysqld_exporter_password: pJwtdho13jLipiyquxldnqialgrpkvl~
+
+storageclass: storageclass-nfs-mysql
+
+storageclass_capacity: 50G

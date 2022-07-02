@@ -114,11 +114,11 @@ spec:
     - port: metrics
   podMetricsEndpoints:
     - relabelings:
-        - action: keep
-          regex: "mysqld-exporter"
-          sourceLabels:
+        - sourceLabels:
             - __meta_kubernetes_pod_container_name
-
+          regex: "mysqld-exporter"
+          action: keep
+          
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -139,10 +139,6 @@ spec:
         name: zabbix
     spec:
       containers:
-        # https://hub.docker.com/r/prom/mysqld-exporter
-        # CREATE USER 'exporter'@'localhost' IDENTIFIED BY 'XXXXXXXX';
-        # GRANT PROCESS, REPLICATION CLIENT ON *.* TO 'exporter'@'localhost';
-        # GRANT SELECT ON performance_schema.* TO 'exporter'@'localhost';
         - name: mysqld-exporter
           image: harbor.freedom.org/prometheus-operator/mysqld-exporter:v0.14.0
           imagePullPolicy: IfNotPresent
@@ -163,7 +159,8 @@ spec:
                   name: zabbix
                   key: MYSQL_ROOT_PASSWORD
           ports:
-            - containerPort: 3306
+            - name: mysql
+              containerPort: 3306
           resources:
             requests:
               cpu: 100m
