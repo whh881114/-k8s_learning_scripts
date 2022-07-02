@@ -1,0 +1,163 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: jenkins
+  namespace: jenkins
+spec:
+  serviceName: jenkins
+  replicas: 1
+  selector:
+    matchLabels:
+      name: jenkins
+  template:
+    metadata:
+      labels:
+        name: jenkins
+    spec:
+      containers:
+        - name: jenkins-exporter
+          image: harbor.freedom.org/bitnami/jenkins-exporter:latest
+          imagePullPolicy: Always
+          ports:
+            - name: metrics
+              containerPort: 9118
+        - name: jenkins
+          image: docker pull harbor.freedom.org/freedom/jenkins-centos7:2.319.1-1.1
+          imagePullPolicy: Always
+          ports:
+            - name: jenkins
+              containerPort: 8080
+          env:
+            - name: TZ
+              value: Asia/Shanghai
+          resources:
+            requests:
+              cpu: 100m
+              memory: 1024Mi
+            limits:
+              cpu: 4000m
+              memory: 8192Mi
+          # 健康检查改为tcp，因为jenkins配置了用户名和密码，返回状态为403，而当前httpGet只支持2xx/3xx。
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 5
+            timeoutSeconds: 60
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          volumeMounts:
+            - name: jenkins-data
+              mountPath: /data
+            # `docker run docker`配置。
+            - name: docker-socket
+              mountPath: /var/run/docker.sock
+              readOnly: true
+      volumes:
+        - name: docker-socket
+          hostPath:
+            path: /var/run/docker.sock
+  volumeClaimTemplates:
+    - metadata:
+        name: jenkins-data
+        annotations:
+          volume.beta.kubernetes.io/storage-class: storageclass-nfs-infra
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 50G
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jenkins
+  namespace: jenkins
+spec:
+  type: ClusterIP
+  ports:
+    - name: jenkins
+      port: 8080
+      targetPort: 8080
+    - name: metrics
+      port: 9118
+      targetPort: 9118
+  selector:
+    name: jenkins
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jenkins-nodeport
+  namespace: jenkins
+spec:
+  type: NodePort
+  ports:
+    - name: jenkins
+      port: 8080
+      targetPort: 8080
+    - name: metrics
+      port: 9118
+      targetPort: 9118
+  selector:
+    name: jenkins
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: jenkins
+  namespace: jenkins
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+  labels:
+    name: jenkins
+spec:
+  rules:
+    - host: jenkins.k8s.freedom.org
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: jenkins
+                port:
+                  number: 8080
+          - path: /metrics
+            pathType: Exact
+            backend:
+              service:
+                name: metrics
+                port:
+                  number: 9118
+    
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: jenkins
+  namespace: jenkins
+  labels:
+    name: jenkins
+spec:
+  namespaceSelector:
+    matchNames:
+      - jenkins
+  selector:
+    matchLabels:
+      name: jenkins
+  endpoints:
+    - port: metrics
+  podMetricsEndpoints:
+    - relabelings:
+        - sourceLabels:
+            - __meta_kubernetes_pod_container_name
+          regex: "jenkins-exporter" # 此处的regex值为硬编码，对应statefulset中containers中的mysqld_exporter容器名字。
+          action: keep

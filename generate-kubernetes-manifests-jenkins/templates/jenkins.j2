@@ -1,0 +1,165 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ item.name }}
+  namespace: {{ item.namespace | default(namespace) }}
+spec:
+  serviceName: jenkins
+  replicas: 1
+  selector:
+    matchLabels:
+      name: {{ item.name }}
+  template:
+    metadata:
+      labels:
+        name: {{ item.name }}
+    spec:
+      containers:
+        - name: jenkins-exporter
+          image: {{ item.jenkins_exporter_image | default(jenkins_exporter_image) }}
+          imagePullPolicy: Always
+          ports:
+            - name: metrics
+              containerPort: 9118
+        - name: {{ item.name }}
+          image: {{ item.image | default(image) }}
+          imagePullPolicy: Always
+          ports:
+            - name: jenkins
+              containerPort: 8080
+          env:
+            - name: TZ
+              value: Asia/Shanghai
+          resources:
+            requests:
+              cpu: {{ item.requests_cpu | default("100m") }}
+              memory: {{ item.requests_memory | default("1024Mi") }}
+            limits:
+              cpu: {{ item.limits_cpu | default("4000m") }}
+              memory: {{ item.limits_memory | default("8192Mi") }}
+          # 健康检查改为tcp，因为jenkins配置了用户名和密码，返回状态为403，而当前httpGet只支持2xx/3xx。
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 5
+            timeoutSeconds: 60
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          volumeMounts:
+            - name: jenkins-data
+              mountPath: /data
+            # `docker run docker`配置。
+            - name: docker-socket
+              mountPath: /var/run/docker.sock
+              readOnly: true
+      volumes:
+        - name: docker-socket
+          hostPath:
+            path: /var/run/docker.sock
+  volumeClaimTemplates:
+    - metadata:
+        name: jenkins-data
+        annotations:
+          volume.beta.kubernetes.io/storage-class: {{ item.storageclass | default(storageclass) }}
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: {{ item.storageclass_capacity | default(storageclass_capacity) }}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ item.name }}
+  namespace: {{ item.namespace | default(namespace) }}
+spec:
+  type: ClusterIP
+  ports:
+    - name: jenkins
+      port: 8080
+      targetPort: 8080
+    - name: metrics
+      port: 9118
+      targetPort: 9118
+  selector:
+    name: {{ item.name }}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ item.name }}-nodeport
+  namespace: {{ item.namespace | default(namespace) }}
+spec:
+  type: NodePort
+  ports:
+    - name: jenkins
+      port: 8080
+      targetPort: 8080
+    - name: metrics
+      port: 9118
+      targetPort: 9118
+  selector:
+    name: {{ item.name }}
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ item.name }}
+  namespace: {{ item.namespace | default(namespace) }}
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+  labels:
+    name: {{ item.name }}
+spec:
+  rules:
+    {% for host in item.ingress_hosts -%}
+    - host: {{ host }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: jenkins
+                port:
+                  number: 8080
+          - path: /metrics
+            pathType: Exact
+            backend:
+              service:
+                name: metrics
+                port:
+                  number: 9118
+    {% endfor %}
+
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: {{ item.name }}
+  namespace: {{ item.namespace | default(namespace) }}
+  labels:
+    name: {{ item.name }}
+spec:
+  namespaceSelector:
+    matchNames:
+      - {{ item.namespace | default(namespace) }}
+  selector:
+    matchLabels:
+      name: {{ item.name }}
+  endpoints:
+    - port: metrics
+  podMetricsEndpoints:
+    - relabelings:
+        - sourceLabels:
+            - __meta_kubernetes_pod_container_name
+          regex: "jenkins-exporter" # 此处的regex值为硬编码，对应statefulset中containers中的mysqld_exporter容器名字。
+          action: keep

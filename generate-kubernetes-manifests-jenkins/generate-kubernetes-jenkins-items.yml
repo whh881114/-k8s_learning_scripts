@@ -1,0 +1,13 @@
+---
+- name: generate kubernetes jenkins items
+  hosts: localhost
+  user: root
+  tasks:
+    - name: generate kubernetes jenkins items
+      template:
+        src: jenkins.j2
+        dest: "{{ output_dir }}/deploy-kubernetes-jenkins-{{ item.name }}.yaml"
+      with_items:
+        - name: jenkins
+          ingress_hosts:
+            - jenkins.k8s.freedom.org
