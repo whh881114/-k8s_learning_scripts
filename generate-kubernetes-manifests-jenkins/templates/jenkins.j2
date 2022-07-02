@@ -16,23 +16,14 @@ spec:
         name: {{ item.name }}
     spec:
       containers:
-        - name: jenkins-exporter
-          image: {{ item.jenkins_exporter_image | default(jenkins_exporter_image) }}
-          imagePullPolicy: Always
-          ports:
-            - name: metrics
-              containerPort: 9118
-          env:
-            - name: JENKINS_USER
-              value: {{ item.jenkins_user | default("admin") }}
-            - name: JENKINS_PASSWORD
-              value: {{ item.jenkins_password | default("admin") }}
         - name: {{ item.name }}
           image: {{ item.image | default(image) }}
           imagePullPolicy: Always
           ports:
             - name: jenkins
               containerPort: 8080
+            - name: metrics
+              containerPort: 60030
           env:
             - name: TZ
               value: Asia/Shanghai
@@ -90,8 +81,8 @@ spec:
       port: 8080
       targetPort: 8080
     - name: metrics
-      port: 9118
-      targetPort: 9118
+      port: 60030
+      targetPort: 60030
   selector:
     name: {{ item.name }}
 
@@ -108,8 +99,8 @@ spec:
       port: 8080
       targetPort: 8080
     - name: metrics
-      port: 9118
-      targetPort: 9118
+      port: 60030
+      targetPort: 60030
   selector:
     name: {{ item.name }}
 
@@ -142,29 +133,21 @@ spec:
               service:
                 name: metrics
                 port:
-                  number: 9118
+                  number: 60030
     {% endfor %}
 
 ---
 apiVersion: monitoring.coreos.com/v1
-kind: PodMonitor
+kind: ServiceMonitor
 metadata:
   name: {{ item.name }}
   namespace: {{ item.namespace | default(namespace) }}
   labels:
     name: {{ item.name }}
 spec:
-  namespaceSelector:
-    matchNames:
-      - {{ item.namespace | default(namespace) }}
+  endpoints:
+    - path: /metrics
+      port: metrics
   selector:
     matchLabels:
       name: {{ item.name }}
-  endpoints:
-    - port: metrics
-  podMetricsEndpoints:
-    - relabelings:
-        - sourceLabels:
-            - __meta_kubernetes_pod_container_name
-          regex: "jenkins-exporter" # 此处的regex值为硬编码，对应statefulset中containers中的mysqld_exporter容器名字。
-          action: keep
