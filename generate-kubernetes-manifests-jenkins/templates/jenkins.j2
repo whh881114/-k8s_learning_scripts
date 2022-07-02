@@ -127,13 +127,6 @@ spec:
                 name: jenkins
                 port:
                   number: 8080
-          - path: /metrics
-            pathType: Exact
-            backend:
-              service:
-                name: metrics
-                port:
-                  number: 60030
     {% endfor %}
 
 ---
