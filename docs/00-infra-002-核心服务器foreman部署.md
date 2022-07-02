@@ -34,8 +34,8 @@
         --foreman-proxy-dhcp true \
         --foreman-proxy-dhcp-managed true \
         --foreman-proxy-dhcp-interface ens192 \
-        --foreman-proxy-dhcp-range "10.255.0.200 10.255.3.250" \
-        --foreman-proxy-dhcp-gateway 10.255.3.254 \
+        --foreman-proxy-dhcp-range "192.168.2.100 192.168.2.200" \
+        --foreman-proxy-dhcp-gateway 192.168.2.254 \
         --foreman-proxy-dhcp-nameservers 10.255.0.121,10.255.0.122 \
         --foreman-proxy-tftp true \
         --foreman-proxy-tftp-managed true 
