@@ -13,8 +13,6 @@ ADD files/el7-repo.tar.gz /etc/yum.repos.d
 ADD files/arthas-bin.zip .
 
 RUN set -eux && \
-    unzip arthas-bin.zip && \
-    rm -f arthas-bin.zip && \
     yum -y install curl \
                    wget \
                    nc \
@@ -35,4 +33,6 @@ RUN set -eux && \
                    kde-l10n-Chinese && \
     yum -y reinstall glibc-common && \
     localedef -i zh_CN -c -f UTF-8 zh_CN.UTF-8 && \
-    echo "export LC_ALL=zh_CN.UTF-8" >> /etc/profile
+    echo "export LC_ALL=zh_CN.UTF-8" >> /etc/profile && \
+    unzip arthas-bin.zip && \
+    rm -f arthas-bin.zip
