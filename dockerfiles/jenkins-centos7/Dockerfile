@@ -4,7 +4,7 @@ LABEL AUTHOR="Wanghaohao"
 LABEL DATACENTER="DELL-R620-PERSONAL-DATACENTER"
 
 ENV JAVA_HEAP_XMS 1024m
-ENV JAVA_HEAP_XMX 8192m
+ENV JAVA_HEAP_XMX 4096m
 ENV JAVA_JMX_OPTS "-javaagent:/lib/jmx_prometheus_javaagent.jar=60030:/etc/jmx-cfg.yml"
 ENV JAVA_OPTS "-Djava.awt.headless=true -DJENKINS_HOME=/data -jar /usr/lib/jenkins/jenkins.war --logfile=/dev/terminal --webroot=/data/war --httpPort=8080 --debug=5 --handlerCountMax=10 --handlerCountMaxIdle=20"
 
