@@ -3,7 +3,7 @@ output_dir: ../kubernetes-manifests-infra/jenkins
 
 namespace: jenkins
 
-image: docker pull harbor.freedom.org/freedom/jenkins-centos7:2.319.1-1.1
+image: harbor.freedom.org/freedom/jenkins-centos7:2.319.1-1.1
 
 jenkins_exporter_image: harbor.freedom.org/bitnami/jenkins-exporter:latest
 
