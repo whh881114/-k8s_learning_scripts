@@ -141,6 +141,9 @@ spec:
   endpoints:
     - path: /metrics
       port: metrics
+  namespaceSelector:
+    matchNames:
+      - {{ item.namespace | default(namespace) }}
   selector:
     matchLabels:
       name: {{ item.name }}
