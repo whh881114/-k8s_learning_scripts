@@ -8,8 +8,9 @@ ENV LC_CTYPE zh_CN.UTF-8
 
 WORKDIR /data
 
+ADD files/rpm-gpg-keys /etc/pki/rpm-gpg
 ADD files/vimrc /root/.vimrc
-ADD files/el7-repo.tar.gz /etc/yum.repos.d
+ADD files/repos.tar.gz /etc/yum.repos.d
 ADD files/arthas-bin.zip .
 
 RUN set -eux && \
