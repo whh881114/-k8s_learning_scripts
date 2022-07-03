@@ -150,7 +150,7 @@
     - base, https://mirrors.tuna.tsinghua.edu.cn/centos/7/os/x86_64/
     - extras, https://mirrors.tuna.tsinghua.edu.cn/centos/7/extras/x86_64/
     - updates, https://mirrors.tuna.tsinghua.edu.cn/centos/7/updates/x86_64/
-    - puppet7, http://yum.puppetlabs.com/puppet7/el/7/x86_64/
+    - puppet7, https://yum.puppetlabs.com/puppet7/el/7/x86_64/
     - epel, https://mirrors.tuna.tsinghua.edu.cn/epel/7/x86_64/
     - docker-ce-stable, https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/7/x86_64/stable/
     - kubernetes, https://mirrors.tuna.tsinghua.edu.cn/kubernetes/yum/repos/kubernetes-el7-x86_64/
