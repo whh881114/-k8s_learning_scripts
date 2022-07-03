@@ -7,10 +7,10 @@
     |:------|:------|:------|:------|:------|:------|
     |DELL R620物理机|物理机|192.168.1.253|N/A|N/A|iDRAC管理地址为192.168.1.252|
     |pfsense.freedom.org|虚拟机|192.168.1.254|192.168.2.254|192.168.3.254||
-    |windows.freedom.org|虚拟机|192.168.2.253|N/A|N/A|windows主机，机器里安装远程桌面软件，方便在其他地方连进来。|
-    |vcenter.freedom.org|虚拟机|192.168.2.252|N/A|N/A|vcenter服务器。|
-    |ns01.freedom.org|虚拟机|192.168.2.250|N/A|N/A|dns主服务器。|
-    |ns02.freedom.org|虚拟机|192.168.2.251|N/A|N/A|dns从服务器。|
+    |windows.freedom.org|虚拟机|N/A|192.168.2.253|N/A|windows主机，机器里安装远程桌面软件，方便在其他地方连进来。|
+    |vcenter.freedom.org|虚拟机|N/A|192.168.2.252|N/A|vcenter服务器。|
+    |ns01.freedom.org|虚拟机|N/A|192.168.2.250|N/A|dns主服务器。|
+    |ns02.freedom.org|虚拟机|N/A|192.168.2.251|N/A|dns从服务器。|
     |foreman.freedom.org|虚拟机|N/A|192.168.2.1|N/A||
     |haproxy.freedom.org|虚拟机|N/A|192.168.2.2|N/A||
     |harbor.freedom.org|虚拟机|N/A|192.168.2.3|N/A||
