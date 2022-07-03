@@ -129,7 +129,7 @@
 ## 配置foremna服务器插件--discovery
 - 手动下载镜像，为的是解决下载慢的问题。版本使用旧点的，最新版本3.8.0有问题，其终端看不到ip信息，其命令为：
     ```
-    cd mkdir -p /var/lib/tftpboot/boot
+    cd /var/lib/tftpboot/boot
     wget https://downloads.theforeman.org/discovery/releases/3.5/fdi-image-3.5.7.tar -O fdi-image-3.5.7.tar
     tar xf fdi-image-3.5.7.tar
     chown -R foreman-proxy:root fdi-image
@@ -143,37 +143,14 @@
     - https://docs.theforeman.org/nightly/Provisioning_Guide/index-foreman-el.html
     - https://docs.theforeman.org/nightly/Managing_Hosts/index-foreman-el.html
 
-
 ## katello配置
 - 文档地址：https://docs.theforeman.org/nightly/Content_Management_Guide/index-foreman-el.html
 
 ## yum源列表
     - base, https://mirrors.tuna.tsinghua.edu.cn/centos/7/os/x86_64/
-    - docker-ce-stable, https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/7/x86_64/stable/
-    - epel, https://mirrors.tuna.tsinghua.edu.cn/epel/7/x86_64/
     - extras, https://mirrors.tuna.tsinghua.edu.cn/centos/7/extras/x86_64/
-    - kubernetes, https://mirrors.tuna.tsinghua.edu.cn/kubernetes/yum/repos/kubernetes-el7-x86_64/
-    - mysql-5.7-community, https://mirrors.tuna.tsinghua.edu.cn/mysql/yum/mysql-5.7-community-el7-x86_64/
-    - mysql-8.0-community, https://mirrors.tuna.tsinghua.edu.cn/mysql/yum/mysql-8.0-community-el7-x86_64/
-    - mysql-connectors-community, https://mirrors.tuna.tsinghua.edu.cn/mysql/yum/mysql-connectors-community-el7-x86_64/
-    - mysql-tools-community, https://mirrors.tuna.tsinghua.edu.cn/mysql/yum/mysql-tools-community-el7-x86_64/
-    - puppet6, http://yum.puppetlabs.com/puppet6/el/7/x86_64/
     - updates, https://mirrors.tuna.tsinghua.edu.cn/centos/7/updates/x86_64/
-    - zabbix-5.0-lts, https://mirrors.tuna.tsinghua.edu.cn/zabbix/zabbix/5.0/rhel/7/x86_64/
-    - zabbix-frontend-5.0-lts, https://mirrors.tuna.tsinghua.edu.cn/zabbix/zabbix/5.0/rhel/7/x86_64/frontend/
-    - zabbix-non-supported, https://mirrors.tuna.tsinghua.edu.cn/zabbix/non-supported/rhel/7/x86_64/
-    - centos-sclo-rh, http://mirror.centos.org/centos/7/sclo/x86_64/rh/
-    - centos-sclo-sclo, http://mirror.centos.org/centos/7/sclo/x86_64/sclo/
-    
-## 安装puppetdb
-- 安装包：yum -y install puppetdb
-- 配置数据库：https://puppet.com/docs/puppetdb/6/configure_postgres.html
-- 配置foreman-puppetdb-plugin：https://github.com/theforeman/puppetdb_foreman
-- 特别说明，默认puppetdb里使用的jetty的http端口为8080，可以自行修改，另外，配置foreman-puppetdb-plugin时，可以不配置https，
-如果要配置ssl时，可以使用参考以下信息。另外，发现配置DB后，两边的信息没有同步，不过这个无伤大雅，其实本来也没啥用，我的强迫症犯了。
-    ```shell
-    puppetdb_address                https://foreman.freedom.org:8081/pdb/cmd/v1
-    puppetdb_ssl_ca_file            /etc/puppetlabs/puppet/ssl/certs/ca.pem
-    puppetdb_ssl_certificate        /etc/puppetlabs/puppet/ssl/certs/foreman.freedom.org.pem
-    puppetdb_ssl_private_key        /etc/puppetlabs/puppet/ssl/private_keys/foreman.freedom.org.pem
-    ```
+    - puppet7, http://yum.puppetlabs.com/puppet7/el/7/x86_64/
+    - epel, https://mirrors.tuna.tsinghua.edu.cn/epel/7/x86_64/
+    - docker-ce-stable, https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/7/x86_64/stable/
+    - kubernetes, https://mirrors.tuna.tsinghua.edu.cn/kubernetes/yum/repos/kubernetes-el7-x86_64/
