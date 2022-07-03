@@ -79,23 +79,22 @@
     --enable-foreman-plugin-discovery \
     --enable-foreman-plugin-ansible \
     --enable-foreman-proxy-plugin-ansible \
-    --enable-foreman-plugin-puppetdb \
     --enable-foreman-plugin-remote-execution \
-    --enable-foreman-proxy-plugin-remote-execution-ssh \
     --foreman-proxy-dhcp true \
     --foreman-proxy-dhcp-managed true \
     --foreman-proxy-dhcp-interface ens192 \
-    --foreman-proxy-dhcp-range "10.255.0.200 10.255.3.250" \
-    --foreman-proxy-dhcp-gateway 10.255.3.254 \
-    --foreman-proxy-dhcp-nameservers 10.255.0.121,10.255.0.122 \
+    --foreman-proxy-dhcp-range "192.168.2.100 192.168.2.200" \
+    --foreman-proxy-dhcp-gateway 10.255.2.254 \
+    --foreman-proxy-dhcp-nameservers 192.168.2.250,192.168.2.251 \
     --foreman-proxy-tftp true \
-    --foreman-proxy-tftp-managed true 
+    --foreman-proxy-tftp-managed true \
+    --foreman-proxy-http true
     ```
+- 安装过程中报错了，在管理界面中看到`smart proxies`中的ERROR，手动处理下即可，其命令为：`ssh-keygen -t rsa -b 4096 -f /usr/share/foreman-proxy/.ssh/id_rsa_foreman_proxy`。
 
 ## 配置foremna服务器插件--foreman_column_view
-- rpm包地址：
-    - https://yum.theforeman.org/plugins/2.5/el7/x86_64/tfm-rubygem-foreman_column_view-0.4.0-5.fm2_5.el7.noarch.rpm
-    - https://yum.theforeman.org/plugins/2.5/el7/x86_64/tfm-rubygem-foreman_column_view-doc-0.4.0-5.fm2_5.el7.noarch.rpm
+- 安装：`yum -y install tfm-rubygem-foreman_column_view tfm-rubygem-foreman_column_view-doc`
+
 - 配置文件`/etc/foreman/plugins/foreman_column_view.yaml`内容如下：
     ```
     :column_view:
