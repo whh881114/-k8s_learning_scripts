@@ -47,21 +47,32 @@
 
 - 配置pfsense界面访问，因为在当前的网络结构下无法访问管理界面，所以安装一个带有图形界面主机访问pfsense所在LAN网段地址，默认用户名密码分别为`admin`和`pfsense`。
 
-- 配置管理界面可以通过WAN地址访问。进入Firewall/Rules/WAN，增加一条路由规则允许ipv4所有协议都能被访问，配置截图如下。
-![pfsense配置WAN口规则结果.png](https://github.com/whh881114/k8s_learning_scripts/blob/master/docs/images/pfsense%E9%85%8D%E7%BD%AEWAN%E5%8F%A3%E8%A7%84%E5%88%99%E7%BB%93%E6%9E%9C.png "pfsense配置WAN口规则结果.png")
+- 配置管理界面可以通过WAN地址访问。进入Firewall/Rules/WAN，增加一条路由规则允许ipv4所有协议都能被访问，配置截图如下。  
+  ![pfsense配置WAN口规则结果.png](https://github.com/whh881114/k8s_learning_scripts/blob/master/docs/images/pfsense配置WAN口规则结果.png "pfsense配置WAN口规则结果.png")  
 
-![pfsense配置WAN口规则.png](https://github.com/whh881114/k8s_learning_scripts/blob/master/docs/images/pfsense%E9%85%8D%E7%BD%AEWAN%E5%8F%A3%E8%A7%84%E5%88%99.png "pfsense配置WAN口规则.png")
+  ![pfsense配置WAN口规则.png](https://github.com/whh881114/k8s_learning_scripts/blob/master/docs/images/pfsense配置WAN口规则.png "pfsense配置WAN口规则.png")
 
-- 配置NAT端口转发，将LAN中的ansible主机的ssh转发出来，此外，windows主机的rdp转发出来，配置截图如下。
-![pfsense配置NAT转发总览.png](https://github.com/whh881114/k8s_learning_scripts/blob/master/docs/images/pfsense%E9%85%8D%E7%BD%AENAT%E8%BD%AC%E5%8F%91%E6%80%BB%E8%A7%88.png "pfsense配置NAT转发总览.png")
+- 配置NAT端口转发，将LAN中的ansible主机的ssh转发出来，此外，windows主机的rdp转发出来，配置截图如下。  
+  ![pfsense配置NAT转发总览.png](https://github.com/whh881114/k8s_learning_scripts/blob/master/docs/images/pfsense配置NAT转发总览.png "pfsense配置NAT转发总览.png")  
 
-![pfsense配置NAT转发--SSH.png](https://github.com/whh881114/k8s_learning_scripts/blob/master/docs/images/pfsense%E9%85%8D%E7%BD%AENAT%E8%BD%AC%E5%8F%91--SSH.png "pfsense配置NAT转发--SSH.png")
+  ![pfsense配置NAT转发--SSH.png](https://github.com/whh881114/k8s_learning_scripts/blob/master/docs/images/pfsense配置NAT转发--SSH.png "pfsense配置NAT转发--SSH.png")
 
-![pfsense配置NAT转发--MSRDP.png](https://github.com/whh881114/k8s_learning_scripts/blob/master/docs/images/pfsense%E9%85%8D%E7%BD%AENAT%E8%BD%AC%E5%8F%91--MSRDP.png "pfsense配置NAT转发--MSRDP.png")
+  ![pfsense配置NAT转发--MSRDP.png](https://github.com/whh881114/k8s_learning_scripts/blob/master/docs/images/pfsense配置NAT转发--MSRDP.png "pfsense配置NAT转发--MSRDP.png")
 
-- 配置DMZ区可以访问外网，配置方法与WAN一致，截图如下。
-![pfsense配置DMZ口规则结果.png](https://github.com/whh881114/k8s_learning_scripts/blob/master/docs/images/pfsense%E9%85%8D%E7%BD%AEDMZ%E5%8F%A3%E8%A7%84%E5%88%99%E7%BB%93%E6%9E%9C.png "pfsense配置DMZ口规则结果.png")
+- 配置DMZ区可以访问外网，配置方法与WAN一致，截图如下。  
+  ![pfsense配置DMZ口规则结果.png](https://github.com/whh881114/k8s_learning_scripts/blob/master/docs/images/pfsense配置DMZ口规则结果.png "pfsense配置DMZ口规则结果.png")  
 
-![pfsense配置DMZ口规则.png](https://github.com/whh881114/k8s_learning_scripts/blob/master/docs/images/pfsense%E9%85%8D%E7%BD%AEDMZ%E5%8F%A3%E8%A7%84%E5%88%99.png "pfsense配置DMZ口规则.png")
+  ![pfsense配置DMZ口规则.png](https://github.com/whh881114/k8s_learning_scripts/blob/master/docs/images/pfsense配置DMZ口规则.png "pfsense配置DMZ口规则.png")
 
 - 至此，pfsense防火墙配置已完成了我所需要的最基本需求。此外，DMZ区暂时还没有用上。
+
+## pfsense配置静态路由：打通k8s集群外部主机与pod通信
+- 配置网关。  
+  ![pfsense配置网关.png](https://github.com/whh881114/k8s_learning_scripts/blob/master/docs/images/pfsense配置网关.png "pfsense配置网关.png")  
+  
+  ![pfsense配置网关总览.png](https://github.com/whh881114/k8s_learning_scripts/blob/master/docs/images/pfsense配置网关总览.png "pfsense配置网关总览.png")
+
+- 静态网关总览。  
+  ![pfsense配置静态路由.png](https://github.com/whh881114/k8s_learning_scripts/blob/master/docs/images/pfsense配置静态路由.png "pfsense配置静态路由.png")  
+  
+  ![pfsense配置静态路由总览.png](https://github.com/whh881114/k8s_learning_scripts/blob/master/docs/images/pfsense配置静态路由总览.png "pfsense配置静态路由总览.png")
