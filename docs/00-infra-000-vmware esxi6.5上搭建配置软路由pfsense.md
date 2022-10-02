@@ -78,4 +78,8 @@
   ![PFSENSE-006-NAT端口转发总览.png](https://github.com/whh881114/k8s_learning_scripts/blob/master/docs/images/PFSENSE-006-NAT端口转发总览.png "PFSENSE-006-NAT端口转发总览.png")
 
 
+## pfsense配置dhcp中继
+  ![PFSENSE-007-DHCP中继.png](https://github.com/whh881114/k8s_learning_scripts/blob/master/docs/images/PFSENSE-007-DHCP中继.png "PFSENSE-007-DHCP中继.png")
+
+
 ## pfsense配置静态路由：打通各个k8s集群外部主机与pod通信。（待补充）
