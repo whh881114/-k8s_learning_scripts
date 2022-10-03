@@ -82,4 +82,7 @@
   ![PFSENSE-007-DHCP中继.png](https://github.com/whh881114/k8s_learning_scripts/blob/master/docs/images/PFSENSE-007-DHCP中继.png "PFSENSE-007-DHCP中继.png")
 
 
-## pfsense配置静态路由：打通各个k8s集群外部主机与pod通信。（待补充）
+## pfsense配置静态路由：打通各个k8s集群外部主机与pod通信。
+  ![PFSENSE-008-配置网关.png](https://github.com/whh881114/k8s_learning_scripts/blob/master/docs/images/PFSENSE-008-配置网关.png "PFSENSE-008-配置网关.png")
+  
+  ![PFSENSE-009-配置静态路由.png](https://github.com/whh881114/k8s_learning_scripts/blob/master/docs/images/PFSENSE-009-配置静态路由.png "PFSENSE-009-配置静态路由.png")
