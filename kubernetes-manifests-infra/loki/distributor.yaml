@@ -16,3 +16,46 @@ data:
       store: memberlist
       prefix: "collectors/"
       heartbeat_timeout: 1m
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: distributor
+  namespace: loki
+  labels:
+    k8s-app: distributor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: distributor
+  template:
+    metadata:
+      labels:
+        k8s-app: distributor
+    spec:
+      containers:
+        - name: distributor
+          image: harbor.freedom.org/grafana/loki:2.6.1
+          imagePullPolicy: IfNotPresent
+          command:
+            - ["loki", "-target=distributor", "-config.file=/etc/config.yaml", "-config.expand-env=true"]
+          resources:
+            requests:
+              cpu: 500m
+              memory: 512Mi
+            limits:
+              cpu: 4000m
+              memory: 4096Mi
+          ports:
+            - name: http
+              containerPort: 3100
+          volumeMounts:
+            - name: distributor-config
+              mountPath: /etc/config.yaml
+      volumes:
+        - name: distributor-config
+          configMap:
+            name: distributor-config
