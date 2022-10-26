@@ -1,24 +1,4 @@
 ---
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: distributor-config
-  namespace: loki
-data:
-  config.yaml: |
-    auth_enabled: false
-
-    server:
-      http_listen_address: "0.0.0.0"
-      http_listen_port: 3100
-
-    distributor:
-      store: memberlist
-      prefix: "collectors/"
-      heartbeat_timeout: 1m
-
-
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -53,9 +33,9 @@ spec:
             - name: http
               containerPort: 3100
           volumeMounts:
-            - name: distributor-config
+            - name: config
               mountPath: /etc/config.yaml
       volumes:
-        - name: distributor-config
+        - name: config
           configMap:
-            name: distributor-config
+            name: config
