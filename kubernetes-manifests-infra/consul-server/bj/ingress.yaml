@@ -1,5 +1,5 @@
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: consul-server
@@ -11,7 +11,10 @@ spec:
     - host: consul.k8s.bj.freedom.org
       http:
         paths:
-        - path: /
-          backend:
-            serviceName: consul-server
-            servicePort: 8500
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: http
+                port:
+                  number: 8500
