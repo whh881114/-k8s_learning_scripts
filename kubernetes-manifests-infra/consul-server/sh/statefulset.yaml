@@ -30,7 +30,7 @@ spec:
                - "-log-rotate-max-files=7"
                - "-bind=0.0.0.0"
                - "-client=0.0.0.0"
-               - "-datacenter=bj"
+               - "-datacenter=sh"
                - "-advertise=$(PODIP)"
                - "-retry-join=consul-server-0.consul-server.$(NAMESPACE).svc.cluster.local"
                - "-retry-join=consul-server-1.consul-server.$(NAMESPACE).svc.cluster.local"
