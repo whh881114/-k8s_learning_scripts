@@ -16,10 +16,10 @@ data:
               ]
           },
           {
-              "name": "k8s-node-exporter",
+              "name": "node-exporter",
               "port": 9100,
               "tags": [
-                  "k8s-node-exporter"
+                  "node-exporter"
               ]
           }
       ]
