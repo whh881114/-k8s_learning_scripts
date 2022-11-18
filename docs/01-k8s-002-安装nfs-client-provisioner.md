@@ -7,8 +7,8 @@
 
 ## 安装说明
 - 安装部署已在`nfs`角色中已声明。
-- 在`ansible`主机上执行部署命令：`ansible-playbook deploy-foreman.yml -t nfs`。
-- 在`master01.k8s.freedom.org`执行生成的manifests文件即可。
+- 在`ansible`主机上执行部署命令：`ansible-playbook deploy-nfs.yml -t nfs`。
+- 在bj/sh/gd三个区的master节点上执行生成的manifests文件即可。
   ```shell
   kubectl apply -f deploy-kubernetes-storageclass-nfs-infra.yaml
   kubectl apply -f deploy-kubernetes-storageclass-nfs-mysql.yaml

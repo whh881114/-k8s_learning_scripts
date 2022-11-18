@@ -1,5 +1,5 @@
 ---
-storagecalss_output_dir: /opt/ansible_playbooks
+storagecalss_output_dir: /opt/k8s_learning_scripts/kubernetes-manifests-infra/storageclass
 
 storagecalss_namespace: kube-system
 
