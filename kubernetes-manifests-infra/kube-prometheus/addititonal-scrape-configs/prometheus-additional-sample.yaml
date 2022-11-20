@@ -20,7 +20,7 @@
     - source_labels: [__meta_kubernetes_pod_name]
       target_label: kubernetes_pod_name
 
-    # 姚文锋部署的服务
+    # 按pod部署的服务过滤
     - source_labels: [__meta_kubernetes_pod_container_name]
       regex: (dm-communi|ms-communi|dm-orgauth|ms-auth|ms-org)
       action: keep
