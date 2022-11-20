@@ -7,9 +7,7 @@ image: harbor.freedom.org/docker.io/mysql:5.7.29
 
 mysqld_exporter_image: harbor.freedom.org/prometheus-operator/mysqld-exporter:v0.14.0
 
-mysqld_exporter_username: exporter
-
-mysqld_exporter_password: pJwtdho13jLipiyquxldnqialgrpkvl~
+mysqld_exporter_data_source: "mysqld_exporter:pJwtdho13jLipiyquxldnqialgrpkvl~@(localhost:3306)/"
 
 storageclass: storageclass-nfs-mysql
 
