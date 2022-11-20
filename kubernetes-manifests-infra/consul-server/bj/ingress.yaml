@@ -8,7 +8,7 @@ metadata:
     kubernetes.io/ingress.class: "nginx"
 spec:
   rules:
-    - host: consul.k8s.bj.freedom.org
+    - host: consul-web.k8s.bj.freedom.org
       http:
         paths:
           - path: /
