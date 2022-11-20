@@ -13,7 +13,7 @@ kubectl apply -f 0prometheusruleCustomResourceDefinition.yaml
 kubectl apply -f 0servicemonitorCustomResourceDefinition.yaml
 kubectl apply -f 0thanosrulerCustomResourceDefinition.yaml
 
-cd kube-prometheus-0.10.0/manifests
+cd ..
 kubectl apply -f .
 
 ```
