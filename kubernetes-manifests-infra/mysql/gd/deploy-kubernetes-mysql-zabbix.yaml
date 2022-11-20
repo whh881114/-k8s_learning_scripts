@@ -188,3 +188,9 @@ spec:
         resources:
           requests:
             storage: 50G
+
+# 配置mysqld_exporter用户监控
+# CREATE USER 'mysqld_exporter'@'localhost' IDENTIFIED BY 'pJwtdho13jLipiyquxldnqialgrpkvl~';
+# GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO 'mysqld_exporter'@'localhost';
+# FLUSH PRIVILEGES;
+# EXIT
