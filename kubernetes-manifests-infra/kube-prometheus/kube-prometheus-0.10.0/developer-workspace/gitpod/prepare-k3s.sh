@@ -14,7 +14,7 @@ function waitssh() {
   while ! nc -z 127.0.0.1 2222; do   
     sleep 0.1
   done
-  ./ssh.sh "whoami" &>/dev/null
+  ssh.sh "whoami" &>/dev/null
   if [ $? -ne 0 ]; then
     sleep 1
     waitssh
@@ -37,10 +37,10 @@ echo "Waiting for the ssh server to become available, it can take a while, after
 waitssh
 echo "✅ ssh server available"
 
-./ssh.sh "curl -sfL https://get.k3s.io | sh -"
+ssh.sh "curl -sfL https://get.k3s.io | sh -"
 
 mkdir -p ~/.kube
-./scp.sh root@127.0.0.1:/etc/rancher/k3s/k3s.yaml ~/.kube/config
+scp.sh root@127.0.0.1:/etc/rancher/k3s/k3s.yaml ~/.kube/config
 
 echo "✅ k3s server is ready"
 touch "${k3sreadylock}"
