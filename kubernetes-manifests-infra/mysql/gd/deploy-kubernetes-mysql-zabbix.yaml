@@ -144,7 +144,7 @@ spec:
           imagePullPolicy: IfNotPresent
           env:
             - name: DATA_SOURCE_NAME
-              value: "exporter:pJwtdho13jLipiyquxldnqialgrpkvl~@(localhost:3306)/"
+              value: "mysqld_exporter:pJwtdho13jLipiyquxldnqialgrpkvl~@(localhost:3306)/"
           ports:
             - name: metrics
               containerPort: 9104
