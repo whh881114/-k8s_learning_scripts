@@ -5,6 +5,8 @@ metadata:
   name: zabbix
   namespace: mysql
 data:
+  MYSQL_EXPORTER_DATA_SOURCE: "mysqld_exporter:pJwtdho13jLipiyquxldnqialgrpkvl~@(localhost:3306)/"
+
   MYSQL_ROOT_PASSWORD: "kz2zv&eoynpneQbyeowebyu0beGxkgvy"
 
   my.cnf: |
@@ -142,7 +144,10 @@ spec:
           imagePullPolicy: IfNotPresent
           env:
             - name: DATA_SOURCE_NAME
-              value: "mysqld_exporter:pJwtdho13jLipiyquxldnqialgrpkvl~@(localhost:3306)/"
+              valueFrom:
+                configMapKeyRef:
+                  name: zabbix
+                  key: MYSQL_EXPORTER_DATA_SOURCE
           ports:
             - name: metrics
               containerPort: 9104
