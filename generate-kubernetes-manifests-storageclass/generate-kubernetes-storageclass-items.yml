@@ -1,38 +1,70 @@
 ---
-- name: generate kubernetes storageclass items for nfs
+- name: generate kubernetes storageclass items for bj zone
   hosts: localhost
   user: root
+  gather_facts: False
+  vars:
+    - storagecalss_output_dir: /opt/k8s_learning_scripts/kubernetes-manifests-infra/storageclass/bj
   tasks:
     - name: generate kubernetes storageclass items
       template:
         src: nfs.j2
         dest: "{{ storagecalss_output_dir }}/deploy-kubernetes-storageclass-nfs-{{ item.name }}.yaml"
       with_items:
-        # nfs
         - name: infra
-          nfs_server: infra.nfs.freedom.org
-          nfs_server_shared_dir: /data/kubernetes-datastorage-nfs-pvc/infra
-        - name: redis
-          nfs_server: redis.nfs.freedom.org
-          nfs_server_shared_dir: /data/kubernetes-datastorage-nfs-pvc/redis
+          nfs_server: nfs.freedom.org
+          nfs_server_shared_dir: /data/k8s-pvc-nfs/bj/infra
         - name: mysql
-          nfs_server: mysql.nfs.freedom.org
-          nfs_server_shared_dir: /data/kubernetes-datastorage-nfs-pvc/mysql
+          nfs_server: nfs.freedom.org
+          nfs_server_shared_dir: /data/k8s-pvc-nfs/bj/mysql
+        - name: redis
+          nfs_server: nfs.freedom.org
+          nfs_server_shared_dir: /data/k8s-pvc-nfs/bj/redis
 
 
-- name: generate kubernetes storageclass items for rbd
+
+- name: generate kubernetes storageclass items for sh zone
   hosts: localhost
   user: root
+  gather_facts: False
+  vars:
+    - storagecalss_output_dir: /opt/k8s_learning_scripts/kubernetes-manifests-infra/storageclass/sh
   tasks:
     - name: generate kubernetes storageclass items
       template:
-        src: rbd.j2
-        dest: "{{ storagecalss_output_dir }}/deploy-kubernetes-storageclass-rbd-{{ item.name }}.yaml"
+        src: nfs.j2
+        dest: "{{ storagecalss_output_dir }}/deploy-kubernetes-storageclass-nfs-{{ item.name }}.yaml"
       with_items:
-        # rbd
         - name: infra
-          pool: kubernetes-datastorage-rbd-infra
-        - name: redis
-          pool: kubernetes-datastorage-rbd-redis
+          nfs_server: nfs.freedom.org
+          nfs_server_shared_dir: /data/k8s-pvc-nfs/sh/infra
         - name: mysql
-          pool: kubernetes-datastorage-rbd-mysql
+          nfs_server: nfs.freedom.org
+          nfs_server_shared_dir: /data/k8s-pvc-nfs/sh/mysql
+        - name: redis
+          nfs_server: nfs.freedom.org
+          nfs_server_shared_dir: /data/k8s-pvc-nfs/sh/redis
+
+
+
+- name: generate kubernetes storageclass items for gd zone
+  hosts: localhost
+  user: root
+  gather_facts: False
+  vars:
+    - storagecalss_output_dir: /opt/k8s_learning_scripts/kubernetes-manifests-infra/storageclass/gd
+  tasks:
+    - name: generate kubernetes storageclass items
+      template:
+        src: nfs.j2
+        dest: "{{ storagecalss_output_dir }}/deploy-kubernetes-storageclass-nfs-{{ item.name }}.yaml"
+      with_items:
+        - name: infra
+          nfs_server: nfs.freedom.org
+          nfs_server_shared_dir: /data/k8s-pvc-nfs/gd/infra
+        - name: mysql
+          nfs_server: nfs.freedom.org
+          nfs_server_shared_dir: /data/k8s-pvc-nfs/gd/mysql
+        - name: redis
+          nfs_server: nfs.freedom.org
+          nfs_server_shared_dir: /data/k8s-pvc-nfs/gd/redis

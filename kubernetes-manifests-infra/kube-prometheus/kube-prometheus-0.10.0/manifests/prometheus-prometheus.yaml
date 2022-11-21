@@ -1,0 +1,90 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  labels:
+    app.kubernetes.io/component: prometheus
+    app.kubernetes.io/instance: k8s
+    app.kubernetes.io/name: prometheus
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 2.32.1
+  name: k8s
+  namespace: monitoring
+spec:
+  alerting:
+    alertmanagers:
+    - apiVersion: v2
+      name: alertmanager-main
+      namespace: monitoring
+      port: web
+  enableFeatures: []
+  externalLabels: {}
+  image: quay.io/prometheus/prometheus:v2.32.1
+  nodeSelector:
+    kubernetes.io/os: linux
+  podMetadata:
+    labels:
+      app.kubernetes.io/component: prometheus
+      app.kubernetes.io/instance: k8s
+      app.kubernetes.io/name: prometheus
+      app.kubernetes.io/part-of: kube-prometheus
+      app.kubernetes.io/version: 2.32.1
+  podMonitorNamespaceSelector: {}
+  podMonitorSelector: {}
+  probeNamespaceSelector: {}
+  probeSelector: {}
+  replicas: 1
+  resources:
+    requests:
+      memory: 400Mi
+  ruleNamespaceSelector: {}
+  ruleSelector: {}
+  securityContext:
+    fsGroup: 2000
+    runAsNonRoot: true
+    runAsUser: 1000
+  serviceAccountName: prometheus-k8s
+  serviceMonitorNamespaceSelector: {}
+  serviceMonitorSelector: {}
+  version: 2.32.1
+  # 自定义参数
+  enableAdminAPI: true
+  # 保存数据时间
+  retention: 90d
+  # 持久化，存储类型：storageclass
+  storage:
+    volumeClaimTemplate:
+      spec:
+        storageClassName: storageclass-nfs-infra
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 200Gi
+  # 增加调度
+  # affinity:
+  #   nodeAffinity:
+  #     requiredDuringSchedulingIgnoredDuringExecution:
+  #       nodeSelectorTerms:
+  #         - matchExpressions:
+  #             - key: worker-role
+  #               operator: In
+  #               values:
+  #                 - prometheus
+  # tolerations:
+  #   - effect: NoSchedule
+  #     key: worker-role
+  #     operator: Equal
+  #     value: prometheus
+  #   - effect: NoExecute
+  #     key: worker-role
+  #     operator: Equal
+  #     value: prometheus
+
+  # 添加自定义监控
+  # additionalScrapeConfigs:
+  #   name: prometheus-additional-scrape-configs
+  #   key: additional-scrape-configs.yaml
+  # 存储类型：remote
+  # remoteWrite:
+  #   - name: mimir
+  #     url: http://mimir-distributor.observability:8080/api/v1/push

@@ -5,6 +5,8 @@ metadata:
   name: {{ item.name }}
   namespace: {{ item.namespace | default(namespace) }}
 data:
+  MYSQL_EXPORTER_DATA_SOURCE: {{ item.mysqld_exporter_data_source | default("mysqld_exporter:pJwtdho13jLipiyquxldnqialgrpkvl~@(localhost:3306)/") }}
+
   MYSQL_ROOT_PASSWORD: "{{ item.password }}"
 
   my.cnf: |
@@ -145,7 +147,10 @@ spec:
           imagePullPolicy: IfNotPresent
           env:
             - name: DATA_SOURCE_NAME
-              value: "{{ item.mysqld_exporter_username | default(mysqld_exporter_username) }}:{{ item.mysqld_exporter_password | default(mysqld_exporter_password)}}@(localhost:3306)/"
+              valueFrom:
+                configMapKeyRef:
+                  name: zabbix
+                  key: MYSQL_EXPORTER_DATA_SOURCE
           ports:
             - name: metrics
               containerPort: 9104
