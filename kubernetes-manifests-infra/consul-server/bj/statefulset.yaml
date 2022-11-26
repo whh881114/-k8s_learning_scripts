@@ -31,7 +31,8 @@ spec:
                - "-client=0.0.0.0"
                - "-datacenter=bj"
                - "-advertise=$(PODIP)"
-               - "-retry-join=consul-server-0.consul-server.$(NAMESPACE).svc.cluster.local"
+               - "-retry-join=master01.k8s.bj.freedom.org"
+               # - "-retry-join=consul-server-0.consul-server.$(NAMESPACE).svc.cluster.local"
                # - "-retry-join=consul-server-1.consul-server.$(NAMESPACE).svc.cluster.local"
                # - "-retry-join=consul-server-2.consul-server.$(NAMESPACE).svc.cluster.local"
                - "-retry-join-wan=node01.consul.freedom.org"  # -retry-join-wan 多数据中心选项，各region加入到cvm部署的consul集群中。
