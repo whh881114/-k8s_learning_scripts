@@ -35,7 +35,7 @@ spec:
           image: harbor.freedom.org/docker.io/consul:1.10.2
           args:
             - "agent"
-            - "-retry-join=consul.k8s.sh.freedom.org"
+            - "-retry-join=consul-server.k8s.sh.freedom.org"
             - "-config-dir=/consul/config"
             - "-log-level=info"
             - "-log-rotate-duration=86400s"
