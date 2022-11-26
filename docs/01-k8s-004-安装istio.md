@@ -5,6 +5,7 @@
 - 一个mesh网络中，一个istio控制两个k8s集群，sun.freedom.org控制bj.freedom.org和sh.freedom.org；moon.freedom.org控制gd.freedom.org和hk.freedom.org。
 
 ## 自定义参数
+- https://istio.io/latest/docs/setup/additional-setup/customize-installation/
 - https://istio.io/latest/docs/reference/config/istio.operator.v1alpha1/
 
 ## mesh：sun.freedom.org规划
