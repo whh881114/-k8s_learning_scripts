@@ -43,9 +43,9 @@ spec:
             - "-bind=0.0.0.0"
             - "-client=0.0.0.0"
             - "-advertise=$(NODEIP)"
-            - "-domain=k8s.freedom.org"
+            - "-domain=k8s.hk.freedom.org"
             - "-disable-host-node-id"
-            - "-datacenter=default"
+            - "-datacenter=hk"
             - "-node=$(NODENAME)"
           imagePullPolicy: IfNotPresent
           ports:
