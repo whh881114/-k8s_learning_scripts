@@ -15,10 +15,10 @@ spec:
       labels:
         app: consul-agent
     spec:
-      tolerations:
-        - key: node-role.kubernetes.io/master
-          operator: Exists
-          effect: NoSchedule
+      # tolerations:
+      #   - key: node-role.kubernetes.io/master
+      #     operator: Exists
+      #     effect: NoSchedule
       containers:
         - name: consul-agent
           env:
