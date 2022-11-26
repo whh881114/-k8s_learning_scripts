@@ -8,7 +8,7 @@ spec:
   selector:
     matchLabels:
       app: consul-server
-  replicas: 3
+  replicas: 1
   template:
     metadata:
       labels:
@@ -21,7 +21,7 @@ spec:
           args:
                - "agent"
                - "-server"
-               - "-bootstrap-expect=3"
+               - "-bootstrap-expect=1"
                - "-ui"
                #- "-data-dir=/consul/data"     # 就算是在虚拟机中使用consul-server集群，也没有使用-data-dir及-config-dir目录，先在yaml中保留。
                #- "-config-dir=/consul/conf"
@@ -32,10 +32,11 @@ spec:
                - "-client=0.0.0.0"
                - "-datacenter=hk"
                - "-advertise=$(PODIP)"
-               - "-retry-join=consul-server-0.consul-server.$(NAMESPACE).svc.cluster.local"
-               - "-retry-join=consul-server-1.consul-server.$(NAMESPACE).svc.cluster.local"
-               - "-retry-join=consul-server-2.consul-server.$(NAMESPACE).svc.cluster.local"
-               - "-retry-join-wan=node01.consul.freedom.org"  # -retry-join-wan 多数据中心选项，各region加入到cvm部署的consul集群中。
+               - "-retry-join=consul-server.k8s.hk.freedom.org"
+               # - "-retry-join=consul-server-0.consul-server.$(NAMESPACE).svc.cluster.local"
+               # - "-retry-join=consul-server-1.consul-server.$(NAMESPACE).svc.cluster.local"
+               # - "-retry-join=consul-server-2.consul-server.$(NAMESPACE).svc.cluster.local"
+               # - "-retry-join-wan=node01.consul.freedom.org"  # -retry-join-wan 多数据中心选项，各region加入到cvm部署的consul集群中。
                - "-retry-join-wan=node02.consul.freedom.org"
                - "-retry-join-wan=node03.consul.freedom.org"
                - "-domain=cluster.local"
@@ -78,3 +79,17 @@ spec:
             requests:
               cpu: 100m
               memory: 64Mi
+      hostNetwork: true
+      tolerations:
+        - key: node-role.kubernetes.io/master
+          operator: Exists
+          effect: NoSchedule
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: node-role.kubernetes.io/master
+                    operator: Exists
+      nodeSelector:
+        kubernetes.io/hostname: master01.k8s.hk.freedom.org
