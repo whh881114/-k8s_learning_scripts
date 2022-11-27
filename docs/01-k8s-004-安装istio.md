@@ -15,3 +15,6 @@
 ## mesh：moon.freedom.org规划
 - gd.freedom.org为primary角色，可自定义参数文件：istio-1.16.0/manifests/profiles/default.yaml，安装命令：istioctl install -f istio-1.16.0/manifests/profiles/default.yaml。
 - hk.freedom.org为remote角色，可自定义参数文件：istio-1.16.0/manifests/profiles/remote.yaml，安装命令：istioctl install -f istio-1.16.0/manifests/profiles/remote.yaml。
+
+## 网络规划
+- 在pfsense上删除各个集群的cluster和pod网段路由，用来部署单mesh多cluster模式。
