@@ -24,14 +24,15 @@
 
 ## 部署
 ### 准备工作
-- 清除环境命令。
+#### 清除环境命令，适合所有集群。
 ```shell
 kubectl delete -f samples/addons
 istioctl uninstall -y --purge
 kubectl delete namespace istio-system
 ```
 
-- 配置信任，在主集群k8s.bj.freedom.org上操作。
+#### 主集群k8s.bj.freedom.org
+- 配置信任。
 ```shell
 kubectl create namespace istio-system
 kubectl create secret generic cacerts -n istio-system \
@@ -109,6 +110,4 @@ istioctl --context="${CTX_CLUSTER1}" install -f cluster1-eastwest.yaml -y
 
 - 使用haproxy转发`istiod`，`istio-ingressgateway`和`istio-eastwestgateway`三个服务，将其暴露出来。
 
-istio-eastwestgateway   LoadBalancer   172.16.24.172   <pending>     15021:30496/TCP,15443:31994/TCP,15012:30631/TCP,15017:31451/TCP   2m14s
-istio-ingressgateway    LoadBalancer   172.16.49.130   <pending>     15021:30517/TCP,80:30695/TCP,443:31139/TCP                        13m
-istiod                  NodePort       172.16.43.151   <none>        15010:32478/TCP,15012:31403/TCP,443:30175/TCP,15014:31357/TCP     14m
+#### 从集群k8s.sh.freedom.org
