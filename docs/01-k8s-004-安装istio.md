@@ -111,3 +111,32 @@ istioctl --context="${CTX_CLUSTER1}" install -f cluster1-eastwest.yaml -y
 - 使用haproxy转发`istiod`，`istio-ingressgateway`和`istio-eastwestgateway`三个服务，将其暴露出来。
 
 #### 从集群k8s.sh.freedom.org
+```shell
+export CTX_CLUSTER2=kubernetes-admin@kubernetes
+kubectl --context="${CTX_CLUSTER2}" create namespace istio-system
+kubectl --context="${CTX_CLUSTER2}" annotate namespace istio-system topology.istio.io/controlPlaneClusters=cluster1
+kubectl --context="${CTX_CLUSTER2}" label namespace istio-system topology.istio.io/network=network2
+
+cat <<EOF > cluster2.yaml
+apiVersion: install.istio.io/v1alpha1
+kind: IstioOperator
+spec:
+  profile: remote
+  values:
+    istiodRemote:
+      injectionPath: /inject/cluster/cluster2/net/network2
+    global:
+      remotePilotAddress: istiod.k8s.bj.freedom.org
+EOF
+
+istioctl install -f cluster2.yaml -y
+
+
+samples/multicluster/gen-eastwest-gateway.sh \
+    --mesh mesh1 --cluster cluster2 --network network2 | \
+    istioctl --context="${CTX_CLUSTER2}" install -y -f -
+```
+
+**异常报错**
+
+- Internal error occurred: failed calling webhook "object.sidecar-injector.istio.io": failed to call webhook: Post "https://istiod.istio-system.svc:443/inject/cluster/cluster2/net/network2?timeout=10s": x509: certificate signed by unknown authority:Deployment does not have minimum availability.
