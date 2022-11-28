@@ -108,7 +108,16 @@ samples/multicluster/gen-eastwest-gateway.sh --mesh mesh1 --cluster cluster1 --n
 istioctl --context="${CTX_CLUSTER1}" install -f cluster1-eastwest.yaml -y
 ```
 
-- 使用haproxy转发`istiod`，`istio-ingressgateway`和`istio-eastwestgateway`三个服务，将其暴露出来。
+- 在集群内暴露服务。
+```shell
+kubectl apply --context="${CTX_CLUSTER1}" -n istio-system -f \
+    samples/multicluster/expose-istiod.yaml
+
+kubectl --context="${CTX_CLUSTER1}" apply -n istio-system -f \
+    samples/multicluster/expose-services.yaml
+```
+
+- 使用haproxy转发`istiod`，`istio-ingressgateway`和`istio-eastwestgateway`三个服务，能被集群外的主机访问。
 
 #### 从集群k8s.sh.freedom.org
 ```shell
