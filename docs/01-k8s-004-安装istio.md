@@ -25,6 +25,9 @@ export CTX_REMOTE_CLUSTER=kubernetes-admin-sh@sh
 export EXTERNAL_ISTIOD_ADDR=192.168.4.11
 export SSL_SECRET_NAME=NONE
 export REMOTE_CLUSTER_NAME=sh
+
+export CTX_SECOND_CLUSTER=kubernetes-admin-gd@gd
+export SECOND_CLUSTER_NAME=gd
 ```
 
 #### 部署过程按官方的文档即可。
