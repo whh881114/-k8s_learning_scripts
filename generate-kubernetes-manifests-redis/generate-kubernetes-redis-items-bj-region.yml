@@ -2,6 +2,8 @@
 - name: generate kubernetes redis items
   hosts: localhost
   user: root
+  vars:
+    - redis_output_dir: /opt/k8s_learning_scripts/kubernetes-manifests-infra/redis/bj
   tasks:
     - name: generate kubernetes redis items
       template:

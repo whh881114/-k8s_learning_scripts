@@ -1476,7 +1476,7 @@ spec:
       volumes:
         - name: conf
           configMap:
-            name: common
+            name: public
         - name: host-sys
           hostPath:
             path: /sys
@@ -1484,7 +1484,7 @@ spec:
     - metadata:
         name: data
         annotations:
-          volume.beta.kubernetes.io/storage-class: fuseim.pri/storageclass-nfs-redis
+          volume.beta.kubernetes.io/storage-class: storageclass-nfs-redis
       spec:
         accessModes: ["ReadWriteOnce"]
         resources:
