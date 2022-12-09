@@ -2,12 +2,12 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: elasticsearch
-  namespace: elasticsearch
+  namespace: efk
   annotations:
     kubernetes.io/ingress.class: "nginx"
 spec:
   rules:
-    - host: kibana.k8s.freedom.org
+    - host: kibana.k8s.bj.freedom.org
       http:
         paths:
         - path: /
@@ -17,7 +17,7 @@ spec:
               name: kibana
               port:
                 number: 5601
-    - host: elasticsearch.k8s.freedom.org
+    - host: elasticsearch.k8s.bj.freedom.org
       http:
         paths:
           - path: /
@@ -27,7 +27,7 @@ spec:
                 name: elasticsearch-client
                 port:
                   number: 9200
-    - host: es.k8s.freedom.org
+    - host: es.k8s.bj.freedom.org
       http:
         paths:
           - path: /
