@@ -3,7 +3,7 @@ kind: ServiceAccount
 apiVersion: v1
 metadata:
   name: elasticsearch-master
-  namespace: elasticsearch
+  namespace: efk
   labels:
     app: elasticsearch-master
 
@@ -13,7 +13,7 @@ kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: elasticsearch-master
-  namespace: elasticsearch
+  namespace: efk
   labels:
     app: elasticsearch-master
 roleRef:
@@ -23,7 +23,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: elasticsearch-master
-    namespace: elasticsearch
+    namespace: efk
 
 
 ---
@@ -31,7 +31,7 @@ kind: StatefulSet
 apiVersion: apps/v1
 metadata:
   name: elasticsearch-master
-  namespace: elasticsearch
+  namespace: efk
   labels:
     component: elasticsearch
     role: master
@@ -81,7 +81,9 @@ spec:
               value: "false"
             - name: "node.ml"
               value: "false"
-            - name: "node.remote_cluster_client"  # 各个角色介绍：https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-node.html
+            - name: "node.remote_cluster_client"
+              value: "false"
+            - name: node.transform
               value: "false"
           resources:
             limits:
@@ -114,7 +116,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: elasticsearch-master
-  namespace: elasticsearch
+  namespace: efk
   labels:
     component: elasticsearch
     role: master
@@ -135,7 +137,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: elasticsearch-master-nodeport
-  namespace: elasticsearch
+  namespace: efk
   labels:
     component: elasticsearch
     role: master
