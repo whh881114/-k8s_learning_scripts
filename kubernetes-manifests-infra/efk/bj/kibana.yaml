@@ -8,7 +8,7 @@ data:
   kibana.yml: |
     server.name: kibana
     server.host: "0.0.0.0"
-    elasticsearch.hosts: ["http://elasticsearch-client.elasticsearch.svc.cluster.local:9200"]
+    elasticsearch.hosts: ["http://elasticsearch.k8s.bj.freedom.org"]  # 使用ingress入口地址
     monitoring.ui.container.elasticsearch.enabled: true
 
 ---
