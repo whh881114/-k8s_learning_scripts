@@ -3,7 +3,7 @@ kind: ServiceAccount
 apiVersion: v1
 metadata:
   name: elasticsearch-client
-  namespace: elasticsearch
+  namespace: efk
   labels:
     app: elasticsearch-client
 
@@ -13,7 +13,7 @@ kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: elasticsearch-client
-  namespace: elasticsearch
+  namespace: efk
   labels:
     app: elasticsearch-client
 roleRef:
@@ -23,7 +23,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: elasticsearch-client
-    namespace: elasticsearch
+    namespace: efk
 
 
 ---
@@ -31,13 +31,13 @@ kind: StatefulSet
 apiVersion: apps/v1
 metadata:
   name: elasticsearch-client
-  namespace: elasticsearch
+  namespace: efk
   labels:
     component: elasticsearch
     role: client
 spec:
   serviceName: elasticsearch-client
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       component: elasticsearch
@@ -78,11 +78,17 @@ spec:
             value: "false"
           - name: "node.ml"
             value: "false"
-          - name: "node.remote_cluster_client"  # 各个角色介绍：https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-node.html
+          - name: "node.remote_cluster_client"
+            value: "false"
+          - name: "node.transform"
             value: "false"
         resources:
           limits:
-            cpu: 1
+            cpu: 1000m
+            memory: 4096Mi
+          requests:
+            cpu: 100m
+            memory: 1024Mi
         ports:
           - name: http
             containerPort: 9200
@@ -100,7 +106,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: elasticsearch-client
-  namespace: elasticsearch
+  namespace: efk
   labels:
     component: elasticsearch
     role: client
