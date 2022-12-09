@@ -3,12 +3,12 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: kibana-configmap
-  namespace: elasticsearch
+  namespace: efk
 data:
   kibana.yml: |
     server.name: kibana
     server.host: "0.0.0.0"
-    elasticsearch.hosts: ["http://elasticsearch-client-0.elasticsearch-client.elasticsearch.svc.cluster.local:9200"]
+    elasticsearch.hosts: ["http://elasticsearch-client.elasticsearch.svc.cluster.local:9200"]
     monitoring.ui.container.elasticsearch.enabled: true
 
 ---
@@ -16,7 +16,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: kibana
-  namespace: elasticsearch
+  namespace: efk
   labels:
     component: elasticsearch
     role: kibana
@@ -35,7 +35,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: kibana-nodeport
-  namespace: elasticsearch
+  namespace: efk
   labels:
     component: elasticsearch
     role: kibana
@@ -55,7 +55,7 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   name: kibana
-  namespace: elasticsearch
+  namespace: efk
   labels:
     component: elasticsearch
     role: kibana
