@@ -83,7 +83,7 @@ spec:
               value: "false"
             - name: "node.remote_cluster_client"
               value: "false"
-            - name: node.transform
+            - name: "node.transform"
               value: "false"
           resources:
             limits:
