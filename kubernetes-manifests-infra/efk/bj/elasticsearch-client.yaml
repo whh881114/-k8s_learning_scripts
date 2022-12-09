@@ -37,7 +37,7 @@ metadata:
     role: client
 spec:
   serviceName: elasticsearch-client
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       component: elasticsearch
