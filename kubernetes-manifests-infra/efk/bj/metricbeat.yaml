@@ -12,7 +12,7 @@ data:
     - module: elasticsearch
       xpack.enabled: true
       period: 10s
-      hosts: ["http://elasticsearch-master-0.elasticsearch-master:9200", "http://elasticsearch-master-1.elasticsearch-master:9200", "http://elasticsearch-master-2.elasticsearch-master:9200", "http://elasticsearch-data-0.elasticsearch-data:9200", "http://elasticsearch-data-1.elasticsearch-data:9200", "http://elasticsearch-data-2.elasticsearch-data:9200", "http://elasticsearch-client-0.elasticsearch-client:9200", "http://elasticsearch-client-1.elasticsearch-client:9200", "http://elasticsearch-client-2.elasticsearch-client:9200"]
+      hosts: ["http://elasticsearch-master-0.elasticsearch-master:9200", "http://elasticsearch-master-1.elasticsearch-master:9200", "http://elasticsearch-master-2.elasticsearch-master:9200", "http://elasticsearch-data-0.elasticsearch-data:9200", "http://elasticsearch-client-0.elasticsearch-client:9200"]
       #username: "user"
       #password: "secret"
 
