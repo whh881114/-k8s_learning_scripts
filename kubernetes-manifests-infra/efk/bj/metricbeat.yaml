@@ -3,7 +3,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: metricbeat-conf
-  namespace: elasticsearch
+  namespace: efk
 data:
   elasticsearch-xpack.yml: |
     # Module: elasticsearch
@@ -12,7 +12,7 @@ data:
     - module: elasticsearch
       xpack.enabled: true
       period: 10s
-      hosts: ["http://elasticsearch-master-0.elasticsearch-master.elasticsearch.svc.cluster.local:9200", "http://elasticsearch-master-1.elasticsearch-master.elasticsearch.svc.cluster.local:9200", "http://elasticsearch-master-2.elasticsearch-master.elasticsearch.svc.cluster.local:9200", "http://elasticsearch-data-0.elasticsearch-data.elasticsearch.svc.cluster.local:9200", "http://elasticsearch-data-1.elasticsearch-data.elasticsearch.svc.cluster.local:9200", "http://elasticsearch-data-2.elasticsearch-data.elasticsearch.svc.cluster.local:9200", "http://elasticsearch-client-0.elasticsearch-client.elasticsearch.svc.cluster.local:9200"]
+      hosts: ["http://elasticsearch-master-0.elasticsearch-master:9200", "http://elasticsearch-master-1.elasticsearch-master:9200", "http://elasticsearch-master-2.elasticsearch-master:9200", "http://elasticsearch-data-0.elasticsearch-data:9200", "http://elasticsearch-data-1.elasticsearch-data:9200", "http://elasticsearch-data-2.elasticsearch-data:9200", "http://elasticsearch-client.elasticsearch.svc.cluster.local:9200"]
       #username: "user"
       #password: "secret"
 
@@ -22,7 +22,7 @@ kind: StatefulSet
 apiVersion: apps/v1
 metadata:
   name: metricbeat
-  namespace: elasticsearch
+  namespace: efk
   labels:
     component: elasticsearch
     role: metricbeat
@@ -45,7 +45,7 @@ spec:
           env:
             - name: TZ
               value: Asia/Shanghai
-          command: ["sh", "-c", "/usr/share/metricbeat/metricbeat -E setup.kibana.host=elasticsearch-kibana.elasticsearch.svc.cluster.local.:5601 -E output.elasticsearch.hosts=['elasticsearch-master.elasticsearch.svc.cluster.local.:9200']"]
+          command: ["sh", "-c", "/usr/share/metricbeat/metricbeat -E setup.kibana.host=kibana.efk:5601 -E output.elasticsearch.hosts=['elasticsearch-master.efk:9200']"]
           volumeMounts:
             - name: metricbeat-conf
               mountPath: /usr/share/metricbeat/modules.d/elasticsearch-xpack.yml

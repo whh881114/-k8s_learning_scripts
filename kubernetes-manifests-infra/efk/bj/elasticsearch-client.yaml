@@ -27,7 +27,7 @@ subjects:
 
 
 ---
-kind: Deployment
+kind: StatefulSet
 apiVersion: apps/v1
 metadata:
   name: elasticsearch-client
@@ -36,6 +36,7 @@ metadata:
     component: elasticsearch
     role: client
 spec:
+  serviceName: elasticsearch-client
   replicas: 3
   selector:
     matchLabels:
