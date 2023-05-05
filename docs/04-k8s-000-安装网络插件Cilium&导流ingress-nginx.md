@@ -1,4 +1,4 @@
-# 01-k8s-000-3安装网络插件Cilium&导流ingress-nginx.md
+# 04-k8s-000-安装网络插件Cilium&导流ingress-nginx.md
 
 ### 前言
 - cilium网站：https://docs.cilium.io
@@ -8,7 +8,13 @@
 - 使用k8s-v1.18.20版本时，安装ingress时使用用3.x.x版本的chart了，当前使用的是3.38.0。
 
 ## 部署
-- `cd ansible_playbooks && ansible-playbook deploy-kubernetes-master01-addons.yml`进行部署即可。
+```shell
+cd ansible_playbooks
+ansible-playbook master01.k8s.bj.freedom.org-addons.yml
+ansible-playbook master01.k8s.sh.freedom.org-addons.yml
+ansible-playbook master01.k8s.gd.freedom.org-addons.yml
+ansible-playbook master01.k8s.hk.freedom.org-addons.yml
+```
 
 ## 集群状态
 ```shell

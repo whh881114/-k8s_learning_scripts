@@ -1,7 +1,8 @@
-# k8s集群上安装rancher管理平台安装说明文档
+# 04-k8s-001-部署rancher管理平台.md
 
 ### 前言
 - rancher可以图形化管理k8s集群，官网地址：https://rancher.com/。
+- 部署rancher步骤适合当前实验环境的四个集群，各集群定义proxy_host值后，其余步骤一样。
 
 ## 1. 安装步骤
 - 安装helm工具，下载最新版即可。官网地址：https://helm.sh/docs/intro/install/。
