@@ -21,8 +21,8 @@
 
 - HA安装方式
     ```shell
-    kubectl create namespace argocd
     wget https://raw.githubusercontent.com/argoproj/argo-cd/v2.7.1/manifests/ha/install.yaml -O argo-cd-v2.7.1-ha.yaml
+    kubectl create namespace argocd
     kubectl apply -n argocd -f argo-cd-v2.7.1-ha.yaml
     ```
     
