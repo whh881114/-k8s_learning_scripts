@@ -2,19 +2,15 @@
 - name: generate kubernetes redis-cluster items
   hosts: localhost
   user: root
-  tasks:
-- name: generate kubernetes redis-cluster items
-  hosts: localhost
-  user: root
   vars:
-    redis_namespace: redis-cluster
+    - redis_output_dir: /opt/k8s_learning_scripts/kubernetes-manifests-infra/redis/bj
   tasks:
     - name: generate kubernetes redis-cluster items
       template:
         src: redis-cluster.j2
-        dest: "{{ redis_output_dir }}/deploy-kubernetes-redis-cluster-{{ item.name }}.yaml"
+        dest: "{{ redis_output_dir }}/deploy-kubernetes-redis-{{ item.name }}.yaml"
       with_items:
-        - name: public
+        - name: public-cluster
           replicas: 6
           password: zuzo0qyiedklvsb7iudeuvydl&tkGQux
           maxmemory: 2GB
@@ -24,8 +20,8 @@
     - name: generate kubernetes redis-cluster items scripts
       template:
         src: init-redis-cluster.sh.j2
-        dest: "{{ redis_output_dir }}/deploy-kubernetes-redis-cluster-{{ item.name }}.sh"
+        dest: "{{ redis_output_dir }}/deploy-kubernetes-redis-{{ item.name }}.sh"
       with_items:
-        - name: public
+        - name: public-cluster
           replicas: 6
           password: zuzo0qyiedklvsb7iudeuvydl&tkGQux
