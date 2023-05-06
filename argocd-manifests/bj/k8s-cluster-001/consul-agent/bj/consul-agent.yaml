@@ -15,10 +15,11 @@ spec:
       labels:
         app: consul-agent
     spec:
-      # tolerations:
-      #   - key: node-role.kubernetes.io/master
-      #     operator: Exists
-      #     effect: NoSchedule
+       tolerations:
+         # - key: node-role.kubernetes.io/master
+         # 取消key的配置，这样只要存在NoSchedule的污点，就都可以做调度。
+         - operator: Exists
+           effect: NoSchedule
       containers:
         - name: consul-agent
           env:
