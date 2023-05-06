@@ -1,5 +1,6 @@
 # 说明
 
+
 - 目录结构
 ```shell
 -- argocd-manifests
@@ -31,8 +32,14 @@
         -- ...
 ```
 
+
 - 目录说明
     - argocd-manifests为argocd进行同步的目录。
     - bj/gd/hk/sh为各个区域。
     - k8s-cluster-prod-001，表示一个k8s集群名称，有可能还会有test集群，或者托管的集群。
     - k8s-cluster-prod-001目录下的就表示各个具体的应用了。
+    
+    
+- 语法格式
+    - 基础建设类的就使用plain yaml文件实现，这一类的服务部署一套就可以了。
+    - 中间件类的服务使用jsonnet实现，毕竟这一类的服务就涉及到部署多套，如果jenkins服务，不同的用户使用不同的jenkins。
