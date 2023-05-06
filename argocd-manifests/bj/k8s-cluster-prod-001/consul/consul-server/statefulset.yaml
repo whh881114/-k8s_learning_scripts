@@ -22,7 +22,7 @@ spec:
                - "-server"
                - "-bootstrap-expect=3"  # 在Consul启动时，指定最少预期的服务器数。如果超过这个数，Consul就会认为已经过了初始化阶段，可以进入正常运行。
                - "-ui"
-               - "-data-dir=/data"  # 存放raft/catalog/metadata/prepared_queryies数据
+               - "-data-dir=/consul/data"  # 存放raft/catalog/metadata/prepared_queryies数据
                - "-log-level=debug"
                - "-log-json"
                - "-log-file=/dev/stdout"
@@ -93,7 +93,7 @@ spec:
             periodSeconds: 10
           volumeMounts:
             - name: consul-server-data
-              mountPath: /data
+              mountPath: /consul/data
       terminationGracePeriodSeconds: 10
       tolerations:
          # - key: node-role.kubernetes.io/master
