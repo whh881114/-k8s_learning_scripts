@@ -1,0 +1,59 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: metricbeat-conf
+  namespace: efk
+data:
+  elasticsearch-xpack.yml: |
+    # Module: elasticsearch
+    # Docs: https://www.elastic.co/guide/en/beats/metricbeat/7.9/metricbeat-module-elasticsearch.html
+
+    - module: elasticsearch
+      xpack.enabled: true
+      period: 10s
+      hosts: ["http://elasticsearch-master-0.elasticsearch-master:9200", "http://elasticsearch-master-1.elasticsearch-master:9200", "http://elasticsearch-master-2.elasticsearch-master:9200", "http://elasticsearch-data-0.elasticsearch-data:9200", "http://elasticsearch-client-0.elasticsearch-client:9200"]
+      #username: "user"
+      #password: "secret"
+
+
+---
+kind: StatefulSet
+apiVersion: apps/v1
+metadata:
+  name: metricbeat
+  namespace: efk
+  labels:
+    component: elasticsearch
+    role: metricbeat
+spec:
+  serviceName: metricbeat
+  replicas: 1
+  selector:
+    matchLabels:
+      component: elasticsearch
+      role: metricbeat
+  template:
+    metadata:
+      labels:
+        component: elasticsearch
+        role: metricbeat
+    spec:
+      containers:
+        - name: metricbeat
+          image: harbor.freedom.org/elastic/metricbeat:7.14.1
+          env:
+            - name: TZ
+              value: Asia/Shanghai
+          command: ["sh", "-c", "/usr/share/metricbeat/metricbeat -E setup.kibana.host=kibana.efk:5601 -E output.elasticsearch.hosts=['elasticsearch-master.efk:9200']"]
+          volumeMounts:
+            - name: metricbeat-conf
+              mountPath: /usr/share/metricbeat/modules.d/elasticsearch-xpack.yml
+              subPath: elasticsearch-xpack.yml
+              readOnly: true
+      volumes:
+        - name: metricbeat-conf
+          configMap:
+            name: metricbeat-conf
+
+

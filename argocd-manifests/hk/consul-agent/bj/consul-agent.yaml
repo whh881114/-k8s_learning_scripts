@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: consul-agent
+  namespace: consul
+  labels:
+    app: consul-agent
+spec:
+  selector:
+    matchLabels:
+      app: consul-agent
+  template:
+    metadata:
+      name: consul-agent
+      labels:
+        app: consul-agent
+    spec:
+       tolerations:
+         # - key: node-role.kubernetes.io/master
+         # 取消key的配置，这样只要存在NoSchedule的污点，就都可以做调度。
+         - operator: Exists
+           effect: NoSchedule
+      containers:
+        - name: consul-agent
+          env:
+            - name: TZ
+              value: Asia/Shanghai
+            - name: NODEIP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: NODENAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+          image: harbor.freedom.org/docker.io/consul:1.10.2
+          args:
+            - "agent"
+            - "-retry-join=consul-server.k8s.bj.freedom.org"
+            - "-config-dir=/consul/config"
+            - "-log-level=info"
+            - "-log-rotate-duration=86400s"
+            - "-log-rotate-max-files=7"
+            - "-bind=0.0.0.0"
+            - "-client=0.0.0.0"
+            - "-advertise=$(NODEIP)"
+            - "-domain=k8s.bj.freedom.org"
+            - "-disable-host-node-id"
+            - "-datacenter=bj"
+            - "-node=$(NODENAME)"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8500
+            - name: serflan-tcp
+              containerPort: 8301
+            - name: consuldns
+              containerPort: 8600
+          resources:
+            limits:
+              cpu: 200m
+              memory: 256Mi
+            requests:
+              cpu: 50m
+              memory: 64Mi
+          readinessProbe:
+            httpGet:
+              port: http
+              path: /
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 60
+          livenessProbe:
+            httpGet:
+              port: http
+              path: /
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          volumeMounts:
+            - name: config
+              mountPath: /consul/config/agent.json
+              subPath: agent.json
+      # 需要使用到主机网络，这样容器才能和同一网段宿主机通信。
+      hostNetwork: true
+      volumes:
+        - name: config
+          configMap:
+            name: consul-agent

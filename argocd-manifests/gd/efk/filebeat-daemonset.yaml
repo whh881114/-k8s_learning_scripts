@@ -1,0 +1,60 @@
+# 参考：
+#   - https://cloud.tencent.com/developer/news/717602
+#   - https://blog.csdn.net/weixin_45015255/article/details/118712497
+#   - https://www.elastic.co/guide/en/beats/filebeat/current/configuration-autodiscover-hints.html
+# 个人总结：不配置自动发现就收集所有日志，但是配置自动发现则就需要大量精力，如果采用sidecar模式，就是省精力，但是要消耗集群资源。
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: filebeat
+  namespace: elasticsearch
+  labels:
+    app: filebeat
+spec:
+  selector:
+    matchLabels:
+      app: filebeat
+  template:
+    metadata:
+      name: filebeat
+      labels:
+        app: filebeat
+    spec:
+      serviceAccountName: filebeat
+      tolerations:
+        - key: node-role.kubernetes.io/master
+          operator: Exists
+          effect: NoSchedule
+      containers:
+        - name: filebeat
+          env:
+            - name: TZ
+              value: Asia/Shanghai
+          image: harbor.freedom.org/elastic/filebeat:7.14.1
+          args:
+            - "-c"
+            - "/usr/share/filebeat/filebeat.yml"
+          securityContext:
+            runAsUser: 0
+          imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              cpu: 500m
+              memory: 1024Mi
+            requests:
+              cpu: 50m
+              memory: 64Mi
+          volumeMounts:
+            - name: config
+              mountPath: /usr/share/filebeat/filebeat.yml
+              subPath: filebeat.yml
+            - name: docker-log-dir
+              mountPath: /var/lib/docker/containers
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: filebeat
+        - name: docker-log-dir
+          hostPath:
+            path: /var/lib/docker/containers
