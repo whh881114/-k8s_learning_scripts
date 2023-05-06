@@ -25,7 +25,6 @@ spec:
                - "-data-dir=/consul/data"  # 存放raft/catalog/metadata/prepared_queryies数据
                - "-log-level=debug"
                - "-log-json"
-               - "-log-file=/dev/stdout"
                - "-bind=0.0.0.0"
                - "-client=0.0.0.0"
                - "-datacenter=bj"
@@ -95,11 +94,11 @@ spec:
             - name: consul-server-data
               mountPath: /consul/data
       terminationGracePeriodSeconds: 10
-      tolerations:
-         # - key: node-role.kubernetes.io/master
-         # 取消key的配置，这样只要存在NoSchedule的污点，就都可以做调度。
-        - operator: Exists
-          effect: NoSchedule
+      # bj集群已经取消了master节点污点。
+      # tolerations:
+      #   - key: node-role.kubernetes.io/master
+      #     operator: Exists
+      #     effect: NoSchedule
   volumeClaimTemplates:
     - metadata:
         name: consul-server-data
