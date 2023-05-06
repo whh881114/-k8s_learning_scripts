@@ -33,24 +33,28 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: spec.nodeName
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
           image: harbor.freedom.org/docker.io/consul:1.10.2
           args:
             - "agent"
-            - "-retry-join=consul-server.k8s.bj.freedom.org"
+            - "-retry-join=consul-server-0.consul-server.$(NAMESPACE).svc.cluster.local"
+            - "-retry-join=consul-server-1.consul-server.$(NAMESPACE).svc.cluster.local"
+            - "-retry-join=consul-server-2.consul-server.$(NAMESPACE).svc.cluster.local"
             - "-config-dir=/consul/config"
-            - "-log-level=info"
-            - "-log-rotate-duration=86400s"
-            - "-log-rotate-max-files=7"
+            - "-log-level=debug"
+            - "-log-file=/dev/stdout"
             - "-bind=0.0.0.0"
             - "-client=0.0.0.0"
             - "-advertise=$(NODEIP)"
-            - "-domain=k8s.bj.freedom.org"
             - "-disable-host-node-id"
             - "-datacenter=bj"
             - "-node=$(NODENAME)"
           imagePullPolicy: IfNotPresent
           ports:
-            - name: http
+            - name: ui
               containerPort: 8500
             - name: serflan-tcp
               containerPort: 8301
@@ -65,7 +69,7 @@ spec:
               memory: 64Mi
           readinessProbe:
             httpGet:
-              port: http
+              port: 8500
               path: /
               scheme: HTTP
             initialDelaySeconds: 10
@@ -73,7 +77,7 @@ spec:
             timeoutSeconds: 60
           livenessProbe:
             httpGet:
-              port: http
+              port: 8500
               path: /
               scheme: HTTP
             initialDelaySeconds: 10
