@@ -7,7 +7,7 @@
 - k8s.sh.freedom.org，k8s.gd.freedom.org和k8s.hk.freedom.org集群连接到控制平面中。
 
 ## 网络规划
-- 在pfsense上禁用各个集群的cluster和pod网段路由，用来部署单mesh多cluster模式。
+- 在pfsense上禁用各个集群的cluster和pod网段路由，用来部署单mesh多cluster模式。（在istio实验中已经验证过了，之后的实验再次打开即可。）
 
 ## 官方文档
 - https://istio.io/latest/docs/setup/install/external-controlplane/
