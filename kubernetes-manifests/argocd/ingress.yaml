@@ -8,7 +8,7 @@ metadata:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
 spec:
   rules:
-    - host: argocd.freedom.org
+    - host: argocd.k8s.bjfreedom.org
       http:
         paths:
           - pathType: Prefix
