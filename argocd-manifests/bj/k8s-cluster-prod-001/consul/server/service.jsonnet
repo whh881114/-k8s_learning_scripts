@@ -26,7 +26,7 @@ local ports = [
         metadata: {
             name: "%s" % service.name,
             namespace: vars['namespace'],
-            labels: {name: "consul-server"},
+            labels: {app: "consul-server"},
         },
         spec: {
             selector: {app: "consul-server"},
