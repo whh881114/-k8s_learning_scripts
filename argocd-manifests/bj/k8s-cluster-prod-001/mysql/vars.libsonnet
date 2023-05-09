@@ -19,11 +19,21 @@ local other_mysql_conf = |||
     {name: "metrics", containerPort: 9104},
   ],
 
+  storage_class: "nfs-infra",
+  storage_class_capacity: "50Gi",
+
   // mysql的root密码必须要每个实例都定义。
   instances: [{name: "zabbix", mysql_root_password: "kz2zv&eoynpneQbyeowebyu0beGxkgvy"}],
 
+
   // mysql部署时，要安装mysql_exporter，定义的用户名和密码就唯一。
   mysql_exporter_data_source: "mysqld_exporter:pJwtdho13jLipiyquxldnqialgrpkvl~@(localhost:3306)/",
+  // 配置mysqld_exporter用户监控
+  // CREATE USER 'mysqld_exporter'@'localhost' IDENTIFIED BY 'pJwtdho13jLipiyquxldnqialgrpkvl~';
+  // GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO 'mysqld_exporter'@'localhost';
+  // FLUSH PRIVILEGES;
+  // EXIT
+
 
   // windows下，当使用|||声明跨行内容时，如果碰上空行，需要补充空格。
   // 但是，保存后就默认去掉了空格，所以方便点的方法，使用#来对齐。
