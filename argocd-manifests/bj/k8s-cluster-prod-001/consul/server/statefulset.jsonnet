@@ -21,10 +21,10 @@ local args_partial = ["agent",
               "-server",
               "-bootstrap-expect=%d" % vars['server_replicas'],
               "-ui",
-              "-data-dir=/consul/data",
               "-log-level=debug",
               "-log-json",
               "-bind=0.0.0.0",
+              "-client=0.0.0.0",
               "-datacenter=%s" % vars['datacenter'],
               "-advertise=$(PODIP)",
               "-domain=cluster.local",
@@ -49,7 +49,7 @@ local args = args_partial + args_retry_join + args_retry_join_wan;
        }
      },
      replicas: vars['server_replicas'],
-     tamplate: {
+     template: {
        metadata: {
          labels: { app: "consul-server", }
        },
@@ -79,7 +79,7 @@ local args = args_partial + args_retry_join + args_retry_join_wan;
            readinessProbe: {
              httpGet: {
                port: 8500,
-               path: "/",
+               path: "/ui/",
                scheme: "HTTP",
              },
              initialDelaySeconds: 10,
@@ -89,7 +89,7 @@ local args = args_partial + args_retry_join + args_retry_join_wan;
            livenessProbe:{
              httpGet: {
                port: 8500,
-               path: "/",
+               path: "/ui/",
                scheme: "HTTP",
              },
              initialDelaySeconds: 10,
@@ -98,20 +98,18 @@ local args = args_partial + args_retry_join + args_retry_join_wan;
            },
          }]
        }
-     }
-   },
+     },
      volumeClaimTemplates: [{
-       metadata: {
-         name: "consul-server-data",
-         annotations: {
-           "volume.beta.kubernetes.io/storage-class": vars['server_storage_class']
-         },
-       spec: {
-         accessModes: ["ReadWriteOnce"],
-         resources: {
-           requests: {storage: vars['server_data_capcity']}
-         }
+     metadata: {
+       name: "consul-server-data",
+       annotations: {"volume.beta.kubernetes.io/storage-class": vars['server_storage_class']}
+     },
+     spec: {
+       accessModes: ["ReadWriteOnce"],
+       resources: {
+         requests: {storage: vars['server_data_capcity']}
        }
      }
    }]
- }
+   }
+}

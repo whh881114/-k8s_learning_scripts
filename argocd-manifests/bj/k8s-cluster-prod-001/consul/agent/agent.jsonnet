@@ -40,13 +40,17 @@ spec: {
   selector: {
     matchLabels: {app: "consul-agent"}
   },
-},
   template: {
     metadata: {
       name: "consul-agent",
       labels: {app: "consul-agent"},
     },
     spec: {
+      initContainers: [{
+        name: "use-coredns",
+        image: "harbor.freedom.org/docker.io/busybox:1.31.1",
+        command: [ "sh", "-c", "echo 'nameserver %s' > /etc/resolv.conf" % vars['coredns_ip']],
+      }],
       containers:[{
         name: "consul-agent",
         image: "%s:%s" % [vars['image'], vars['image_tag']],
@@ -56,12 +60,12 @@ spec: {
         imagePullPolicy: vars['image_pull_policy'],
         resources:{
           requests: {
-            cpu: vars['server_requests_cpu'],
-            memory: vars['server_requests_memory'],
+            cpu: vars['agent_requests_cpu'],
+            memory: vars['agent_requests_memory'],
           },
           limits: {
-            cpu: vars['server_limits_cpu'],
-            memory: vars['server_limits_memory'],
+            cpu: vars['agent_limits_cpu'],
+            memory: vars['agent_limits_memory'],
           },
        },
         readinessProbe: {
@@ -94,7 +98,8 @@ spec: {
       volumes: [{
           name: "config",
           configMap: { name: "consul-agent-config"},
-      }],
+      }]
     }
   }
+}
 }
