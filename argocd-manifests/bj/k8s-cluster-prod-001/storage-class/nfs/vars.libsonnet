@@ -1,10 +1,10 @@
 {
   type: "nfs",
 
-  image_pull_policy: "IfNotPresent",
   namespace: "storage-class",
   image: "harbor.freedom.org/quay.io/nfs-client-provisioner",
   image_tag: "v3.1.0-k8s1.11",
+  image_pull_policy: "IfNotPresent",
 
   replicas: 3,
   requests_cpu: "100m",
