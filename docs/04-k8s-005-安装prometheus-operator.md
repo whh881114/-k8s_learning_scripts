@@ -18,7 +18,7 @@ kubectl apply -f .
 
 ```
 
-#### Dashboard导入
+### Dashboard导入
 - dashboard：
     - 8878，JVM dashboard (for Prometheus Operator)
     - 11074，1 Node Exporter for Prometheus Dashboard EN 20201010
