@@ -1,5 +1,13 @@
+// 当定义其他redis实例的配置文件时，请按照default_conf模板修改。
+// 另外，要注意的是，requirepass和 maxmemory需要保留格式，他们分别对应的值写在instances中即可。
 local other_conf = |||
   Here is the customized configuration content, adjusting to other mysql instances.
+  ...
+  ...
+  requirepass [indiviual_redis_password]
+  maxmemory [indiviual_redis_memory]
+  ...
+  ...
 |||;
 
 {
@@ -27,6 +35,7 @@ local other_conf = |||
   instances: [
     {name: "public", password: "x-Pvvkw2cytxfusWedkgxztxqdhp5ocs"},
     {name: "password-bank", password: "uuglwtvYitnod@yevuqrDkr6xrlk3ach", memory: "4096Mi", limits_memory: self.memory},
+    // {name: "cache", password: "srcgxzsl1av>fojzcjkOnikxste7Babs", memory: "1024Mi", limits_memory: self.memory, conf: other_conf},
   ],
 
   default_conf: |||
