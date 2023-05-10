@@ -9,9 +9,9 @@ local vars = import './vars.libsonnet';
       namespace: vars['namespace'],
     },
     data: {
-      MYSQL_EXPORTER_DATA_SOURCE: vars['mysql_exporter_data_source'],
-      MYSQL_ROOT_PASSWORD: instance['mysql_root_password'],
-      "my.cnf": if 'mysql_conf' in instance then instance['mysql_conf'] else vars['mysql_default_conf'],
+      MYSQLD_EXPORTER_DATA_SOURCE: vars['mysqld_exporter_data_source'],
+      MYSQL_ROOT_PASSWORD: instance['root_password'],
+      "my.cnf": if 'conf' in instance then instance['conf'] else vars['default_conf'],
     }
   }
 

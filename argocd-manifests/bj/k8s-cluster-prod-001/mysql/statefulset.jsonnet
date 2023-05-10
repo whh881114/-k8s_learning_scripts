@@ -1,6 +1,17 @@
 local vars = import './vars.libsonnet';
 
-local ports = vars['container_ports'];
+local mysqld_exporter_container = {
+  name: "mysqld-exporter",
+  image: "harbor.freedom.org/prometheus-operator/mysqld-exporter:v0.14.0",
+  imagePullPolicy: "IfNotPresent",
+  env: [
+    { name: "DATA_SOURCE_NAME", valueFrom: { configMapKeyRef: { name: "mysqld_exporter", key: "DATA_SOURCE_NAME" } } }
+  ],
+  port: [
+    { name: "metrics", containerPort: 9104 }
+  ]
+};
+
 
 [
   {
@@ -20,18 +31,7 @@ local ports = vars['container_ports'];
           labels: { app: instance[ 'name' ] },
         },
         spec: {
-          containers: [
-            {
-              name: "mysqld-exporter",
-              image: "harbor.freedom.org/prometheus-operator/mysqld-exporter:v0.14.0",
-              imagePullPolicy: "IfNotPresent",
-              env: [
-                { name: "DATA_SOURCE_NAME", valueFrom: { configMapKeyRef: { name: instance[ 'name' ], key: "MYSQL_EXPORTER_DATA_SOURCE" } } }
-              ],
-              port: [
-                { name: "metrics", containerPort: 9104 }
-              ]
-            },
+          containers: [ mysqld_exporter_container,
             {
               name: instance[ 'name' ],
               image: if 'image' in instance && 'image_tag' in instance then "%s:%s" % [ instance[ 'image' ], instance[ 'image_tag' ] ]
@@ -40,7 +40,7 @@ local ports = vars['container_ports'];
                 { name: "TZ", value: "Asia/Shanghai" },
                 { name: "MYSQL_ROOT_PASSWORD", valueFrom: { configMapKeyRef: { name: instance[ 'name' ], key: "MYSQL_ROOT_PASSWORD" } } },
               ],
-              ports: ports,
+              ports: vars['container_ports'],
               resources: {
                 requests: {
                   cpu: if 'requests_cpu' in instance then instance[ 'requests_cpu' ] else vars[ 'requests_cpu' ],
@@ -52,19 +52,19 @@ local ports = vars['container_ports'];
                 },
               },
               volumeMounts: [
-                { name: "mysql-conf", mountPath: "/etc/mysql/conf.d", readOnly: "true" },
-                { name: "mysql-data", mountPath: "/var/lib/mysql" },
+                { name: "conf", mountPath: "/etc/mysql/conf.d", readOnly: "true" },
+                { name: "data", mountPath: "/var/lib/mysql" },
               ],
             },
           ],
           volumes: [
-            { name: "mysql-conf", configMap: { name: instance[ 'name' ] } },
+            { name: "conf", configMap: { name: instance[ 'name' ] } },
           ]
         },
         volumeClaimTemplates: [
           {
             metadata: {
-              name: "mysql-data",
+              name: "data",
               annotations: {
                 "volume.beta.kubernetes.io/storage-class": if 'storage_class' in instance then instance[ 'storage_class' ] else vars[ 'storage_class' ]
               },
