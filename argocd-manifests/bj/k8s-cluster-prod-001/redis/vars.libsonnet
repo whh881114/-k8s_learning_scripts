@@ -22,7 +22,12 @@ local other_conf = |||
   storage_class_capacity: "10Gi",
 
   // redis的密码必须要每个实例都要单独定义。
-  instances: [{name: "public", password: "x-Pvvkw2cytxfusWedkgxztxqdhp5ocs", memory: "1Gi"}],
+  // 如果不定义redis实例的memory值时，那redis.conf文件中的maxmemory就为默认的limits_memory值，
+  // 当声明memory值时，请同时声明limits_memory值。
+  instances: [
+    {name: "public", password: "x-Pvvkw2cytxfusWedkgxztxqdhp5ocs"},
+    {name: "password-bank", password: "uuglwtvYitnod@yevuqrDkr6xrlk3ach", memory: "4096Mi", limits_memory: self.memory},
+  ],
 
   default_conf: |||
     bind 0.0.0.0

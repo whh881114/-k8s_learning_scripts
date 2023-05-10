@@ -1,6 +1,13 @@
 local vars = import './vars.libsonnet';
 
+
 [
+  local conf_1 = if 'conf' in instance then instance['conf'] else vars['default_conf'];
+  local conf_2 = std.strReplace(conf_1, "[indiviual_redis_password]", instance['password']);
+
+  local memory = if 'memory' in instance then instance['memory'] else vars['limits_memory'];
+  local conf = std.strReplace(conf_2, "[indiviual_redis_memory]", memory);
+
   {
     apiVersion: "v1",
     kind: "ConfigMap",
@@ -9,7 +16,7 @@ local vars = import './vars.libsonnet';
       namespace: vars['namespace'],
     },
     data: {
-      "redis.conf": if 'conf' in instance then instance['conf'] else vars['default_conf'],
+      "redis.conf": conf,
     }
   }
 
