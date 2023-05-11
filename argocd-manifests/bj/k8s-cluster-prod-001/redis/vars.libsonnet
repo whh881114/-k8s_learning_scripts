@@ -33,12 +33,22 @@ local other_conf = |||
   // 如果不定义redis实例的memory值时，那redis.conf文件中的maxmemory就为默认的limits_memory值，
   // 当声明memory值时，请同时声明limits_memory值。
   instances: [
+    // standalone实例
     {name: "public", password: "x-Pvvkw2cytxfusWedkgxztxqdhp5ocs"},
-    {name: "password-bank", password: "uuglwtvYitnod@yevuqrDkr6xrlk3ach", memory: "4096Mi", limits_memory: self.memory},
-    // {name: "cache", password: "srcgxzsl1av>fojzcjkOnikxste7Babs", memory: "1024Mi", limits_memory: self.memory, conf: other_conf},
+
+    // cluster实例
+    {
+      name: "password-bank",
+      mode: "cluster",
+      replicas: 6,
+      memory: "4096Mi",
+      limits_memory: self.memory,
+      password: "uuglwtvYitnod@yevuqrDkr6xrlk3ach"
+    },
+
   ],
 
-  default_conf: |||
+  default_standalone_conf: |||
     bind 0.0.0.0
     protected-mode yes
     port 6379
@@ -105,5 +115,55 @@ local other_conf = |||
     dynamic-hz yes
     aof-rewrite-incremental-fsync yes
     rdb-save-incremental-fsync yes
+  |||,
+
+  default_cluster_conf: |||
+    dir /data
+    bind 0.0.0.0
+    cluster-enabled yes
+    cluster-config-file nodes.conf
+    logfile redis.log
+    cluster-node-timeout 5000
+    appendonly yes
+    daemonize no
+    pidfile redis.pid
+    appendfilename appendonly.aof
+    protected-mode yes
+    \r\n
+    maxmemory [indiviual_redis_memory]
+    maxmemory-policy volatile-ttl
+    \r\n
+    requirepass [indiviual_redis_password]
+    masterauth  [indiviual_redis_password]
+    \r\n
+    timeout 60
+    tcp-keepalive 300
+    loglevel notice
+    \r\n
+    appendfsync everysec
+    no-appendfsync-on-rewrite no
+    auto-aof-rewrite-percentage 100
+    auto-aof-rewrite-min-size 64mb
+    aof-load-truncated yes
+    \r\n
+    lua-time-limit 5000
+    slowlog-log-slower-than 10000
+    slowlog-max-len 128
+    latency-monitor-threshold 0
+    notify-keyspace-events ""
+    hash-max-ziplist-entries 512
+    hash-max-ziplist-value 64
+    list-max-ziplist-entries 512
+    list-max-ziplist-value 64
+    set-max-intset-entries 512
+    zset-max-ziplist-entries 128
+    zset-max-ziplist-value 64
+    hll-sparse-max-bytes 3000
+    activerehashing yes
+    client-output-buffer-limit normal 0 0 0
+    client-output-buffer-limit slave 256mb 64mb 60
+    client-output-buffer-limit pubsub 32mb 8mb 60
+    hz 10
+    aof-rewrite-incremental-fsync yes
   |||,
 }
