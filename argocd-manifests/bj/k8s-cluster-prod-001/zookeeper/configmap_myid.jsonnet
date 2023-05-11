@@ -11,7 +11,7 @@ local vars = import './vars.libsonnet';
     data: {
       "myid.sh": |||
         #!/bin/bash
-        #
+        \r\n
         myid=`echo $HOSTNAME | awk -F "-" '{print $NF}'`
         myid=$[myid+1]
         echo $myid > /data/myid
