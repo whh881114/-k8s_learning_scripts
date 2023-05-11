@@ -1,6 +1,6 @@
 local vars = import './vars.libsonnet';
 
-local ports = [
+local ports_standalone = [
     if "protocol" in p then
     {
       name: p.name,
@@ -15,10 +15,10 @@ local ports = [
       targetPort: p.containerPort,
     }
 
-    for p in vars['container_ports']
+    for p in vars['container_ports_standalone']
 ];
 
-local cluster_ports = [
+local ports_cluster = [
     if "protocol" in p then
     {
       name: p.name,
@@ -32,15 +32,10 @@ local cluster_ports = [
         name: p.name,
         port: p.containerPort,
         targetPort: p.containerPort,
-      },
-      {
-        name: "cluster",
-        port: p.containerPort + 10000,
-        targetPort: p.containerPort + 10000,
       }
     ]
 
-    for p in vars['container_ports']
+    for p in vars['container_ports_cluster']
 ];
 
 
@@ -57,7 +52,7 @@ local cluster_ports = [
       spec: {
         selector: {app: instance['name']},
         type: "%s" % service_type,
-        ports: ports
+        ports: ports_standalone
       }
     }
   else
@@ -77,7 +72,7 @@ local cluster_ports = [
           spec: {
             selector: {app: "%s-%d" % [instance['name'], num]},
             type: "%s" % service_type,
-            ports: cluster_ports
+            ports: ports_cluster,
           }
         },
         for num in std.range(1, instance['replicas'])

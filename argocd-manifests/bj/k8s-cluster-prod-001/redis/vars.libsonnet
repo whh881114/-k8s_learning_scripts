@@ -22,8 +22,13 @@ local other_conf = |||
   limits_cpu: "1000m",
   limits_memory: "2048Mi",
 
-  container_ports: [
+  container_ports_standalone: [
     {name: "redis", containerPort: 6379},
+  ],
+
+  container_ports_cluster: [
+    {name: "redis", containerPort: 6379},
+    {name: "cluster", containerPort: 16379},
   ],
 
   storage_class: "nfs-redis",
@@ -43,7 +48,8 @@ local other_conf = |||
       replicas: 6,
       memory: "4096Mi",
       limits_memory: self.memory,
-      password: "uuglwtvYitnod@yevuqrDkr6xrlk3ach"
+      password: "uuglwtvYitnod@yevuqrDkr6xrlk3ach",
+      disable: true
     },
 
   ],
