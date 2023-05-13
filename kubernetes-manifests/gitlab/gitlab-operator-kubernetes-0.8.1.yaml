@@ -17055,7 +17055,8 @@ spec:
         - --upstream=http://127.0.0.1:8080/
         - --logtostderr=true
         - --v=10
-        image: gcr.io/kubebuilder/kube-rbac-proxy:v0.5.0
+        # image: gcr.io/kubebuilder/kube-rbac-proxy:v0.5.0
+        image: harbor.freedom.org/gcr.io/kube-rbac-proxy:v0.5.0
         name: kube-rbac-proxy
         ports:
         - containerPort: 8443
