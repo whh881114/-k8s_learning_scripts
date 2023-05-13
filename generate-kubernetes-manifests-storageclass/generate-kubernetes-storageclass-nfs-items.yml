@@ -4,12 +4,12 @@
   user: root
   gather_facts: False
   vars:
-    - storagecalss_output_dir: /opt/k8s_learning_scripts/kubernetes-manifests/storageclass/bj
+    - output_dir: /opt/k8s_learning_scripts/kubernetes-manifests/storageclass/bj
   tasks:
     - name: generate kubernetes storageclass items
       template:
         src: nfs.j2
-        dest: "{{ storagecalss_output_dir }}/deploy-kubernetes-storageclass-nfs-{{ item.name }}.yaml"
+        dest: "{{ output_dir }}/deploy-kubernetes-storageclass-nfs-{{ item.name }}.yaml"
       with_items:
         - name: infra
           nfs_server: nfs.freedom.org
@@ -22,12 +22,12 @@
   user: root
   gather_facts: False
   vars:
-    - storagecalss_output_dir: /opt/k8s_learning_scripts/kubernetes-manifests/storageclass/sh
+    - output_dir: /opt/k8s_learning_scripts/kubernetes-manifests/storageclass/sh
   tasks:
     - name: generate kubernetes storageclass items
       template:
         src: nfs.j2
-        dest: "{{ storagecalss_output_dir }}/deploy-kubernetes-storageclass-nfs-{{ item.name }}.yaml"
+        dest: "{{ output_dir }}/deploy-kubernetes-storageclass-nfs-{{ item.name }}.yaml"
       with_items:
         - name: infra
           nfs_server: nfs.freedom.org
@@ -40,12 +40,12 @@
   user: root
   gather_facts: False
   vars:
-    - storagecalss_output_dir: /opt/k8s_learning_scripts/kubernetes-manifests/storageclass/gd
+    - output_dir: /opt/k8s_learning_scripts/kubernetes-manifests/storageclass/gd
   tasks:
     - name: generate kubernetes storageclass items
       template:
         src: nfs.j2
-        dest: "{{ storagecalss_output_dir }}/deploy-kubernetes-storageclass-nfs-{{ item.name }}.yaml"
+        dest: "{{ output_dir }}/deploy-kubernetes-storageclass-nfs-{{ item.name }}.yaml"
       with_items:
         - name: infra
           nfs_server: nfs.freedom.org
@@ -58,12 +58,12 @@
   user: root
   gather_facts: False
   vars:
-    - storagecalss_output_dir: /opt/k8s_learning_scripts/kubernetes-manifests/storageclass/hk
+    - output_dir: /opt/k8s_learning_scripts/kubernetes-manifests/storageclass/hk
   tasks:
     - name: generate kubernetes storageclass items
       template:
         src: nfs.j2
-        dest: "{{ storagecalss_output_dir }}/deploy-kubernetes-storageclass-nfs-{{ item.name }}.yaml"
+        dest: "{{ output_dir }}/deploy-kubernetes-storageclass-nfs-{{ item.name }}.yaml"
       with_items:
         - name: infra
           nfs_server: nfs.freedom.org
