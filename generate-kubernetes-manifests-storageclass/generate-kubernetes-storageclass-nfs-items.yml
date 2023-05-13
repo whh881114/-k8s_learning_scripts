@@ -1,0 +1,70 @@
+---
+- name: generate kubernetes storageclass nfs items for bj zone
+  hosts: localhost
+  user: root
+  gather_facts: False
+  vars:
+    - storagecalss_output_dir: /opt/k8s_learning_scripts/kubernetes-manifests/storageclass/bj
+  tasks:
+    - name: generate kubernetes storageclass items
+      template:
+        src: nfs.j2
+        dest: "{{ storagecalss_output_dir }}/deploy-kubernetes-storageclass-nfs-{{ item.name }}.yaml"
+      with_items:
+        - name: infra
+          nfs_server: nfs.freedom.org
+          nfs_server_shared_dir: /data/k8s-pvc-nfs/bj/infra
+
+
+
+- name: generate kubernetes storageclass nfs items for sh zone
+  hosts: localhost
+  user: root
+  gather_facts: False
+  vars:
+    - storagecalss_output_dir: /opt/k8s_learning_scripts/kubernetes-manifests/storageclass/sh
+  tasks:
+    - name: generate kubernetes storageclass items
+      template:
+        src: nfs.j2
+        dest: "{{ storagecalss_output_dir }}/deploy-kubernetes-storageclass-nfs-{{ item.name }}.yaml"
+      with_items:
+        - name: infra
+          nfs_server: nfs.freedom.org
+          nfs_server_shared_dir: /data/k8s-pvc-nfs/sh/infra
+
+
+
+- name: generate kubernetes storageclass nfs items for gd zone
+  hosts: localhost
+  user: root
+  gather_facts: False
+  vars:
+    - storagecalss_output_dir: /opt/k8s_learning_scripts/kubernetes-manifests/storageclass/gd
+  tasks:
+    - name: generate kubernetes storageclass items
+      template:
+        src: nfs.j2
+        dest: "{{ storagecalss_output_dir }}/deploy-kubernetes-storageclass-nfs-{{ item.name }}.yaml"
+      with_items:
+        - name: infra
+          nfs_server: nfs.freedom.org
+          nfs_server_shared_dir: /data/k8s-pvc-nfs/gd/infra
+
+
+
+- name: generate kubernetes storageclass nfs items for hk zone
+  hosts: localhost
+  user: root
+  gather_facts: False
+  vars:
+    - storagecalss_output_dir: /opt/k8s_learning_scripts/kubernetes-manifests/storageclass/hk
+  tasks:
+    - name: generate kubernetes storageclass items
+      template:
+        src: nfs.j2
+        dest: "{{ storagecalss_output_dir }}/deploy-kubernetes-storageclass-nfs-{{ item.name }}.yaml"
+      with_items:
+        - name: infra
+          nfs_server: nfs.freedom.org
+          nfs_server_shared_dir: /data/k8s-pvc-nfs/hk/infra
