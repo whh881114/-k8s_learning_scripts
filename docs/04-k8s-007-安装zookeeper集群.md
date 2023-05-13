@@ -1,4 +1,4 @@
-# 04-k8s-006-安装zookeeper集群.md
+# 04-k8s-007-安装zookeeper集群.md
 
 ## 参数资料：
   - https://hub.docker.com/_/zookeeper

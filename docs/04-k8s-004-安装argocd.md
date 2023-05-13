@@ -1,4 +1,4 @@
-# 04-k8s-003-安装argocd.md
+# 04-k8s-004-安装argocd.md
 
 ## 版本说明
 - https://argo-cd.readthedocs.io/en/stable/operator-manual/installation/#supported-versions

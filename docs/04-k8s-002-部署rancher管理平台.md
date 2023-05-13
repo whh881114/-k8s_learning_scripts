@@ -1,4 +1,4 @@
-# 04-k8s-001-部署rancher管理平台.md
+# 04-k8s-002-部署rancher管理平台.md
 
 ### 前言
 - rancher可以图形化管理k8s集群，官网地址：https://rancher.com/。

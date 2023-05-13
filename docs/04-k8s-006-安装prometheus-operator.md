@@ -1,4 +1,4 @@
-# 01-k8s-005-安装prometheus-operator.md
+# 04-k8s-006-安装prometheus-operator.md
 
 ### 安装步骤
 ```shell
