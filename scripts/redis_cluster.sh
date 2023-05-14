@@ -9,10 +9,16 @@
 # 不删除就不会有影响，避免了pod全部删除后导致集群不可用的情况。
 
 
-OPERATOR=$1
-NAMESPACE=$2
-WORKLOAD=$3
-REPLICAS=$4
+NAMESPACE=$1
+WORKLOAD=$2
+PASSWORD=$3
+
+
+function check()
+{
+
+
+}
 
 
 function scale_pod()
@@ -48,14 +54,28 @@ function scale_pod()
     fi
 }
 
+
+function delete_pod_data()
+{
+}
+
+
+function init_cluster()
+{
+
+}
+
+
+
+
 if [ $# -eq 0 ]; then
     echo "Usage: $0 [namespace] [workload]"
-    echo "Description: This script will initialize the redis cluster, and all data of it will be deleted."
+    echo "Description: This script will delete all the data of the cluster instances, and initialize the redis cluster."
     exit 0
 fi
 
-read -p "This script will initialize the redis cluster, and all data of it will be deleted.
-        Enter y/yes to continue, other to exit: " input
+read -p "This script will delete all the data of the cluster instances, and initialize the redis cluster.
+        Enter 'y/yes' to continue, other to exit: " input
 
 case $(echo $input | tr [A-Z] [a-z]) in
     y|yes)

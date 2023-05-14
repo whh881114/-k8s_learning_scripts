@@ -1,0 +1,3 @@
+[submodule "argocd-manifests"]
+	path = argocd-manifests
+	url = git@github.com:whh881114/argocd-manifests.git
