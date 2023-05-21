@@ -39,8 +39,6 @@ RUN set -eux && \
     localedef -i zh_CN -c -f UTF-8 zh_CN.UTF-8 && \
     echo "export LC_ALL=zh_CN.UTF-8" >> /etc/profile
 
-CMD ["-javaagent:/lib/jmx_prometheus_javaagent.jar=60030:/etc/jmx-cfg.yml"]
-
 EXPOSE 8080 50000 60030
 
 VOLUME /var/jenkins_home
