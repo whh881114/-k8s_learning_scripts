@@ -1,24 +1,11 @@
 #!/bin/bash
 
-# 当使用stateful部署模式为：workload为redis-cluster，其pod名称为redis-cluster-0/redis-cluster-1/redis-cluster-2/.....，
-# 这里会存在一个问题：当所有的redis-cluster的pod同时删除时，redis-cluster将不可用，这是因为flannel/cilium网络插件
-# 不支持固定pod的ip，使用脚本修改nodes.conf无法正常通知到其他pod。
+# 当所有的redis-cluster的pod同时删除时，redis-cluster将不可用，这是因为flannel/cilium网络插件不支持固定pod的ip，而calico网络插件可以，所在不会存在这个问题。
 
-# 现在使用stateful部署模式为多个workload搭建redis-cluster，即redis-cluster-1（pod名称为redis-cluster-1-0）/
-# redis-cluster-2（pod名称为redis-cluster-2-0）/....，初始化使用各个workload的ClusterIP通信，这样只要ClusterIP类型的service
-# 不删除就不会有影响，避免了pod全部删除后导致集群不可用的情况。
-
-
-NAMESPACE=$1
-WORKLOAD=$2
+NAMESPACE=redis
+PODNAME=$1
+REPLICAS=$2
 PASSWORD=$3
-
-
-function check()
-{
-
-
-}
 
 
 function scale_pod()
@@ -55,57 +42,19 @@ function scale_pod()
 }
 
 
-function delete_pod_data()
-{
-}
-
-
-function init_cluster()
-{
-
-}
-
-
-
-
-if [ $# -eq 0 ]; then
-    echo "Usage: $0 [namespace] [workload]"
-    echo "Description: This script will delete all the data of the cluster instances, and initialize the redis cluster."
-    exit 0
-fi
-
-read -p "This script will delete all the data of the cluster instances, and initialize the redis cluster.
-        Enter 'y/yes' to continue, other to exit: " input
-
-case $(echo $input | tr [A-Z] [a-z]) in
-    y|yes)
-        scale_pod 1
-        for((i=0; i<6; i++))
-        do
-            echo "rm -rf /data/*" | kubectl -n redis-cluster exec public-$i -c common -it -- /bin/bash
-        done
-        ;;
-    *)
-        echo "Exiting..."
-        exit 0
-        ;;
-esac
-
 # 将redis-cluster实例处于运行状态，从而进行删除文件。
-scale_pod 6
+scale_pod $REPLICAS
 
-for((i=0; i<6; i++))
+for((i=0; i<$REPLICAS; i++))
 do
-    echo "rm -rf /data/*" | kubectl -n redis-cluster exec public-$i -c common -it -- /bin/bash
+    echo "rm -rf /data/*" | kubectl -n redis exec $PODNAME-$i -c redis -it -- /bin/bash
 done
 
-## 将redis-cluster实例数量改为0。
-#scale_pod 0
-#
-## 将redis-cluster的实例数恢复成6。
-#scale_pod 6
-#
-## 重建redis-cluster实例。
-#kubectl -n $NAMESPACE exec ${PODNAME}-0 -it -- redis-cli -a "zuzo0qyiedklvsb7iudeuvydl&tkGQux" --cluster create --cluster-replicas 1 $(kubectl -n $NAMESPACE get pods -l app=$PODNAME -o jsonpath='{range.items[*]}{.status.podIP}:6379 ' | sed s/\ :6379\ $//)
-#
+# 将redis-cluster实例数量改为0。
+scale_pod 0
 
+# 将redis-cluster的实例数恢复成{{ item.replicas }}。
+scale_pod $REPLICAS
+
+# 重建redis-cluster实例。
+kubectl -n $NAMESPACE exec ${PODNAME}-0 -it -- redis-cli -a "$PASSWORD" --cluster create --cluster-replicas 1 $(kubectl -n $NAMESPACE get pods -l app=$PODNAME -o jsonpath='{range.items[*]}{.status.podIP}:6379 ' | sed s/\ :6379\ $//)
