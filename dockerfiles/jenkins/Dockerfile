@@ -43,4 +43,4 @@ CMD ["-javaagent:/lib/jmx_prometheus_javaagent.jar=60030:/etc/jmx-cfg.yml"]
 
 EXPOSE 8080 50000 60030
 
-VOLUME [/var/jenkins_home]
+VOLUME /var/jenkins_home
