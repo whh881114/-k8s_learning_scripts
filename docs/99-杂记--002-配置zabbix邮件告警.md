@@ -49,11 +49,11 @@
 
 - 故障发生主题：
   ```
-  【故障发生】故障程度：{TRIGGER.STATUS} --  服务器：{HOSTNAME1}-{HOST.IP1} -- 故障名称：{TRIGGER.NAME}
+  【故障状态：{TRIGGER.STATUS}】  -- 故障名称：{TRIGGER.NAME}  --  服务器：{HOSTNAME1}-{HOST.IP1}
   ```
 - 故障恢复主题：
   ```
-  【故障恢复】故障程度：{TRIGGER.STATUS} --  服务器：{HOSTNAME1}-{HOST.IP1} -- 故障名称：{TRIGGER.NAME}
+  【故障状态：{TRIGGER.STATUS}】  -- 故障名称：{TRIGGER.NAME}  --  服务器：{HOSTNAME1}-{HOST.IP1}
   ```
 - 故障发生/恢复内容：
   ```
@@ -70,4 +70,5 @@
 ## 告警测试结果
 - 告警结果。
 
-  ![邮件告警结果](./images/zabbix-5.0-lts--邮件告警测试结果.png)
+  ![邮件告警结果](images/zabbix-5.0-lts--邮件告警测试结果01.png)
+  ![邮件告警结果](images/zabbix-5.0-lts--邮件告警测试结果02.png)
