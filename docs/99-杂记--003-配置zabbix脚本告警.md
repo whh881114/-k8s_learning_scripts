@@ -5,6 +5,9 @@
 
 - 当前以企业微信机器人来实现脚本告警。
 
+## 测试结果
+![zabbix-6.0-lts--配置磁盘告警结果01.png](./images/zabbix-6.0-lts--配置磁盘告警结果01.png)
+
 ## 配置过程（zabbix-server端）
 - 默认脚本位置：/usr/lib/zabbix/alertscripts，脚本名称：DevOps-Disk-QYWX-Robot.py，脚本需要有执行权限，其中QYWX_ROBOT变量值为官方示例值，实际在使用时请自行修改。
   ```python
