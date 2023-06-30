@@ -78,3 +78,9 @@
 
   ![zabbix-6.0-lts--配置磁盘告警媒介04.png](./images/zabbix-6.0-lts--配置磁盘告警媒介04.png)
 
+- admin用户启用告警媒介：DevOps-Disk-QYWX-Robot.py
+  ![zabbix-6.0-lts--admin用户启用告警媒介：DevOps-Disk-QYWX-Robot.py-01.png](./images/zabbix-6.0-lts--admin用户启用告警媒介：DevOps-Disk-QYWX-Robot.py-01.png)
+  
+  ![zabbix-6.0-lts--admin用户启用告警媒介：DevOps-Disk-QYWX-Robot.py-02.png](./images/zabbix-6.0-lts--admin用户启用告警媒介：DevOps-Disk-QYWX-Robot.py-02.png)
+
+  ![zabbix-6.0-lts--admin用户启用告警媒介：DevOps-Disk-QYWX-Robot.py-03.png](./images/zabbix-6.0-lts--admin用户启用告警媒介：DevOps-Disk-QYWX-Robot.py-03.png)
