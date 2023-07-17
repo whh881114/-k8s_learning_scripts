@@ -5,7 +5,7 @@
 
 - 官方文档：https://www.zabbix.com/cn/integrations/mysql
 
-- **文档中记录的密码使用mkpasswd生成随机生成，此外，此密码仅用于个人实验环境。**
+- **文档中记录的密码使用mkpasswd生成随机密码，此外，此密码仅用于个人实验环境。**
 
 
 ## 配置过程
