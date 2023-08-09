@@ -1,4 +1,4 @@
-# 配置zabbix监控haproxy.md
+# 监控haproxy
 
 ## 参考文档
 - https://www.zabbix.com/cn/integrations/haproxy#haproxy_http

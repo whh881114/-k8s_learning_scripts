@@ -1,4 +1,4 @@
-# 99-杂记--007-zabbix监控mysql.md
+# 监控mysql
 
 ## 说明
 - mysql监控笔记进度晚于haproxy，经过haproxy的折腾后，还是打算采用`MySQL by Zabbix agent`实现，优先选择带有`agent`的模板实现。

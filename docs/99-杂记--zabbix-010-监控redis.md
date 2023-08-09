@@ -1,4 +1,4 @@
-# 99-杂记--010-zabbix监控redis.md
+# 监控redis
 
 ## 说明
 - zabbix新版本支持模板挺丰富的，此时使用官方模板`Redis by Zabbix agent 2`即可。
