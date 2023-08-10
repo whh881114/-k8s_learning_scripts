@@ -64,33 +64,33 @@
 ## pfsense各网段开启路由
 - 各个网段开启路由后，网段内的主机才可以访问外网。
   
-  ![PFSENSE-WAN口路由信息.png](./images/PFSENSE-WAN口路由信息.png "PFSENSE-WAN口路由信息.png")
+  ![PFSENSE-WAN口路由信息.png](images/pfsense/PFSENSE-WAN口路由信息.png "PFSENSE-WAN口路由信息.png")
   
-  ![PFSENSE-LAN口路由信息.png](./images/PFSENSE-LAN口路由信息.png "PFSENSE-LAN口路由信息.png")
+  ![PFSENSE-LAN口路由信息.png](images/pfsense/PFSENSE-LAN口路由信息.png "PFSENSE-LAN口路由信息.png")
   
-  ![PFSENSE-DMZ口路由信息.png](./images/PFSENSE-DMZ口路由信息.png "PFSENSE-DMZ口路由信息.png")
+  ![PFSENSE-DMZ口路由信息.png](images/pfsense/PFSENSE-DMZ口路由信息.png "PFSENSE-DMZ口路由信息.png")
   
-  ![PFSENSE-BJ-LAN口路由信息.png](./images/PFSENSE-BJ-LAN口路由信息.png "PFSENSE-BJ-LAN口路由信息.png")
+  ![PFSENSE-BJ-LAN口路由信息.png](images/pfsense/PFSENSE-BJ-LAN口路由信息.png "PFSENSE-BJ-LAN口路由信息.png")
   
-  ![PFSENSE-SH-LAN口路由信息.png](./images/PFSENSE-SH-LAN口路由信息.png "PFSENSE-SH-LAN口路由信息.png")
+  ![PFSENSE-SH-LAN口路由信息.png](images/pfsense/PFSENSE-SH-LAN口路由信息.png "PFSENSE-SH-LAN口路由信息.png")
   
-  ![PFSENSE-GD-LAN口路由信息.png](./images/PFSENSE-GD-LAN口路由信息.png "PFSENSE-GD-LAN口路由信息.png")
+  ![PFSENSE-GD-LAN口路由信息.png](images/pfsense/PFSENSE-GD-LAN口路由信息.png "PFSENSE-GD-LAN口路由信息.png")
   
-  ![PFSENSE-HK-LAN口路由信息.png](./images/PFSENSE-HK-LAN口路由信息.png "PFSENSE-HK-LAN口路由信息.png")
+  ![PFSENSE-HK-LAN口路由信息.png](images/pfsense/PFSENSE-HK-LAN口路由信息.png "PFSENSE-HK-LAN口路由信息.png")
  
 
 ## pfsense配置NAT端口转发
 - 配置NAT端口转发，将DMZ区中个人linux主机的ssh协议和windows主机的rdp协议转发出来，配置截图如下。  
-  ![PFSENSE-NAT端口转发总览.png](./images/PFSENSE-NAT端口转发总览.png "PFSENSE-NAT端口转发总览.png")
+  ![PFSENSE-NAT端口转发总览.png](images/pfsense/PFSENSE-NAT端口转发总览.png "PFSENSE-NAT端口转发总览.png")
 
 
 ## pfsense配置dhcp中继
 - 配置DHCP中继则可以实现跨网段自动安装操作系统。
-  ![PFSENSE-DHCP中继.png](./images/PFSENSE-DHCP中继.png "PFSENSE-DHCP中继.png")
+  ![PFSENSE-DHCP中继.png](images/pfsense/PFSENSE-DHCP中继.png "PFSENSE-DHCP中继.png")
 
 
 ## pfsense配置静态路由
 - 打通各个k8s集群外部主机与pod通信，当前环境有istio，暂时关闭路由。
-  ![PFSENSE-配置网关.png](./images/PFSENSE-配置网关.png "PFSENSE-配置网关.png")
+  ![PFSENSE-配置网关.png](images/pfsense/PFSENSE-配置网关.png "PFSENSE-配置网关.png")
   
-  ![PFSENSE-配置静态路由.png](./images/PFSENSE-配置静态路由.png "PFSENSE-配置静态路由.png")
+  ![PFSENSE-配置静态路由.png](images/pfsense/PFSENSE-配置静态路由.png "PFSENSE-配置静态路由.png")
