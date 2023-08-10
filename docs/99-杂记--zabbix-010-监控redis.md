@@ -14,12 +14,12 @@
 - `zabbix-agent2`在当前环境下使用的是`10150`端口。
 
 - 由于`zabbix-agent2`没有使用默认端口`10050`，所以监控redis时，需要单独创建一台主机，客户端监听的端口要改为`10150`。
-  ![zabbix-6.0-lts-创建redis监控主机.png](./images/zabbix-6.0-lts-创建redis监控主机.png)
+  ![zabbix-6.0-lts-创建redis监控主机.png](images/zabbix/zabbix-6.0-lts-创建redis监控主机.png)
 
 
 ## redis配置密码说明
 - 模板中默认没有配置密码，说明如下。
-  ![zabbix-6.0-lts--Redis-by-Zabbix-agent-2.png](./images/zabbix-6.0-lts--Redis-by-Zabbix-agent-2.png)
+  ![zabbix-6.0-lts--Redis-by-Zabbix-agent-2.png](images/zabbix/zabbix-6.0-lts--Redis-by-Zabbix-agent-2.png)
 
 - 当redis配置了密码认证后，需要修改`/etc/zabbix/zabbix_agent2.d/plugins.d/redis.conf`文件，配置`Plugins.Redis.Default.Password`即可。
 
@@ -41,5 +41,5 @@
   ```
 
 - zabbix上增加6380监控实例步骤，重点配置宏`{$REDIS.CONN.URI}`的值为**Redis6380**。
-  ![zabbix-6.0-lts-创建redis监控主机6380-1.png](./images/zabbix-6.0-lts-创建redis监控主机6380-1.png)
-  ![zabbix-6.0-lts-创建redis监控主机6380-2.png](./images/zabbix-6.0-lts-创建redis监控主机6380-2.png)
+  ![zabbix-6.0-lts-创建redis监控主机6380-1.png](images/zabbix/zabbix-6.0-lts-创建redis监控主机6380-1.png)
+  ![zabbix-6.0-lts-创建redis监控主机6380-2.png](images/zabbix/zabbix-6.0-lts-创建redis监控主机6380-2.png)

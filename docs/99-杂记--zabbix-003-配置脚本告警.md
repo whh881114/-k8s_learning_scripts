@@ -6,7 +6,7 @@
 - 当前以企业微信机器人来实现脚本告警。
 
 ## 测试结果
-![zabbix-6.0-lts--配置磁盘告警结果01.png](./images/zabbix-6.0-lts--配置磁盘告警结果01.png)
+![zabbix-6.0-lts--配置磁盘告警结果01.png](images/zabbix/zabbix-6.0-lts--配置磁盘告警结果01.png)
 
 ## 配置过程（zabbix-server端）
 - 默认脚本位置：/usr/lib/zabbix/alertscripts，脚本名称：DevOps-Disk-QYWX-Robot.py，脚本需要有执行权限，其中QYWX_ROBOT变量值为官方示例值，实际在使用时请自行修改。
@@ -45,11 +45,11 @@
 
 
 - 配置触发器动作：DevOps-Disk-QYWX-Robot.py，在配置条件时，类型要为"触发器名称"，操作者为""包含"，值就要根据上述实际情况写，并且要去掉宏配置。
-  ![zabbix-6.0-lts--配置磁盘告警触发器01.png](./images/zabbix-6.0-lts--配置磁盘告警触发器01.png)
+  ![zabbix-6.0-lts--配置磁盘告警触发器01.png](images/zabbix/zabbix-6.0-lts--配置磁盘告警触发器01.png)
 
-  ![zabbix-6.0-lts--配置磁盘告警触发器02.png](./images/zabbix-6.0-lts--配置磁盘告警触发器02.png)
+  ![zabbix-6.0-lts--配置磁盘告警触发器02.png](images/zabbix/zabbix-6.0-lts--配置磁盘告警触发器02.png)
 
-  ![zabbix-6.0-lts--配置磁盘告警触发器03.png](./images/zabbix-6.0-lts--配置磁盘告警触发器03.png)
+  ![zabbix-6.0-lts--配置磁盘告警触发器03.png](images/zabbix/zabbix-6.0-lts--配置磁盘告警触发器03.png)
 
 
 - 配置告警媒介：DevOps-Disk-QYWX-Robot.py，其中脚本参数需要配置两个宏参数：{ALERT.SUBJECT}和{ALERT.MESSAGE}，这两个值分别对应message templates中的定义的message type。
@@ -70,17 +70,17 @@
     >Original problem ID: {EVENT.ID}
     >
     ```
-  ![zabbix-6.0-lts--配置磁盘告警媒介01.png](./images/zabbix-6.0-lts--配置磁盘告警媒介01.png)
+  ![zabbix-6.0-lts--配置磁盘告警媒介01.png](images/zabbix/zabbix-6.0-lts--配置磁盘告警媒介01.png)
 
-  ![zabbix-6.0-lts--配置磁盘告警媒介02.png](./images/zabbix-6.0-lts--配置磁盘告警媒介02.png)
+  ![zabbix-6.0-lts--配置磁盘告警媒介02.png](images/zabbix/zabbix-6.0-lts--配置磁盘告警媒介02.png)
 
-  ![zabbix-6.0-lts--配置磁盘告警媒介03.png](./images/zabbix-6.0-lts--配置磁盘告警媒介03.png)
+  ![zabbix-6.0-lts--配置磁盘告警媒介03.png](images/zabbix/zabbix-6.0-lts--配置磁盘告警媒介03.png)
 
-  ![zabbix-6.0-lts--配置磁盘告警媒介04.png](./images/zabbix-6.0-lts--配置磁盘告警媒介04.png)
+  ![zabbix-6.0-lts--配置磁盘告警媒介04.png](images/zabbix/zabbix-6.0-lts--配置磁盘告警媒介04.png)
 
 - admin用户启用告警媒介：DevOps-Disk-QYWX-Robot.py
-  ![zabbix-6.0-lts--admin用户启用告警媒介：DevOps-Disk-QYWX-Robot.py-01.png](./images/zabbix-6.0-lts--admin用户启用告警媒介：DevOps-Disk-QYWX-Robot.py-01.png)
+  ![zabbix-6.0-lts--admin用户启用告警媒介：DevOps-Disk-QYWX-Robot.py-01.png](images/zabbix/zabbix-6.0-lts--admin用户启用告警媒介：DevOps-Disk-QYWX-Robot.py-01.png)
   
-  ![zabbix-6.0-lts--admin用户启用告警媒介：DevOps-Disk-QYWX-Robot.py-02.png](./images/zabbix-6.0-lts--admin用户启用告警媒介：DevOps-Disk-QYWX-Robot.py-02.png)
+  ![zabbix-6.0-lts--admin用户启用告警媒介：DevOps-Disk-QYWX-Robot.py-02.png](images/zabbix/zabbix-6.0-lts--admin用户启用告警媒介：DevOps-Disk-QYWX-Robot.py-02.png)
 
-  ![zabbix-6.0-lts--admin用户启用告警媒介：DevOps-Disk-QYWX-Robot.py-03.png](./images/zabbix-6.0-lts--admin用户启用告警媒介：DevOps-Disk-QYWX-Robot.py-03.png)
+  ![zabbix-6.0-lts--admin用户启用告警媒介：DevOps-Disk-QYWX-Robot.py-03.png](images/zabbix/zabbix-6.0-lts--admin用户启用告警媒介：DevOps-Disk-QYWX-Robot.py-03.png)

@@ -48,6 +48,6 @@
 
 
 ## 监控结果
-![zabbix-6.0-lts-创建docker监控主机.png](./images/zabbix-6.0-lts-创建docker监控主机.png)
+![zabbix-6.0-lts-创建docker监控主机.png](images/zabbix/zabbix-6.0-lts-创建docker监控主机.png)
 
-![zabbix-6.0-lts-创建docker监控主机结果.png](./images/zabbix-6.0-lts-创建docker监控主机结果.png)
+![zabbix-6.0-lts-创建docker监控主机结果.png](images/zabbix/zabbix-6.0-lts-创建docker监控主机结果.png)

@@ -25,4 +25,4 @@
 
 
 ## 监控结果
-![zabbix-6.0-lts--Nginx-by-Zabbix-agent.png](./images/zabbix-6.0-lts--Nginx-by-Zabbix-agent.png)
+![zabbix-6.0-lts--Nginx-by-Zabbix-agent.png](images/zabbix/zabbix-6.0-lts--Nginx-by-Zabbix-agent.png)

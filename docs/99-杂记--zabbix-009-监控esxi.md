@@ -42,10 +42,10 @@
 
 - 配置客户端时，其端口要是80或者443，推荐443，毕竟访问esxi主机时，就使用的是https协议。
 
-![zabbix-6.0-lts--添加esxi主机1.png](./images/zabbix-6.0-lts--添加esxi主机1.png)
+![zabbix-6.0-lts--添加esxi主机1.png](images/zabbix/zabbix-6.0-lts--添加esxi主机1.png)
 
-![zabbix-6.0-lts--添加esxi主机2.png](./images/zabbix-6.0-lts--添加esxi主机2.png)
+![zabbix-6.0-lts--添加esxi主机2.png](images/zabbix/zabbix-6.0-lts--添加esxi主机2.png)
 
 
 ## 监控结果
-![zabbix-6.0-lts--esxi主机监控数据.png](./images/zabbix-6.0-lts--esxi主机监控数据.png)
+![zabbix-6.0-lts--esxi主机监控数据.png](images/zabbix/zabbix-6.0-lts--esxi主机监控数据.png)
