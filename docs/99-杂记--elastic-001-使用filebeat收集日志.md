@@ -8,6 +8,7 @@
 
 - 官方文档：
   - https://www.elastic.co/guide/en/beats/filebeat/8.9/configuring-howto-filebeat.html
+  - https://www.elastic.co/guide/en/beats/filebeat/8.9/filebeat-input-filestream.html
   - https://www.elastic.co/guide/en/beats/filebeat/8.9/configuration-filebeat-modules.html
   - https://www.elastic.co/guide/en/beats/filebeat/8.9/filebeat-module-nginx.html
   - https://www.elastic.co/guide/en/beats/filebeat/8.9/filebeat-module-mysql.html
