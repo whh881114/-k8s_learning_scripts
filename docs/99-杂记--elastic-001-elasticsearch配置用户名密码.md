@@ -36,13 +36,6 @@
 ## 配置文件说明
   - 配置文件，`/etc/elasticsearch/elasticsearch.yml`。
   - `xpack.security.enabled: true`，必须是开启状态才能配置用户名和密码。
-  - `xpack.security.http.ssl`配置项`enabled`配置为`true`，增加通信安全，访问时需要使用https协议，否则为http协议。
-  - 配置片断。
-    ```yaml
-    xpack.security.enabled: true
-    xpack.security.http.ssl:
-      enabled: true
-      keystore.path: certs/http.p12
-    ```
+  - `xpack.security.http.ssl`配置项`enabled`默认配置为`false`。如需增加通信安全，访问时需要使用https协议，参考官方文档，地址：https://www.elastic.co/guide/en/elasticsearch/reference/8.9/security-settings.html。
 
 ## 结果
