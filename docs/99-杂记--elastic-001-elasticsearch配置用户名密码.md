@@ -34,8 +34,10 @@
   ```
 
 ## 配置文件说明
-  - 配置文件，`/etc/elasticsearch/elasticsearch.yml`。
+- 配置文件，`/etc/elasticsearch/elasticsearch.yml`。
   - `xpack.security.enabled: true`，必须是开启状态才能配置用户名和密码。
   - `xpack.security.http.ssl`配置项`enabled`默认配置为`false`。如需增加通信安全，访问时需要使用https协议，参考官方文档，地址：https://www.elastic.co/guide/en/elasticsearch/reference/8.9/security-settings.html。
 
-## 结果
+## 配置用户名和密码
+- 重置超级管理员密码。
+- 查看elasticsearch内置角色(`curl -X GET -u elastic:gLplU23GiqFU7eSlVo-q http://localhost:9200/_security/role`)，创建不同角色的用户名和密码。
