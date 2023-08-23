@@ -48,10 +48,10 @@
 - 查看elasticsearch内置角色(`curl -X GET -u elastic:gLplU23GiqFU7eSlVo-q http://localhost:9200/_security/role`)，查询各种内置账号角色，其角色名和内置账号名一致。
 - 创建以下角色用户：
   ```shell
-    service elasticsearch restart
-    cd /usr/share/elasticsearch/bin
-    echo -e "y\n{{ elastic_password }}\n{{ elastic_password }}\n" | ./elasticsearch-reset-password --username elastic --interactive
-    echo -e "y\n{{ elastic_kibana_password }}\n{{ elastic_kibana_password }}\n" | ./elasticsearch-reset-password --username kibana_system --interactive
-    ./elasticsearch-users useradd "{{ elastic_beats_username }}" --password "{{ elastic_beats_password }}" -r "beats_admin"
-    ./elasticsearch-users useradd "{{ elastic_monitor_username }}" --password "{{ elastic_monitor_password }}" -r "monitoring_user"
+  service elasticsearch restart
+  cd /usr/share/elasticsearch/bin
+  echo -e "y\n{{ elastic_password }}\n{{ elastic_password }}\n" | ./elasticsearch-reset-password --username elastic --interactive
+  echo -e "y\n{{ elastic_kibana_password }}\n{{ elastic_kibana_password }}\n" | ./elasticsearch-reset-password --username kibana_system --interactive
+  ./elasticsearch-users useradd "{{ elastic_beats_username }}" --password "{{ elastic_beats_password }}" -r "beats_admin"
+  ./elasticsearch-users useradd "{{ elastic_monitor_username }}" --password "{{ elastic_monitor_password }}" -r "monitoring_user"
   ```
