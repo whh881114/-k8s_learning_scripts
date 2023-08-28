@@ -89,10 +89,10 @@
 
 ## 结果
 - zabbix-server索引模板。
-  ![zabbix-server索引模板.png](./images/elastic/zabbix-server索引模板.png)
+  ![zabbix-server索引模板.png](../images/elastic/zabbix-server索引模板.png)
 
 - zabbix-server数据流。
-  ![zabbix-server数据流.png](./images/elastic/zabbix-server数据流.png)
+  ![zabbix-server数据流.png](../images/elastic/zabbix-server数据流.png)
 
 - zabbix-server nginx日志解析。
   ```json

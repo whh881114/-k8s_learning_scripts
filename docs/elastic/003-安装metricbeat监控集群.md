@@ -68,4 +68,4 @@
   ```
 
 ## 结果
-![metricbeat结果](images/elastic/metricbeat结果.png)
+![metricbeat结果](../images/elastic/metricbeat结果.png)
