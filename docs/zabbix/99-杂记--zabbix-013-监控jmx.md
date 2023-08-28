@@ -27,7 +27,7 @@
     ```
 
 - zabbix server主机配置jmx监控。
-    ![zabbix-6.0-lts--Generic-Java-JMX--配置主机.png](images/zabbix/zabbix-6.0-lts--Generic-Java-JMX--配置主机.png)
+    ![zabbix-6.0-lts--Generic-Java-JMX--配置主机.png](../images/zabbix/zabbix-6.0-lts--Generic-Java-JMX--配置主机.png)
 
 ## 监控结果
-![zabbix-6.0-lts--Generic-Java-JMX.png](images/zabbix/zabbix-6.0-lts--Generic-Java-JMX.png)
+![zabbix-6.0-lts--Generic-Java-JMX.png](../images/zabbix/zabbix-6.0-lts--Generic-Java-JMX.png)

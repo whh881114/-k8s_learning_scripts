@@ -42,4 +42,4 @@
 
 
 ## 监控结果
-![zabbix-6.0-lts--apache监控数据.png](images/zabbix/zabbix-6.0-lts--apache监控数据.png)
+![zabbix-6.0-lts--apache监控数据.png](../images/zabbix/zabbix-6.0-lts--apache监控数据.png)

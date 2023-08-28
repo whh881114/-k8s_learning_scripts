@@ -11,11 +11,11 @@
   ```
 
 ## 配置过程
-![zabbix-6.0-lts--DELL iDRAC自动发现动作.png](images/zabbix/zabbix-6.0-lts--DELL iDRAC自动发现动作.png)
+![zabbix-6.0-lts--DELL iDRAC自动发现动作.png](../images/zabbix/zabbix-6.0-lts--DELL%20iDRAC自动发现动作.png)
 
 
-![zabbix-6.0-lts--DELL iDRAC自动发现规则.png](images/zabbix/zabbix-6.0-lts--DELL iDRAC自动发现规则.png)
+![zabbix-6.0-lts--DELL iDRAC自动发现规则.png](../images/zabbix/zabbix-6.0-lts--DELL%20iDRAC自动发现规则.png)
 
 
-![zabbix-6.0-lts--DELL iDRAC自动发现规则结果.png](images/zabbix/zabbix-6.0-lts--DELL iDRAC自动发现规则结果.png)
+![zabbix-6.0-lts--DELL iDRAC自动发现规则结果.png](../images/zabbix/zabbix-6.0-lts--DELL%20iDRAC自动发现规则结果.png)
 

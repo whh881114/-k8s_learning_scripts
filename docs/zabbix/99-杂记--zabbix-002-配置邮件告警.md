@@ -13,39 +13,39 @@
 
 - mail告警媒介。
 
-  ![mail告警媒介](images/zabbix/zabbix-5.0-lts--邮件告警01.png)
+  ![mail告警媒介](../images/zabbix/zabbix-5.0-lts--邮件告警01.png)
   
 - mail告警配置细节。
 
-  ![mail告警配置细节](images/zabbix/zabbix-5.0-lts--邮件告警02.png)
+  ![mail告警配置细节](../images/zabbix/zabbix-5.0-lts--邮件告警02.png)
 
 
 ## 配置Admin用户告警媒介
 - 配置Admin用户告警媒介步骤一。
 
-  ![配置Admin用户告警媒介步骤一](images/zabbix/zabbix-5.0-lts--配置Admin用户告警媒介01.png)
+  ![配置Admin用户告警媒介步骤一](../images/zabbix/zabbix-5.0-lts--配置Admin用户告警媒介01.png)
   
 - 配置Admin用户告警媒介步骤二。
 
-  ![配置Admin用户告警媒介步骤二](images/zabbix/zabbix-5.0-lts--配置Admin用户告警媒介02.png)
+  ![配置Admin用户告警媒介步骤二](../images/zabbix/zabbix-5.0-lts--配置Admin用户告警媒介02.png)
   
 - 配置Admin用户告警媒介步骤三。
 
-  ![配置Admin用户告警媒介步骤三](images/zabbix/zabbix-5.0-lts--配置Admin用户告警媒介03.png)
+  ![配置Admin用户告警媒介步骤三](../images/zabbix/zabbix-5.0-lts--配置Admin用户告警媒介03.png)
 
 
 ## 配置动作
 - 配置动作
 
-  ![动作01](images/zabbix/zabbix-5.0-lts--配置触发器动作01.png)
+  ![动作01](../images/zabbix/zabbix-5.0-lts--配置触发器动作01.png)
   
-  ![动作02](images/zabbix/zabbix-5.0-lts--配置触发器动作02.png)
+  ![动作02](../images/zabbix/zabbix-5.0-lts--配置触发器动作02.png)
   
-  ![动作03](images/zabbix/zabbix-5.0-lts--配置触发器动作03.png)
+  ![动作03](../images/zabbix/zabbix-5.0-lts--配置触发器动作03.png)
   
-  ![动作04](images/zabbix/zabbix-5.0-lts--配置触发器动作04.png)
+  ![动作04](../images/zabbix/zabbix-5.0-lts--配置触发器动作04.png)
   
-  ![动作05](images/zabbix/zabbix-5.0-lts--配置触发器动作05.png)
+  ![动作05](../images/zabbix/zabbix-5.0-lts--配置触发器动作05.png)
 
 - 故障发生主题：
   ```
@@ -70,5 +70,5 @@
 ## 告警测试结果
 - 告警结果。
 
-  ![邮件告警结果](images/zabbix/zabbix-5.0-lts--邮件告警测试结果01.png)
-  ![邮件告警结果](images/zabbix/zabbix-5.0-lts--邮件告警测试结果02.png)
+  ![邮件告警结果](../images/zabbix/zabbix-5.0-lts--邮件告警测试结果01.png)
+  ![邮件告警结果](../images/zabbix/zabbix-5.0-lts--邮件告警测试结果02.png)
