@@ -1,4 +1,4 @@
-# 自定义dashboard查看k8s集群整体资源使用情况
+# grafana自定义dashboard查看k8s集群整体资源使用情况
 
 
 ## 说明
