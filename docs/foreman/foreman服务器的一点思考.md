@@ -37,3 +37,12 @@
 
 - 【待验证】虚拟机不再使用自动发现安装操作系统，转用模板部署，虚拟机订阅yum源后，实现了主机注册，之后要验证一点就是，客户端不管是ansible还是puppet的facts信息要实时同步，如ip地址修改后，需要同步到foreman的管理界面。
   - 【ansible已验证】主机修改了ip地址后，管理员需要在foreman管理端去修改主机的ip地址，然后再执行一次ansible任务，这样就能更新页面上显示的ip地址了。
+    ```shell
+    [root@foreman.freedom.org /etc/foreman/plugins 10:16]# 8> cat foreman_column_view.yaml
+    :column_view:
+      :ipaddress:
+        :title: IP
+        :after: name
+        :content: facts_hash['ansible_all_ipv4_addresses']
+    [root@foreman.freedom.org /etc/foreman/plugins 10:16]# 9> 
+    ```
