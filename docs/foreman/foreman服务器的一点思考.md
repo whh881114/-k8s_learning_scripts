@@ -68,7 +68,7 @@
 [MIRROR] dotnet-sdk-6.0-source-built-artifacts-6.0.129-1.el9_3.x86_64.rpm: Curl error (56): Failure when receiving data from the peer for https://foreman.freedom.org/pulp/content/Default_Organization/Library/custom/Rocky-9-x86_64/crb/Packages/d/dotnet-sdk-6.0-source-built-artifacts-6.0.129-1.el9_3.x86_64.rpm [OpenSSL SSL_read: error:0A000126:SSL routines::unexpected eof while reading, errno 0]
 [MIRROR] dotnet-sdk-7.0-source-built-artifacts-7.0.118-1.el9_3.x86_64.rpm: Downloading successful, but checksum doesn't match. Calculated: 3f6855f07dfbda5fc30228334c8515e49c4fdaf1cb6428c038309c73abf3452f(sha256)  Expected: 4ceb1c38606c26ae7f3c47edb7ae334bd9fde2bbd2b6b2763974f6371d0ecd29(sha256) 
 ```
-解决方法，直接进repository的published地址，然后wget下载。
+解决方法，直接进repository的published地址，然后wget下载，可以看出已同步完成的包，下载速度很快。
 ```shell
 [root@rocky-9-demo-a ~]# wget https://foreman.freedom.org/pulp/content/Default_Organization/Library/custom/Rocky-9-x86_64/crb/Packages/d/dotnet-sdk-8.0-source-built-artifacts-8.0.104-1.el9_3.x86_64.rpm
 --2024-04-29 17:49:01--  https://foreman.freedom.org/pulp/content/Default_Organization/Library/custom/Rocky-9-x86_64/crb/Packages/d/dotnet-sdk-8.0-source-built-artifacts-8.0.104-1.el9_3.x86_64.rpm
