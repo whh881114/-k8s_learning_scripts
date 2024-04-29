@@ -98,5 +98,17 @@ dotnet-sdk-7.0-source-built-artifacts-7.0.118-1.el9 100%[=======================
 
 [root@rocky-9-demo-a ~]# 
 
+[root@rocky-9-demo-a tmp]# wget https://foreman.freedom.org/pulp/content/Default_Organization/Library/custom/Rocky-9-x86_64/crb/Packages/d/dotnet-sdk-6.0-source-built-artifacts-6.0.129-1.el9_3.x86_64.rpm
+--2024-04-29 17:47:41--  https://foreman.freedom.org/pulp/content/Default_Organization/Library/custom/Rocky-9-x86_64/crb/Packages/d/dotnet-sdk-6.0-source-built-artifacts-6.0.129-1.el9_3.x86_64.rpm
+正在解析主机 foreman.freedom.org (foreman.freedom.org)... 10.255.0.123
+正在连接 foreman.freedom.org (foreman.freedom.org)|10.255.0.123|:443... 已连接。
+已发出 HTTP 请求，正在等待回应... 200 OK
+长度：2851842013 (2.7G) [application/x-redhat-package-manager]
+正在保存至: “dotnet-sdk-6.0-source-built-artifacts-6.0.129-1.el9_3.x86_64.rpm”
 
+dotnet-sdk-6.0-source-built-artifacts-6.0.129-1.el9 100%[==================================================================================================================>]   2.66G  4.02MB/s  用时 18m 19s 
+
+2024-04-29 18:06:00 (2.48 MB/s) - 已保存 “dotnet-sdk-6.0-source-built-artifacts-6.0.129-1.el9_3.x86_64.rpm” [2851842013/2851842013])
+
+[root@rocky-9-demo-a tmp]# 
 ```
