@@ -59,3 +59,44 @@
 ## 思考点四：如何快速foreman同步上游yum源。
 解答：创建好同步yum源后，使用`Immediate`下载策略后，遇到比较大的源下载经常失败，比如说crb源；如果使用`On Demand`策略时，客户端第一次下载包慢，之后再次下载时就用foreman本地文件，这样很快，但是这样的本地yum源是不完整的，所以要分析同步失败的原因（本质上来说，就是下载包不稳定），那么就能找到应对的方法了。其实解决方法也很简单，就是先把同步源的策略改成`On Demand`，然后客户端再使用`reposync --repo reposync --repo Default_Organization_Rocky-9-x86_64_crb`将包全部下载下来，因为使用这个命令下载包的成功率远比foreman页面同步操作高得多，随后同步完成后，再把策略改成`Immediate`，后续同步的数据量小，那么成功率就很高了。以下是测试结果。
  ![img.png](如何快速foreman同步上游yum源.png)
+
+## 思考点五：同步异常解决方法。
+解答：请看案例，提示sha256sum值不对，然而进foreman主机也找不到对应的包，删除对应的repository再创建，然后同步元数据成功，也依然报如下错。
+```shell
+[MIRROR] dotnet-sdk-6.0-source-built-artifacts-6.0.129-1.el9_3.x86_64.rpm: Curl error (56): Failure when receiving data from the peer for https://foreman.freedom.org/pulp/content/Default_Organization/Library/custom/Rocky-9-x86_64/crb/Packages/d/dotnet-sdk-6.0-source-built-artifacts-6.0.129-1.el9_3.x86_64.rpm [OpenSSL SSL_read: error:0A000126:SSL routines::unexpected eof while reading, errno 0]
+[MIRROR] dotnet-sdk-7.0-source-built-artifacts-7.0.118-1.el9_3.x86_64.rpm: Curl error (56): Failure when receiving data from the peer for https://foreman.freedom.org/pulp/content/Default_Organization/Library/custom/Rocky-9-x86_64/crb/Packages/d/dotnet-sdk-7.0-source-built-artifacts-7.0.118-1.el9_3.x86_64.rpm [OpenSSL SSL_read: error:0A000126:SSL routines::unexpected eof while reading, errno 0]
+[MIRROR] dotnet-sdk-6.0-source-built-artifacts-6.0.129-1.el9_3.x86_64.rpm: Curl error (56): Failure when receiving data from the peer for https://foreman.freedom.org/pulp/content/Default_Organization/Library/custom/Rocky-9-x86_64/crb/Packages/d/dotnet-sdk-6.0-source-built-artifacts-6.0.129-1.el9_3.x86_64.rpm [OpenSSL SSL_read: error:0A000126:SSL routines::unexpected eof while reading, errno 0]
+[MIRROR] dotnet-sdk-7.0-source-built-artifacts-7.0.118-1.el9_3.x86_64.rpm: Downloading successful, but checksum doesn't match. Calculated: 3f6855f07dfbda5fc30228334c8515e49c4fdaf1cb6428c038309c73abf3452f(sha256)  Expected: 4ceb1c38606c26ae7f3c47edb7ae334bd9fde2bbd2b6b2763974f6371d0ecd29(sha256) 
+```
+解决方法，直接进repository的published地址，然后wget下载。
+```shell
+[root@rocky-9-demo-a ~]# wget https://foreman.freedom.org/pulp/content/Default_Organization/Library/custom/Rocky-9-x86_64/crb/Packages/d/dotnet-sdk-8.0-source-built-artifacts-8.0.104-1.el9_3.x86_64.rpm
+--2024-04-29 17:49:01--  https://foreman.freedom.org/pulp/content/Default_Organization/Library/custom/Rocky-9-x86_64/crb/Packages/d/dotnet-sdk-8.0-source-built-artifacts-8.0.104-1.el9_3.x86_64.rpm
+正在解析主机 foreman.freedom.org (foreman.freedom.org)... 10.255.0.123
+正在连接 foreman.freedom.org (foreman.freedom.org)|10.255.0.123|:443... 已连接。
+已发出 HTTP 请求，正在等待回应... 200 OK
+长度：664849254 (634M) [application/x-rpm]
+正在保存至: “dotnet-sdk-8.0-source-built-artifacts-8.0.104-1.el9_3.x86_64.rpm”
+
+dotnet-sdk-8.0-source-built-artifacts-8.0.104-1.el9 100%[==================================================================================================================>] 634.05M  83.5MB/s  用时 7.7s    
+
+2024-04-29 17:49:09 (82.3 MB/s) - 已保存 “dotnet-sdk-8.0-source-built-artifacts-8.0.104-1.el9_3.x86_64.rpm” [664849254/664849254])
+
+[root@rocky-9-demo-a ~]# 
+
+[root@rocky-9-demo-a ~]# wget https://foreman.freedom.org/pulp/content/Default_Organization/Library/custom/Rocky-9-x86_64/crb/Packages/d/dotnet-sdk-7.0-source-built-artifacts-7.0.118-1.el9_3.x86_64.rpm
+--2024-04-29 17:48:48--  https://foreman.freedom.org/pulp/content/Default_Organization/Library/custom/Rocky-9-x86_64/crb/Packages/d/dotnet-sdk-7.0-source-built-artifacts-7.0.118-1.el9_3.x86_64.rpm
+正在解析主机 foreman.freedom.org (foreman.freedom.org)... 10.255.0.123
+正在连接 foreman.freedom.org (foreman.freedom.org)|10.255.0.123|:443... 已连接。
+已发出 HTTP 请求，正在等待回应... 200 OK
+长度：850133977 (811M) [application/x-redhat-package-manager]
+正在保存至: “dotnet-sdk-7.0-source-built-artifacts-7.0.118-1.el9_3.x86_64.rpm”
+
+dotnet-sdk-7.0-source-built-artifacts-7.0.118-1.el9 100%[==================================================================================================================>] 810.75M  2.21MB/s  用时 10m 15s 
+
+2024-04-29 17:59:03 (1.32 MB/s) - 已保存 “dotnet-sdk-7.0-source-built-artifacts-7.0.118-1.el9_3.x86_64.rpm” [850133977/850133977])
+
+[root@rocky-9-demo-a ~]# 
+
+
+```
