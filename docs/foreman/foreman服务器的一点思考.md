@@ -112,3 +112,6 @@ dotnet-sdk-6.0-source-built-artifacts-6.0.129-1.el9 100%[=======================
 
 [root@rocky-9-demo-a ~]# 
 ```
+
+## 思考点六：dotnet-sdk-6.0-source-built-artifacts-6.0.129-1.el9_3.x86_64.rpm，一直同步失败。
+解答：试过了很多方法，包括思考点五的，新测后发现还是不行，换源也不行，换成上传方式后，报打开文件过多，最后没办法，在foreman主机上，打开yum的缓存功能，然后装下crb源，使用`nohup yum --downloadonly install dotnet-sdk-6.0-source-built-artifacts &`下载包，之后再同步crb源解决。
