@@ -22,6 +22,7 @@
     ```shell
     dnf clean all
     dnf install https://yum.theforeman.org/releases/3.10/el9/x86_64/foreman-release.rpm
+    dnf install https://yum.theforeman.org/katello/4.12/katello/el9/x86_64/katello-repos-4.12.0-1.el9.noarch.rpm
     dnf install https://yum.puppet.com/puppet7-release-el-9.noarch.rpm
 
     dnf install foreman-installer-katello
