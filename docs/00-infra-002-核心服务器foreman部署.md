@@ -1,71 +1,66 @@
 # 核心服务器：foreman.freedom.org
 
-## 安装配置ansible
-- 配置ssh key，命令为：`ssh-keygen`。
-- 安装ansible，命令为：`yum -y install epel-release && yum -y install ansible`。
-- 编辑ansible配置文件/etc/ansible/ansible.cfg，修改内容如下：
-    ```
-    roles_path = /etc/ansible/roles:/opt/ansible_playbooks/roles
-    host_key_checking = False
-    module_name = shell
+## 更新日志
+- 2024/05/18更新日志
+  - 私有云环境下，foreman服务器核心功能是提供yum源仓库，像ansible/discovery插件就不安装了，功能单一化处理，核心点在于
+    discovery安装部署过于复杂，时间成本过高，另外，ansible自动化处理则使用静态方式处理即可。
+  - CentOS 7 将于2024/06/30走向生命周期，私有云操作系统将使用RockyLinux，官方地址：https://rockylinux.org。
+  - 此次使用`Rocky-9.4-x86_64`部署系统，foreman使用3.10版本，katello使用4.12版本。
+
+## 配置foreman服务器核心过程
+- 官方文档：https://theforeman.org/manuals/3.10/quickstart_guide.html。
+
+- 命令简化如下：
+    ```shell
+    dnf clean all
+    dnf install https://yum.theforeman.org/releases/3.10/el9/x86_64/foreman-release.rpm
+    dnf install https://yum.puppet.com/puppet7-release-el-9.noarch.rpm
+
+    dnf install foreman-installer-katello
+
+    foreman-installer --scenario katello
     ```
 
-## 配置foreman服务器
-- 初始化主机。使用ansible部署，命令为：`cd /opt/ansible_playbooks && ansible-playbook deploy-foreman.yml`。
-- 2022/07/03，安装foreman和katello。按官方文档操作即可，本次使用3.3版本，katello配套版本为4.5。
-    - katello可以管理yum源仓库，这个比写脚本高级些，所以安装了这个插件。
-    - 文档地址：
-        - https://docs.theforeman.org/3.3/Quickstart_Guide/index-katello.html#_centos_7
-    - 命令简化如下：
-        ```shell
-        yum -y localinstall https://yum.theforeman.org/releases/3.3/el7/x86_64/foreman-release.rpm
-        yum -y localinstall https://yum.theforeman.org/katello/4.5/katello/el7/x86_64/katello-repos-latest.rpm
-        yum -y localinstall https://yum.puppet.com/puppet7-release-el-7.noarch.rpm
-        yum -y install centos-release-scl-rh
-        yum -y install foreman-installer-katello
-
-        foreman-installer --scenario katello
-        ```
-    - 安装过程日志：
-        ```
-        [root@foreman.freedom.org ~ 11:23]# 9> foreman-installer --scenario katello
-        2022-07-03 11:23:49 [NOTICE] [root] Loading installer configuration. This will take some time.
-        2022-07-03 11:23:55 [NOTICE] [root] Running installer with log based terminal output at level NOTICE.
-        2022-07-03 11:23:55 [NOTICE] [root] Use -l to set the terminal output log level to ERROR, WARN, NOTICE, INFO, or DEBUG. See --full-help for definitions.
-        2022-07-03 11:24:05 [NOTICE] [configure] Starting system configuration.
-        2022-07-03 11:24:39 [NOTICE] [configure] 250 configuration steps out of 1353 steps complete.
-        2022-07-03 11:32:59 [NOTICE] [configure] 500 configuration steps out of 1355 steps complete.
-        2022-07-03 11:37:05 [NOTICE] [configure] 750 configuration steps out of 1361 steps complete.
-        2022-07-03 11:37:08 [NOTICE] [configure] 1000 configuration steps out of 1381 steps complete.
-        2022-07-03 11:43:34 [NOTICE] [configure] 1250 configuration steps out of 1381 steps complete.
-        2022-07-03 11:47:54 [NOTICE] [configure] System configuration has finished.
-        Executing: foreman-rake upgrade:run
-        =============================================
-        Upgrade Step 1/8: katello:correct_repositories. This may take a long while.
-        =============================================
-        Upgrade Step 2/8: katello:clean_backend_objects. This may take a long while.
-        0 orphaned consumer id(s) found in candlepin.
-        Candlepin orphaned consumers: []
-        =============================================
-        Upgrade Step 3/8: katello:upgrades:4.0:remove_ostree_puppet_content. =============================================
-        Upgrade Step 4/8: katello:upgrades:4.1:sync_noarch_content. =============================================
-        Upgrade Step 5/8: katello:upgrades:4.1:fix_invalid_pools. I, [2022-07-03T11:48:13.956548 #54399]  INFO -- : Corrected 0 invalid pools
-        I, [2022-07-03T11:48:13.956586 #54399]  INFO -- : Removed 0 orphaned pools
-        =============================================
-        Upgrade Step 6/8: katello:upgrades:4.1:reupdate_content_import_export_perms. =============================================
-        Upgrade Step 7/8: katello:upgrades:4.2:remove_checksum_values. =============================================
-        Upgrade Step 8/8: katello:upgrades:4.4:publish_import_cvvs.   Success!
-          * Foreman is running at https://foreman.freedom.org
-              Initial credentials are admin / qrWp4LmGHeV9dwxu
-          * To install an additional Foreman proxy on separate machine continue by running:
+- 安装过程日志：
+    ```
+    [root@foreman.freedom.org ~ 11:23]# 9> foreman-installer --scenario katello
+    2022-07-03 11:23:49 [NOTICE] [root] Loading installer configuration. This will take some time.
+    2022-07-03 11:23:55 [NOTICE] [root] Running installer with log based terminal output at level NOTICE.
+    2022-07-03 11:23:55 [NOTICE] [root] Use -l to set the terminal output log level to ERROR, WARN, NOTICE, INFO, or DEBUG. See --full-help for definitions.
+    2022-07-03 11:24:05 [NOTICE] [configure] Starting system configuration.
+    2022-07-03 11:24:39 [NOTICE] [configure] 250 configuration steps out of 1353 steps complete.
+    2022-07-03 11:32:59 [NOTICE] [configure] 500 configuration steps out of 1355 steps complete.
+    2022-07-03 11:37:05 [NOTICE] [configure] 750 configuration steps out of 1361 steps complete.
+    2022-07-03 11:37:08 [NOTICE] [configure] 1000 configuration steps out of 1381 steps complete.
+    2022-07-03 11:43:34 [NOTICE] [configure] 1250 configuration steps out of 1381 steps complete.
+    2022-07-03 11:47:54 [NOTICE] [configure] System configuration has finished.
+    Executing: foreman-rake upgrade:run
+    =============================================
+    Upgrade Step 1/8: katello:correct_repositories. This may take a long while.
+    =============================================
+    Upgrade Step 2/8: katello:clean_backend_objects. This may take a long while.
+    0 orphaned consumer id(s) found in candlepin.
+    Candlepin orphaned consumers: []
+    =============================================
+    Upgrade Step 3/8: katello:upgrades:4.0:remove_ostree_puppet_content. =============================================
+    Upgrade Step 4/8: katello:upgrades:4.1:sync_noarch_content. =============================================
+    Upgrade Step 5/8: katello:upgrades:4.1:fix_invalid_pools. I, [2022-07-03T11:48:13.956548 #54399]  INFO -- : Corrected 0 invalid pools
+    I, [2022-07-03T11:48:13.956586 #54399]  INFO -- : Removed 0 orphaned pools
+    =============================================
+    Upgrade Step 6/8: katello:upgrades:4.1:reupdate_content_import_export_perms. =============================================
+    Upgrade Step 7/8: katello:upgrades:4.2:remove_checksum_values. =============================================
+    Upgrade Step 8/8: katello:upgrades:4.4:publish_import_cvvs.   Success!
+      * Foreman is running at https://foreman.freedom.org
+          Initial credentials are admin / qrWp4LmGHeV9dwxu
+      * To install an additional Foreman proxy on separate machine continue by running:
         
-              foreman-proxy-certs-generate --foreman-proxy-fqdn "$FOREMAN_PROXY" --certs-tar "/root/$FOREMAN_PROXY-certs.tar"
-          * Foreman Proxy is running at https://foreman.freedom.org:9090
+          foreman-proxy-certs-generate --foreman-proxy-fqdn "$FOREMAN_PROXY" --certs-tar "/root/$FOREMAN_PROXY-certs.tar"
+      * Foreman Proxy is running at https://foreman.freedom.org:9090
         
-          The full log is at /var/log/foreman-installer/katello.log
-        You have new mail in /var/spool/mail/root
-        [root@foreman.freedom.org ~ 11:48]# 10> 
-        ```
+      The full log is at /var/log/foreman-installer/katello.log
+    You have new mail in /var/spool/mail/root
+    [root@foreman.freedom.org ~ 11:48]# 10> 
+    ```
 
 
 ## 安装foreman服务器插件
