@@ -10,6 +10,14 @@
 ## 配置foreman服务器核心过程
 - 官方文档：https://theforeman.org/manuals/3.10/quickstart_guide.html。
 
+- 前提条件：主机名设置成fqdn格式（foreman.freedom.org），并且需要有此fqdn的正反解析，否则会有如下报错信息。
+  ```shell
+  2024-05-18 23:07:35 [NOTICE] [root] Loading installer configuration. This will take some time.
+  2024-05-18 23:07:41 [NOTICE] [root] Running installer with log based terminal output at level NOTICE.
+  2024-05-18 23:07:41 [NOTICE] [root] Use -l to set the terminal output log level to ERROR, WARN, NOTICE, INFO, or DEBUG. See --full-help for definitions.
+  Unable to resolve forward DNS for foreman.freedom.org
+  ```
+
 - 命令简化如下：
     ```shell
     dnf clean all
