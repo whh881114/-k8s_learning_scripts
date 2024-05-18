@@ -84,13 +84,3 @@
   ![PFSENSE-NAT端口转发总览.png](images/pfsense/PFSENSE-NAT端口转发总览.png "PFSENSE-NAT端口转发总览.png")
 
 
-## pfsense配置dhcp中继
-- 配置DHCP中继则可以实现跨网段自动安装操作系统。
-  ![PFSENSE-DHCP中继.png](images/pfsense/PFSENSE-DHCP中继.png "PFSENSE-DHCP中继.png")
-
-
-## pfsense配置静态路由
-- 打通各个k8s集群外部主机与pod通信，当前环境有istio，暂时关闭路由。
-  ![PFSENSE-配置网关.png](images/pfsense/PFSENSE-配置网关.png "PFSENSE-配置网关.png")
-  
-  ![PFSENSE-配置静态路由.png](images/pfsense/PFSENSE-配置静态路由.png "PFSENSE-配置静态路由.png")
