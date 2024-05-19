@@ -120,7 +120,10 @@ You can view the list of minikube maintainers at: https://github.com/kubernetes/
   - Using image registry.k8s.io/metrics-server/metrics-server:v0.7.1
 * The 'metrics-server' addon is enabled
 [root@minikube ~]# 
+```
 
+- 启用插件ingress
+```shell
 [root@minikube ~]# minikube addons enable ingress
 * ingress is an addon maintained by Kubernetes. For any concerns contact minikube on GitHub.
 You can view the list of minikube maintainers at: https://github.com/kubernetes/minikube/blob/master/OWNERS
