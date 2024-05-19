@@ -145,3 +145,7 @@ You can view the list of minikube maintainers at: https://github.com/kubernetes/
 * Successfully deleted all profiles
 [root@minikube ~]# 
 ```
+
+## 部署过程中镜像无法拉取解决方法
+- minikube默认是不识别本地镜像的，需要使用`minikube image load <image_name>:<image_tag>`加载，但是碰到启用ingress插件时就无效了。
+- 启用ingress时，需要指定镜像，在网上找到的解决方法，但是明白images指定的那些参数在哪里找，https://juejin.cn/post/7165777147959705608。
