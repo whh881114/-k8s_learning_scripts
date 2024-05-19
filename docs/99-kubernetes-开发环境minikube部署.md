@@ -120,6 +120,10 @@ You can view the list of minikube maintainers at: https://github.com/kubernetes/
   - Using image registry.k8s.io/metrics-server/metrics-server:v0.7.1
 * The 'metrics-server' addon is enabled
 [root@minikube ~]# 
+
+[root@minikube ~]# docker pull k8s.dockerproxy.com/metrics-server/metrics-server:v0.7.1
+[root@minikube ~]# docker tag k8s.dockerproxy.com/metrics-server/metrics-server:v0.7.1 registry.k8s.io/metrics-server/metrics-server:v0.7.1
+[root@minikube ~]# docker rmi k8s.dockerproxy.com/metrics-server/metrics-server:v0.7.1
 ```
 
 - 启用插件ingress，安装过程中是无法访问`registry.k8s.io`，不过可以在`https://dockerproxy.com`可以找到相对应的镜像，然后修改下tag即可。
