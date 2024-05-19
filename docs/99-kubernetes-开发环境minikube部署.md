@@ -120,44 +120,20 @@ You can view the list of minikube maintainers at: https://github.com/kubernetes/
   - Using image registry.k8s.io/metrics-server/metrics-server:v0.7.1
 * The 'metrics-server' addon is enabled
 [root@minikube ~]# 
-
-[root@minikube ~]# docker pull k8s.dockerproxy.com/metrics-server/metrics-server:v0.7.1
-[root@minikube ~]# docker tag k8s.dockerproxy.com/metrics-server/metrics-server:v0.7.1 registry.k8s.io/metrics-server/metrics-server:v0.7.1
-[root@minikube ~]# docker rmi k8s.dockerproxy.com/metrics-server/metrics-server:v0.7.1
 ```
 
-- 启用插件ingress，安装过程中是无法访问`registry.k8s.io`，不过可以在`https://dockerproxy.com`可以找到相对应的镜像，然后修改下tag即可。
+- 启用插件ingress
 ```shell
-[root@minikube ~]# minikube addons enable ingress
+[root@minikube ~]# minikube addons enable ingress --images="KubeWebhookCertgenCreate=k8s.dockerproxy.com/ingress-nginx/kube-webhook-certgen:v1.4.1,KubeWebhookCertgenPatch=k8s.dockerproxy.com/ingress-nginx/kube-webhook-certgen:v1.4.1,IngressController=k8s.dockerproxy.com/ingress-nginx/controller:v1.10.1" --registries="k8s.dockerproxy.com"
 * ingress is an addon maintained by Kubernetes. For any concerns contact minikube on GitHub.
 You can view the list of minikube maintainers at: https://github.com/kubernetes/minikube/blob/master/OWNERS
-  - Using image registry.k8s.io/ingress-nginx/controller:v1.10.1
-  - Using image registry.k8s.io/ingress-nginx/kube-webhook-certgen:v1.4.1
-  - Using image registry.k8s.io/ingress-nginx/kube-webhook-certgen:v1.4.1
+! Ignoring invalid pair entry k8s.dockerproxy.com
+  - Using image k8s.dockerproxy.com/ingress-nginx/controller:v1.10.1
+  - Using image k8s.dockerproxy.com/ingress-nginx/kube-webhook-certgen:v1.4.1
+  - Using image k8s.dockerproxy.com/ingress-nginx/kube-webhook-certgen:v1.4.1
 * Verifying ingress addon...
-
-X Exiting due to MK_ADDON_ENABLE: enable failed: run callbacks: running callbacks: [waiting for app.kubernetes.io/name=ingress-nginx pods: context deadline exceeded]
-* 
-╭─────────────────────────────────────────────────────────────────────────────────────────────╮
-│                                                                                             │
-│    * If the above advice does not help, please let us know:                                 │
-│      https://github.com/kubernetes/minikube/issues/new/choose                               │
-│                                                                                             │
-│    * Please run `minikube logs --file=logs.txt` and attach logs.txt to the GitHub issue.    │
-│    * Please also attach the following file to the GitHub issue:                             │
-│    * - /tmp/minikube_addons_5e63cb8ceb2e7e06e33b8dd7a9dcbebc0ad5ec5a_0.log                  │
-│                                                                                             │
-╰─────────────────────────────────────────────────────────────────────────────────────────────╯
-
-[root@minikube ~]#
-
-[root@minikube ~]# docker pull k8s.dockerproxy.com/ingress-nginx/controller:v1.10.1
-[root@minikube ~]# docker tag k8s.dockerproxy.com/ingress-nginx/controller:v1.10.1 registry.k8s.io/ingress-nginx/controller:v1.10.1
-[root@minikube ~]# docker rmi k8s.dockerproxy.com/ingress-nginx/controller:v1.10.1
-
-[root@minikube ~]# docker pull k8s.dockerproxy.com/ingress-nginx/kube-webhook-certgen:v1.4.1
-[root@minikube ~]# docker tag k8s.dockerproxy.com/ingress-nginx/kube-webhook-certgen:v1.4.1 registry.k8s.io/ingress-nginx/kube-webhook-certgen:v1.4.1
-[root@minikube ~]# docker rmi k8s.dockerproxy.com/ingress-nginx/kube-webhook-certgen:v1.4.1
+* The 'ingress' addon is enabled
+[root@minikube ~]# 
 ```
 
 ## 删除环境
