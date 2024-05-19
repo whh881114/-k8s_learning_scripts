@@ -39,6 +39,17 @@
 * Enabled addons: storage-provisioner, default-storageclass
 * Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
 [root@minikube ~]# 
+
+[root@minikube ~]# kubectl get pods -A
+NAMESPACE     NAME                               READY   STATUS    RESTARTS   AGE
+kube-system   coredns-7db6d8ff4d-wj9d9           1/1     Running   0          2m1s
+kube-system   etcd-minikube                      1/1     Running   0          2m15s
+kube-system   kube-apiserver-minikube            1/1     Running   0          2m16s
+kube-system   kube-controller-manager-minikube   1/1     Running   0          2m15s
+kube-system   kube-proxy-cwmgz                   1/1     Running   0          2m1s
+kube-system   kube-scheduler-minikube            1/1     Running   0          2m17s
+kube-system   storage-provisioner                1/1     Running   0          2m13s
+[root@minikube ~]# 
 ```
 
 ## 删除环境
