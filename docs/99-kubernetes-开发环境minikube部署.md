@@ -122,7 +122,7 @@ You can view the list of minikube maintainers at: https://github.com/kubernetes/
 [root@minikube ~]# 
 ```
 
-- 启用插件ingress
+- 启用插件ingress，安装过程中是无法访问`registry.k8s.io`，不过可以在`https://dockerproxy.com`可以找到相对应的镜像，然后修改下tag即可。
 ```shell
 [root@minikube ~]# minikube addons enable ingress
 * ingress is an addon maintained by Kubernetes. For any concerns contact minikube on GitHub.
@@ -146,6 +146,14 @@ X Exiting due to MK_ADDON_ENABLE: enable failed: run callbacks: running callback
 ╰─────────────────────────────────────────────────────────────────────────────────────────────╯
 
 [root@minikube ~]#
+
+[root@minikube ~]# docker pull k8s.dockerproxy.com/ingress-nginx/controller:v1.10.1
+[root@minikube ~]# docker tag k8s.dockerproxy.com/ingress-nginx/controller:v1.10.1 registry.k8s.io/ingress-nginx/controller:v1.10.1
+[root@minikube ~]# docker rmi k8s.dockerproxy.com/ingress-nginx/controller:v1.10.1
+
+[root@minikube ~]# docker pull k8s.dockerproxy.com/ingress-nginx/kube-webhook-certgen:v1.4.1
+[root@minikube ~]# docker tag k8s.dockerproxy.com/ingress-nginx/kube-webhook-certgen:v1.4.1 registry.k8s.io/ingress-nginx/kube-webhook-certgen:v1.4.1
+[root@minikube ~]# docker rmi k8s.dockerproxy.com/ingress-nginx/kube-webhook-certgen:v1.4.1
 ```
 
 ## 删除环境
