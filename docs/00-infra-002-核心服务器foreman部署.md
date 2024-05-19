@@ -100,3 +100,9 @@
 - crb，https://mirrors.aliyun.com/rockylinux/9/CRB/x86_64/os
 - epel，https://mirrors.aliyun.com/epel/9/Everything/x86_64
 - zabbix，https://mirrors.aliyun.com/zabbix/zabbix/6.0/rhel/9/x86_64
+
+## 订阅RockyLinux9本地源
+3.10版本和之前安装的3.3版本有差异，使用以下命令订阅并注册主机，其中token无过期时间。
+```shell
+set -o pipefail && curl -sS --insecure 'https://foreman.freedom.org/register?activation_keys=Rocky-Linux-9-x86_64&force=true&location_id=2&organization_id=1&update_packages=false' -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0LCJpYXQiOjE3MTYwODMzMTcsImp0aSI6ImU4MTBjMTE2ZmJiNGRjYWI5Yzc0MjU3MDU3MWFhMGQ0YTZlOTZhY2U0MWM2YzU1ZjZkNjk5MTU5NzJiZGMwYjIiLCJzY29wZSI6InJlZ2lzdHJhdGlvbiNnbG9iYWwgcmVnaXN0cmF0aW9uI2hvc3QifQ.8hXP9U67TjQeduIvRFaZ5PReKZHezDQguF5EcHuR7Zs' | bash
+```
