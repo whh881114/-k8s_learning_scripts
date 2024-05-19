@@ -100,6 +100,7 @@
 - crb，https://mirrors.aliyun.com/rockylinux/9/CRB/x86_64/os
 - epel，https://mirrors.aliyun.com/epel/9/Everything/x86_64
 - zabbix，https://mirrors.aliyun.com/zabbix/zabbix/6.0/rhel/9/x86_64
+- docker-ce，https://mirrors.aliyun.com/docker-ce/linux/rhel/9/x86_64/stable
 
 ## 订阅RockyLinux9本地源
 3.10版本和之前安装的3.3版本有差异，使用以下命令订阅并注册主机，其中token无过期时间。
