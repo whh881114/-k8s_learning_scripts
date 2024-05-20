@@ -6,6 +6,7 @@ import cgi, cgitb
 import re
 import sys
 import subprocess
+import datetime
 from colorama import Fore, Back, Style
 
 print("Content-type:text/html")
@@ -15,37 +16,40 @@ print("")
 form = cgi.FieldStorage()
 
 # 获取数据
-id = form.getvalue("id")  # id，各厂商不一样，先暂时按(\w+-){1,}匹配处理。
-hostname = form.getvalue("hostname")  # 主机名要求格式"(\w+-){1,}-\d{3}"。
-ip = form.getvalue(
-    "ip")  # (25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)
+id = form.getvalue("id")
+hostname = form.getvalue("hostname")
+ip = form.getvalue("ip")
 
-pattern_id = r"\w+-\w+(?:-\w+)*$"
-pattern_hostname = r"\w+-\w+(?:-\w+)*-\d{3}$"
-pattern_ip = r"(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)"
+if id is None or hostname is None or ip is None:
+    print(Fore.RED + "[%s] - [CRITICAL] - The required parameters (id, hostname, and ip) are missing." % datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'), Style.RESET_ALL)
+    sys.exit()
+
+pattern_id = r"^[a-zA-Z0-9]+-[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*$"
+pattern_hostname = r"^[a-zA-Z0-9]+-[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*-\d{3}$"
+pattern_ip = r"(^25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d$)"
 
 match_id = re.search(pattern_id, id)
 match_hostname = re.search(pattern_hostname, hostname)
 match_ip = re.search(pattern_ip, ip)
 
 if match_id:
-    print(Fore.BLUE + "The provided id, %s, is valid." % id, Style.RESET_ALL)
+    print(Fore.BLUE + "[%s] - [INFO] - The provided id, %s, is valid." % (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'), id), Style.RESET_ALL)
 else:
-    print("The provided id, %s, is invalid. Valid id must follow the pattern \"\w+-\w+(?:-\w+)*$\"." % id)
+    print(Fore.RED + "[%s] - [ERROR] - The provided id, %s, is invalid. Valid id must follow the pattern \"^[a-zA-Z0-9]+-[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*$\"." % (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'), id), Style.RESET_ALL)
 
 if match_hostname:
-    print("The provided hostname, %s, is valid." % hostname)
+    print(Fore.BLUE + "[%s] - [INFO] - The provided hostname, %s, is valid." % (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'), hostname), Style.RESET_ALL)
     ansible_hostgroup = "-".join(hostname.split("-")[0:-1])
 else:
-    print("The provided hostname, %s, is invalid. Valid hostname must follow the pattern \"\w+-\w+(?:-\w+)*-\d{3}$\"." % hostname)
+    print(Fore.RED + "[%s] - [ERROR] - The provided hostname, %s, is invalid. Valid hostname must follow the pattern \"^[a-zA-Z0-9]+-[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*-\d{3}$\"." % (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'), hostname), Style.RESET_ALL)
 
 if match_ip:
-    print("The provided ip, %s, is valid." % ip)
+    print(Fore.BLUE + "[%s] - [INFO] - The provided ip, %s, is valid." % (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'), ip), Style.RESET_ALL)
 else:
-    print("The provided ip, %s, is invalid." % ip)
+    print(Fore.RED + "[%s] - [ERROR] - The provided ip, %s, is invalid." % (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'), ip), Style.RESET_ALL)
 
 if match_id and match_hostname and match_ip:
     pass
 else:
-    print("Data Verification Failed.")
+    print(Fore.RED + "[%s] - [ERROR] - Data Verification Failed." % datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'), Style.RESET_ALL)
     sys.exit()
