@@ -74,7 +74,19 @@ else:
 #       - 如果不存在，那么需要将主机名test-bigdata-001锁定起来。
 #           - 当其他客户端使用相同主机名请求时，则提示此主机名处于锁定状态，那么就报错退出初始化程序。
 #           - 当没有其他客户端抢占主机名时，那么就等主机初始化完成后，释放主机名test-bigdata-001锁。
-
+#     ** 这个方法不好，因为consul-agent会因为网络故障会出现failed或者关机，两分钟后就不在members清单中。而新主机使用了
+#     ** 已存在的主机名，那之前的主机开机后就无法启动consul-agent。
+#     ** 所以，此时，可以向consul中写入kv作为锁，因consul-ui无保护机制，可以将监控地址修改成127.0.0.1，使用httpd配置反向代理，
+#     ** 并且配置身份验证。除此之外，consul-agent端禁用掉ui。
+#     ** 以上对锁的逻辑需要做修改。
+#     **   - kv锁存在，那就一直让锁存在，直到主机请求注销流程，以流程的方式来处理死锁。但是主机重复初始化时就会失败，提示主机名一直
+#     **     处于占用状态。
+#     **   - kv锁不存在，那么先设置锁，直到流程
+c = consul.Consul()
+_, consul_node_info = c.heath.node(hostname)
+if len(consul_node_info) == 0:
+    # 说明节点异常，
+    pass
 
 # 检查ansible playbook是否存在
 playbook_root_dir = "/opt/ansible"
