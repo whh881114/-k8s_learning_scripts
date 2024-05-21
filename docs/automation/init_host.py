@@ -28,7 +28,8 @@ if id is None or hostname is None or ip is None:
 
 pattern_id = r"^[a-zA-Z0-9]+-[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*$"
 pattern_hostname = r"^[a-zA-Z0-9]+-[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*-\d{3}$"
-pattern_ip = r"(^25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d$)"
+pattern_ip = (r"(^25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\."
+              r"(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d$)")
 
 match_id = re.search(pattern_id, id)
 match_hostname = re.search(pattern_hostname, hostname)
@@ -92,7 +93,8 @@ if status_playbook_default and not status_playbook_hostgroup:
 
 if not status_playbook_default and not status_playbook_hostgroup:
     print(Fore.BLUE + "[%s] - [INFO] - The default ansible playbook (%s) and the hostgroup ansible playbook (%s) exist."
-        % (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'), playbook_default, playbook_hostgroup), Style.RESET_ALL)
+        % (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'), playbook_default, playbook_hostgroup),
+          Style.RESET_ALL)
     playbook = playbook_hostgroup
 
 if status_playbook_default and status_playbook_hostgroup:
@@ -102,18 +104,23 @@ if status_playbook_default and status_playbook_hostgroup:
     sys.exit()
 
 
+# 检查hostname是否全局唯一
+
+
 # 开始初始化主机
 print(Fore.BLUE + "[%s] - [INFO] - Start to initialize the host: %s -- %s -- %s, using %s playbook." %
       (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'), id, hostname, ip, playbook), Style.RESET_ALL)
 
 # 需要修改playbook_log_dir权限，chown apache:apache $playbook_log_dir，cgi-bin客户端请求时，是以apache身份执行程序。
-inventory = "%s/%s__%s__%s" % (playbook_log_dir, id, hostname, ip)
+inventory = "%s/%s__%s__%s.txt" % (playbook_log_dir, id, hostname, ip)
 with open(inventory, 'w') as f:
     f.write("[%s]\n" % hostgroup)
     f.write("%s\n" % ip)
     f.close()
 
-command = "cd %s && ansible-playbook %s -i %s 2>&1" % (playbook_root_dir, playbook, inventory)
+command = ("cd %s && ansible-playbook %s -i %s 2>&1 | tee %s__%s.log" %
+           (playbook_root_dir, playbook, inventory, inventory,
+            datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')))
 process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 while True:
     line = process.stdout.readline()
