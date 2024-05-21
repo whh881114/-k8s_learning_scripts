@@ -106,15 +106,11 @@ if status_playbook_default and status_playbook_hostgroup:
 print(Fore.BLUE + "[%s] - [INFO] - Start to initialize the host: %s -- %s -- %s, using %s playbook." %
       (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'), id, hostname, ip, playbook), Style.RESET_ALL)
 
-inventory = "%s/%s__%s__%s" % (playbook_log_dir, id, hostname, ip)
-
-with open(inventory, 'w') as f:
-    f.write("[%s]\n" % hostgroup)
-    f.write("%s\n" % ip)
+command = "echo [%s]\n%s > %s/%s__%s__%s" % (hostgroup, ip, playbook_log_dir, id, hostname, ip)
+process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 
 command = "cd %s && ansible-playbook %s -i %s 2>&1" % (playbook_log_dir, playbook, inventory)
-
-process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 while True:
     line = process.stdout.readline()
     if not line:
