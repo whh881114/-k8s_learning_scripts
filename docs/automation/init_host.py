@@ -23,7 +23,7 @@ ip = form.getvalue("ip")
 
 if id is None or hostname is None or ip is None:
     print(Fore.RED + "[%s] - [CRITICAL] - The required parameters (id, hostname, and ip) are missing." %
-          datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'), Style.RESET_ALL)
+          datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f'), Style.RESET_ALL)
     sys.exit()
 
 pattern_id = r"^[a-zA-Z0-9]+-[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*$"
@@ -37,33 +37,33 @@ match_ip = re.search(pattern_ip, ip)
 
 if match_id:
     print(Fore.BLUE + "[%s] - [INFO] - The provided id, %s, is valid." %
-          (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'), id), Style.RESET_ALL)
+          (datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f'), id), Style.RESET_ALL)
 else:
     print(Fore.RED + "[%s] - [ERROR] - The provided id, %s, is invalid. Valid id must follow the pattern "
                      "\"^[a-zA-Z0-9]+-[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*$\"." %
-          (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'), id), Style.RESET_ALL)
+          (datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f'), id), Style.RESET_ALL)
 
 if match_hostname:
     print(Fore.BLUE + "[%s] - [INFO] - The provided hostname, %s, is valid." %
-          (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'), hostname), Style.RESET_ALL)
+          (datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f'), hostname), Style.RESET_ALL)
     hostgroup = "-".join(hostname.split("-")[0:-1])  # 主机组名中使用"-"，在执行ansible命令时，会有WARNING提示，影响不大。
 else:
     print(Fore.RED + "[%s] - [ERROR] - The provided hostname, %s, is invalid. Valid hostname must follow the pattern "
                      "\"^[a-zA-Z0-9]+-[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*-\d{3}$\"." %
-          (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'), hostname), Style.RESET_ALL)
+          (datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f'), hostname), Style.RESET_ALL)
 
 if match_ip:
     print(Fore.BLUE + "[%s] - [INFO] - The provided ip, %s, is valid." %
-          (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'), ip), Style.RESET_ALL)
+          (datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f'), ip), Style.RESET_ALL)
 else:
     print(Fore.RED + "[%s] - [ERROR] - The provided ip, %s, is invalid." %
-          (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'), ip), Style.RESET_ALL)
+          (datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f'), ip), Style.RESET_ALL)
 
 if match_id and match_hostname and match_ip:
     pass
 else:
     print(Fore.RED + "[%s] - [ERROR] - Data Verification Failed." %
-          datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'), Style.RESET_ALL)
+          datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f'), Style.RESET_ALL)
     sys.exit()
 
 
@@ -81,25 +81,25 @@ status_playbook_hostgroup, _ = subprocess.getstatusoutput(cmd_exist_playbook_hos
 
 if not status_playbook_default and status_playbook_hostgroup:
     print(Fore.YELLOW + "[%s] - [WARNING] - The default ansible playbook (%s) exists, however, the hostgroup ansible "
-                      "playbook (%s) does not exist." % (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'),
+                      "playbook (%s) does not exist." % (datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f'),
                                                          playbook_default, playbook_hostgroup), Style.RESET_ALL)
     playbook = playbook_default
 
 if status_playbook_default and not status_playbook_hostgroup:
     print(Fore.BLUE + "[%s] - [INFO] - The default ansible playbook (%s) does not exist, fortunately, the hostgroup "
-                    "ansible playbook (%s) exists." % (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'),
+                    "ansible playbook (%s) exists." % (datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f'),
                                                        playbook_default, playbook_hostgroup), Style.RESET_ALL)
     playbook = playbook_hostgroup
 
 if not status_playbook_default and not status_playbook_hostgroup:
     print(Fore.BLUE + "[%s] - [INFO] - The default ansible playbook (%s) and the hostgroup ansible playbook (%s) exist."
-        % (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'), playbook_default, playbook_hostgroup),
+        % (datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f'), playbook_default, playbook_hostgroup),
           Style.RESET_ALL)
     playbook = playbook_hostgroup
 
 if status_playbook_default and status_playbook_hostgroup:
     print(Fore.RED + "[%s] - [CRITICAL] - Neither the default ansible playbook (%s) nor the hostgroup ansible "
-                     "playbook (%s) exists." % (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'),
+                     "playbook (%s) exists." % (datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f'),
                                                 playbook_default, playbook_hostgroup), Style.RESET_ALL)
     sys.exit()
 
@@ -109,7 +109,7 @@ if status_playbook_default and status_playbook_hostgroup:
 
 # 开始初始化主机
 print(Fore.BLUE + "[%s] - [INFO] - Start to initialize the host: %s -- %s -- %s, using %s playbook." %
-      (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'), id, hostname, ip, playbook), Style.RESET_ALL)
+      (datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f'), id, hostname, ip, playbook), Style.RESET_ALL)
 
 # 需要修改playbook_log_dir权限，chown apache:apache $playbook_log_dir，cgi-bin客户端请求时，是以apache身份执行程序。
 inventory = "%s/%s__%s__%s.txt" % (playbook_log_dir, id, hostname, ip)
@@ -119,8 +119,8 @@ with open(inventory, 'w') as f:
     f.close()
 
 command = ("cd %s && ansible-playbook %s -i %s 2>&1 | tee %s__%s.log" %
-           (playbook_root_dir, playbook, inventory, inventory,
-            datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')))
+           (playbook_root_dir, playbook, inventory, inventory.replace(".txt", ""),
+            datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f')))
 process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 while True:
     line = process.stdout.readline()
@@ -131,4 +131,4 @@ process.stdout.close()
 process.wait()
 
 print(Fore.BLUE + "[%s] - [INFO] - Initialize host done." %
-      datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'), Style.RESET_ALL)
+      datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f'), Style.RESET_ALL)
