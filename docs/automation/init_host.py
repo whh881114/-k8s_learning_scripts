@@ -112,7 +112,7 @@ with open(inventory, 'w') as f:
     f.write("[%s]\n" % hostgroup)
     f.write("%s\n" % ip)
 
-command = "cd %s && ansible-playbook %s -i %s 2>&1" % (playbook_log_dir, playbook, inventory)
+command = "cd %s && ansible-playbook %s -i %s 2>&1" % (playbook_root_dir, playbook, inventory)
 
 process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 while True:
