@@ -68,6 +68,7 @@ else:
 
 # 检查ansible playbook是否存在
 playbook_root_dir = "/opt/ansible"
+playbook_log_dir = "/var/www/html/init_host_log"
 playbook_default = "%s/default.yaml" % playbook_root_dir
 playbook_hostgroup = "%s/%s.yaml" % (playbook_root_dir, hostgroup)
 
@@ -81,15 +82,18 @@ if not status_playbook_default and status_playbook_hostgroup:
     print(Fore.YELLOW + "[%s] - [WARNING] - The default ansible playbook (%s) exists, however, the hostgroup ansible "
                       "playbook (%s) does not exist." % (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'),
                                                          playbook_default, playbook_hostgroup), Style.RESET_ALL)
+    playbook = playbook_default
 
 if status_playbook_default and not status_playbook_hostgroup:
     print(Fore.BLUE + "[%s] - [INFO] - The default ansible playbook (%s) does not exist, fortunately, the hostgroup "
                     "ansible playbook (%s) exists." % (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'),
                                                        playbook_default, playbook_hostgroup), Style.RESET_ALL)
+    playbook = playbook_hostgroup
 
 if not status_playbook_default and not status_playbook_hostgroup:
     print(Fore.BLUE + "[%s] - [INFO] - The default ansible playbook (%s) and the hostgroup ansible playbook (%s) exist."
         % (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'), playbook_default, playbook_hostgroup), Style.RESET_ALL)
+    playbook = playbook_hostgroup
 
 if status_playbook_default and status_playbook_hostgroup:
     print(Fore.RED + "[%s] - [CRITICAL] - Neither the default ansible playbook (%s) nor the hostgroup ansible "
@@ -98,12 +102,26 @@ if status_playbook_default and status_playbook_hostgroup:
     sys.exit()
 
 
+# 开始初始化主机
+print(Fore.BLUE + "[%s] - [INFO] - Start to initialize the host: %s -- %s -- %s, using %s playbook." %
+      (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'), id, hostname, ip, playbook), Style.RESET_ALL)
 
-#test_cmd = "ansible 192.168.255.251 -u root -m shell -a 'touch /tmp/init_host.py--$$.txt'"
-#p = subprocess.Popen(test_cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-#
-#print(Fore.BLUE + "正常输出", Style.RESET_ALL)
-#print(p.stdout.read())
-#
-#print(Fore.RED + "异常输出", Style.RESET_ALL)
-#print(p.stderr.read())
+inventory = "%s/%s__%s__%s" % (playbook_log_dir, id, hostname, ip)
+
+with open(inventory, 'w') as f:
+    f.write("[%s]\n" % hostgroup)
+    f.write("%s\n" % ip)
+
+command = "cd %s && ansible-playbook %s -i %s 2>&1" % (playbook_log_dir, playbook, inventory)
+
+process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+while True:
+    line = process.stdout.readline()
+    if not line:
+        break
+    print(line.decode('utf-8').rstrip())
+process.stdout.close()
+process.wait()
+
+print(Fore.BLUE + "[%s] - [INFO] - Initialize host done." %
+      datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'), Style.RESET_ALL)
