@@ -68,8 +68,8 @@ else:
 
 # 检查ansible playbook是否存在
 playbook_root_dir = "/opt/ansible"
-playbook_default = "default.yaml"
-playbook_hostgroup = hostgroup + ".yaml"
+playbook_default = "%s/default.yaml" % playbook_root_dir
+playbook_hostgroup = "%s/%s.yaml" % (playbook_root_dir, hostgroup)
 
 cmd_exist_playbook_default = "test -f %s" % playbook_default
 cmd_exist_playbook_hostgroup = "test -f %s" % playbook_hostgroup
