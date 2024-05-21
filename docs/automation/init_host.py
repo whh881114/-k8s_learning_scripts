@@ -45,7 +45,7 @@ else:
 if match_hostname:
     print(Fore.BLUE + "[%s] - [INFO] - The provided hostname, %s, is valid." %
           (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'), hostname), Style.RESET_ALL)
-    hostgroup = "_".join(hostname.split("-")[0:-1])  # 主机组名不接受 "-"，现修改成 "_"。
+    hostgroup = "-".join(hostname.split("-")[0:-1])  # 主机组名中使用"-"，在执行ansible命令时，会有WARNING提示，影响不大。
 else:
     print(Fore.RED + "[%s] - [ERROR] - The provided hostname, %s, is invalid. Valid hostname must follow the pattern "
                      "\"^[a-zA-Z0-9]+-[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*-\d{3}$\"." %
