@@ -67,6 +67,10 @@ else:
     sys.exit()
 
 
+# 检查hostname是否全局唯一
+
+
+
 # 检查ansible playbook是否存在
 playbook_root_dir = "/opt/ansible"
 playbook_log_dir = "/var/www/html/init_host_log"
@@ -102,9 +106,6 @@ if status_playbook_default and status_playbook_hostgroup:
                      "playbook (%s) exists." % (datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f'),
                                                 playbook_default, playbook_hostgroup), Style.RESET_ALL)
     sys.exit()
-
-
-# 检查hostname是否全局唯一
 
 
 # 开始初始化主机
