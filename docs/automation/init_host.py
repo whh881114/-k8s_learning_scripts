@@ -106,14 +106,14 @@ if status_playbook_default and status_playbook_hostgroup:
 print(Fore.BLUE + "[%s] - [INFO] - Start to initialize the host: %s -- %s -- %s, using %s playbook." %
       (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'), id, hostname, ip, playbook), Style.RESET_ALL)
 
+# 需要修改playbook_log_dir权限，chown apache:apache $playbook_log_dir，cgi-bin客户端请求时，是以apache身份执行程序。
 inventory = "%s/%s__%s__%s" % (playbook_log_dir, id, hostname, ip)
-
 with open(inventory, 'w') as f:
     f.write("[%s]\n" % hostgroup)
     f.write("%s\n" % ip)
+    f.close()
 
 command = "cd %s && ansible-playbook %s -i %s 2>&1" % (playbook_root_dir, playbook, inventory)
-
 process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 while True:
     line = process.stdout.readline()
