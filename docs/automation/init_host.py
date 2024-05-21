@@ -45,7 +45,7 @@ else:
 if match_hostname:
     print(Fore.BLUE + "[%s] - [INFO] - The provided hostname, %s, is valid." %
           (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'), hostname), Style.RESET_ALL)
-    ansible_hostgroup = "-".join(hostname.split("-")[0:-1])
+    hostgroup = "-".join(hostname.split("-")[0:-1])
 else:
     print(Fore.RED + "[%s] - [ERROR] - The provided hostname, %s, is invalid. Valid hostname must follow the pattern "
                      "\"^[a-zA-Z0-9]+-[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*-\d{3}$\"." %
@@ -66,34 +66,35 @@ else:
     sys.exit()
 
 
-# 检查ansible脚本是否存在
-default_playbook = "default.yaml"
-hostgroup_playbook = ansible_hostgroup + ".yaml"
+# 检查ansible playbook是否存在
+playbook_root_dir = "/opt/ansible"
+playbook_default = "default.yaml"
+playbook_hostgroup = hostgroup + ".yaml"
 
-cmd_exist_default_playbook = "test -f %s" % default_playbook
-cmd_exist_hostgroup_playbook = "test -f %s" % hostgroup_playbook
+cmd_exist_playbook_default = "test -f %s" % playbook_default
+cmd_exist_playbook_hostgroup = "test -f %s" % playbook_hostgroup
 
-status_default_playbook, _ = subprocess.getstatusoutput(cmd_exist_default_playbook)
-status_hostgroup_playbook, _ = subprocess.getstatusoutput(cmd_exist_hostgroup_playbook)
+status_playbook_default, _ = subprocess.getstatusoutput(cmd_exist_playbook_default)
+status_playbook_hostgroup, _ = subprocess.getstatusoutput(cmd_exist_playbook_hostgroup)
 
-if not status_default_playbook and status_hostgroup_playbook:
+if not status_playbook_default and status_playbook_hostgroup:
     print(Fore.YELLOW + "[%s] - [WARNING] - The default ansible playbook (%s) exists, however, the hostgroup ansible "
                       "playbook (%s) does not exist." % (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'),
-                                                         default_playbook, hostgroup_playbook), Style.RESET_ALL)
+                                                         playbook_default, playbook_hostgroup), Style.RESET_ALL)
 
-if status_default_playbook and not status_hostgroup_playbook:
+if status_playbook_default and not status_playbook_hostgroup:
     print(Fore.BLUE + "[%s] - [INFO] - The default ansible playbook (%s) does not exist, fortunately, the hostgroup "
                     "ansible playbook (%s) exists." % (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'),
-                                                       default_playbook, hostgroup_playbook), Style.RESET_ALL)
+                                                       playbook_default, playbook_hostgroup), Style.RESET_ALL)
 
-if not status_default_playbook and not status_hostgroup_playbook:
+if not status_playbook_default and not status_playbook_hostgroup:
     print(Fore.BLUE + "[%s] - [INFO] - The default ansible playbook (%s) and the hostgroup ansible playbook (%s) exist."
-        % (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'), default_playbook, hostgroup_playbook), Style.RESET_ALL)
+        % (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'), playbook_default, playbook_hostgroup), Style.RESET_ALL)
 
-if status_default_playbook and status_hostgroup_playbook:
+if status_playbook_default and status_playbook_hostgroup:
     print(Fore.RED + "[%s] - [CRITICAL] - Neither the default ansible playbook (%s) nor the hostgroup ansible "
                      "playbook (%s) exists." % (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'),
-                                                default_playbook, hostgroup_playbook), Style.RESET_ALL)
+                                                playbook_default, playbook_hostgroup), Style.RESET_ALL)
     sys.exit()
 
 
