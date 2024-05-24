@@ -67,12 +67,10 @@ else:
     sys.exit()
 
 
+# 主机名全局唯一
 
-c = consul.Consul()
-_, consul_node_info = c.heath.node(hostname)
-if len(consul_node_info) == 0:
-    # 说明节点异常，
-    pass
+
+
 
 # 检查ansible playbook是否存在
 playbook_root_dir = "/opt/ansible"
