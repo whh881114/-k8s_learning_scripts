@@ -85,7 +85,7 @@ else:
         print(Fore.YELLOW + "[%s] - [WARNING] - The lock of the hostname has been created, %s." %
               (datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f'), hostname), Style.RESET_ALL)
     else:
-        print(Fore.RED + "[%s] - [CRITICAL] - The lock of the hostname has been conflicted which "
+        print(Fore.RED + "[%s] - [CRITICAL] - The lock of the hostname (%s) is conflicted which "
                          "consists of the id, the hostname and the ip you provided. Please release the "
                          "original lock first." %
               (datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f'), hostname), Style.RESET_ALL)
