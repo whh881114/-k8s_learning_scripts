@@ -72,22 +72,20 @@ else:
 r = redis.StrictRedis(host="localhost", port=6379, db=15, password="svkinyOeb.lz!fpO7_ntb7ikbgmezmcd")
 try:
     hostname_lock = r.hsetnx("LOCK__" + hostname, "id__ip", id + "__" + ip)
+    print(Fore.BLUE + "[%s] - [INFO] - Set a lock for the hostname, %s." %
+          (datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f'), hostname), Style.RESET_ALL)
 except:
-    if hostname_lock:
+    # 重复初始化逻辑
+    lock_result = str(r.hget(hostname, "id_ip")).split("__")
+    lock_id = lock_result[0]
+    lock_ip = lock_result[1]
+    if lock_id == id and lock_ip == ip:
         print(Fore.BLUE + "[%s] - [INFO] - Set a lock for the hostname, %s." %
               (datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f'), hostname), Style.RESET_ALL)
     else:
-        # 重复初始化逻辑
-        lock_result = str(r.hget(hostname, "id_ip")).split("__")
-        lock_id = lock_result[0]
-        lock_ip = lock_result[1]
-        if lock_id == id and lock_ip == ip:
-            print(Fore.BLUE + "[%s] - [INFO] - Set a lock for the hostname, %s." %
-                  (datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f'), hostname), Style.RESET_ALL)
-        else:
-            print(Fore.RED + "[%s] - [CRITICAL] - The hostname is locked, %s." %
-                  (datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f'), hostname), Style.RESET_ALL)
-            sys.exit()
+        print(Fore.RED + "[%s] - [CRITICAL] - The hostname is locked, %s." %
+              (datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f'), hostname), Style.RESET_ALL)
+        sys.exit()
 
 
 # 检查ansible playbook是否存在
