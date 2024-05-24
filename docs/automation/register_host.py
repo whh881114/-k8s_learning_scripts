@@ -5,6 +5,7 @@
 import cgi, cgitb
 import re
 import sys
+import redis
 import subprocess
 import datetime
 from colorama import Fore, Back, Style
@@ -68,8 +69,15 @@ else:
 
 
 # 主机名全局唯一
-
-
+r = redis.StrictRedis(host="localhost", port=6379, db=15, password="svkinyOeb.lz!fpO7_ntb7ikbgmezmcd")
+hostname_lock = r.set("LOCK_%s__%s__%s" % (id, hostname, ip), 1, nx=True)
+if hostname_lock:
+    print(Fore.BLUE + "[%s] - [INFO] - Set a lock for the hostname, %s." %
+          (datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f'), hostname), Style.RESET_ALL)
+else:
+    print(Fore.RED + "[%s] - [CRITICAL] - The hostname is locked, %s." %
+          (datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f'), hostname), Style.RESET_ALL)
+    sys.exit()
 
 
 # 检查ansible playbook是否存在
