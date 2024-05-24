@@ -18,31 +18,33 @@ print("")
 form = cgi.FieldStorage()
 
 # 获取数据
-id = form.getvalue("id")
-
-if id is None:
+hostname = form.getvalue("hostname")
+if hostname is None:
     print(Fore.RED + "[%s] - [CRITICAL] - The required parameters (id, hostname, and ip) are missing." %
           datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f'), Style.RESET_ALL)
     sys.exit()
 
-pattern_id = r"^[a-zA-Z0-9]+-[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*$"
-match_id = re.search(pattern_id, id)
-if match_id:
-    print(Fore.BLUE + "[%s] - [INFO] - The provided id, %s, is valid." %
-          (datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f'), id), Style.RESET_ALL)
+pattern_hostname = r"^[a-zA-Z0-9]+-[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*-\d{3}$"
+match_hostname = re.search(pattern_hostname, hostname)
+if match_hostname:
+    print(Fore.BLUE + "[%s] - [INFO] - The provided hostname, %s, is valid." %
+          (datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f'), hostname), Style.RESET_ALL)
 else:
-    print(Fore.RED + "[%s] - [ERROR] - The provided id, %s, is invalid. Valid id must follow the pattern "
-                     "\"^[a-zA-Z0-9]+-[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*$\"." %
-          (datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f'), id), Style.RESET_ALL)
+    print(Fore.RED + "[%s] - [ERROR] - The provided hostname, %s, is invalid. Valid hostname must follow the pattern "
+                     "\"^[a-zA-Z0-9]+-[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*-\d{3}$\"." %
+          (datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f'), hostname), Style.RESET_ALL)
     sys.exit()
 
 
-# 释放主机名锁
+# 主机名全局唯一
 r = redis.StrictRedis(host="localhost", port=6379, db=15, password="svkinyOeb.lz!fpO7_ntb7ikbgmezmcd")
-for k in r.keys("LOCK_%s__*" % (id)):
-    r.delet(k)
-print(Fore.BLUE + "[%s] - [INFO] - The lock of the id is released, %s." %
-          (datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f'), id), Style.RESET_ALL)
+lock_result = r.hget("LOCK__" + hostname, "id__ip").decode()
+if lock_result is None:
+    print(Fore.YELLOW + "[%s] - [WARNING] - The lock of the hostname has been release, %s." %
+          (datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f'), hostname), Style.RESET_ALL)
+else:
+    r.hdel("LOCK__" + hostname, "id__ip")
+    print(Fore.BLUE + "[%s] - [INFO] - The lock of the hostname has been release, %s." %
+          (datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f'), hostname), Style.RESET_ALL)
 
-
-# 不对主机上的程序做任何变更。
+# 注销主机时，除去释放锁外，暂时不执行任何ansible操作。
