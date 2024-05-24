@@ -38,9 +38,9 @@ else:
 
 # 主机名全局唯一
 r = redis.StrictRedis(host="localhost", port=6379, db=15, password="svkinyOeb.lz!fpO7_ntb7ikbgmezmcd")
-lock_result = r.hget("LOCK__" + hostname, "id__ip").decode()
+lock_result = r.hget("LOCK__" + hostname, "id__ip")
 if lock_result is None:
-    print(Fore.YELLOW + "[%s] - [WARNING] - The lock of the hostname has been release, %s." %
+    print(Fore.YELLOW + "[%s] - [WARNING] - The lock of the hostname does not exist, %s." %
           (datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f'), hostname), Style.RESET_ALL)
 else:
     r.hdel("LOCK__" + hostname, "id__ip")
