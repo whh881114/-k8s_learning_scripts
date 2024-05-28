@@ -10,7 +10,7 @@ systemctl restart zabbix-server zabbix-agent2 httpd php-fpm
 ```
 
 ## 监控图中无法显示中文
-解决方法：上传微软雅黑字体到服务器中，然后替换zabbix-web-font指定的字体即可。
+解决方法：上传微软雅黑字体`msyh.ttf`到服务器中，然后替换zabbix-web-font指定的字体即可。
 ```shell
 [root@infra-devops-zabbix-001 ~]# ll /etc/alternatives/zabbix-web-font 
 lrwxrwxrwx 1 root root 49  5月 28 10:17 /etc/alternatives/zabbix-web-font -> /usr/share/fonts/dejavu-sans-fonts/DejaVuSans.ttf
