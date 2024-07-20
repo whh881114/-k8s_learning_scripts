@@ -1,10 +1,14 @@
 # 部署minio前准备工作
 
+
 ## 准备工作
 - minio打算使用"Multi-Node Multi-Drive (MNMD)"模式部署，在部署开始之前，需要部署一个反向代理。
+
 - 反向代理使用nginx，同时考虑到反向代理高可用性，那就使用keepalived实现。
+
 - keepalived参考资料。
   - https://www.keepalived.org/
+  - https://datatracker.ietf.org/wg/vrrp/documents/
   - https://cloud.tencent.com/developer/article/1416596
 
 
@@ -22,10 +26,20 @@ VRRP state transition can take into account BFD hint to drive fast state transit
 Keepalived frameworks can be used independently or all together to provide resilient infrastructures.
 ```
 
+- 配置点说明。
+  - global_defs.router_id，两台主机的router_id不能相同。
+  - global_defs.vrrp_strict，严格遵守VRRP协议。下列情况将会阻止启动Keepalived：1. 没有VIP地址。2. 单播邻居。3. 在VRRP版本2中有IPv6地址。在此次环境中，禁用此选项。
+  - vrrp_instance.VI_1，为自定义vrrp组名，在每个vrrp实例组中，其vrrp_instance.virtual_router_id必须一致。在Cisco中配置过vrrp实例的话，自然能明白。
+  - vrrp_instance.state的值只有"MASTER"和"BACKUP"。
+  - vrrp_instance.priority的"MASTER"和"BACKUP"的值必须不一样，值范围是1-255，数字越大优先级越高，所以在同一个vrrp组中，"MASTER"的值要大于"BACKUP"的值。
+  - vrrp_instance.interface需要根据实际的网卡名称。
+
 
 ## 部署细节
 - 两台主机名：ha-nginx-01.freedom.org和ha-nginx-02.freedom.org。
+
 - 两台主机均安装nginx和keepalived软件。
+
 - ha-nginx-01.freedom.org主机keepalived.conf配置文件。
 ```shell
 ! Configuration File for keepalived
@@ -85,6 +99,7 @@ vrrp_instance VI_2 {
     }
 }
 ```
+
 - ha-nginx-02.freedom.org主机keepalived.conf配置文件。
 ```shell
 ! Configuration File for keepalived
@@ -143,4 +158,47 @@ vrrp_instance VI_2 {
         10.255.1.222/22
     }
 }
+```
+
+## 检查keepalived是否正常运行
+- ha-nginx-01.freedom.org主机ip信息。
+```shell
+[root@ha-nginx-01.freedom.org ~ 23:46]# 1> ip addr show
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: ens192: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 00:50:56:9d:2f:0a brd ff:ff:ff:ff:ff:ff
+    altname enp11s0
+    inet 10.255.1.9/22 brd 10.255.3.255 scope global noprefixroute ens192
+       valid_lft forever preferred_lft forever
+    inet 10.255.1.111/22 scope global secondary ens192
+       valid_lft forever preferred_lft forever
+    inet6 fe80::250:56ff:fe9d:2f0a/64 scope link noprefixroute 
+       valid_lft forever preferred_lft forever
+[root@ha-nginx-01.freedom.org ~ 23:46]# 2> 
+```
+
+- ha-nginx-02.freedom.org主机ip信息。
+```shell
+[root@ha-nginx-02.freedom.org ~ 23:46]# 1> ip addr show
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: ens192: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 00:50:56:9d:49:ca brd ff:ff:ff:ff:ff:ff
+    altname enp11s0
+    inet 10.255.1.10/22 brd 10.255.3.255 scope global noprefixroute ens192
+       valid_lft forever preferred_lft forever
+    inet 10.255.1.222/22 scope global secondary ens192
+       valid_lft forever preferred_lft forever
+    inet6 fe80::250:56ff:fe9d:49ca/64 scope link noprefixroute 
+       valid_lft forever preferred_lft forever
+[root@ha-nginx-02.freedom.org ~ 23:46]# 2> 
 ```
