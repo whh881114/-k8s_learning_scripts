@@ -3,7 +3,25 @@
 ## 准备工作
 - minio打算使用"Multi-Node Multi-Drive (MNMD)"模式部署，在部署开始之前，需要部署一个反向代理。
 - 反向代理使用nginx，同时考虑到反向代理高可用性，那就使用keepalived实现。
-- keepalived参考资料：https://cloud.tencent.com/developer/article/1416596
+- keepalived参考资料。
+  - https://www.keepalived.org/
+  - https://cloud.tencent.com/developer/article/1416596
+
+
+## keeplived.conf文件重点
+- keepalived介绍。
+```shell
+Keepalived is a routing software written in C. The main goal of this project is to provide simple and robust facilities 
+for loadbalancing and high-availability to Linux system and Linux based infrastructures. Loadbalancing framework relies 
+on well-known and widely used Linux Virtual Server (IPVS) kernel module providing Layer4 loadbalancing. 
+Keepalived implements a set of checkers to dynamically and adaptively maintain and manage loadbalanced server pool according their health. 
+On the other hand high-availability is achieved by VRRP protocol. VRRP is a fundamental brick for router failover. 
+In addition, Keepalived implements a set of hooks to the VRRP finite state machine providing low-level and high-speed protocol interactions. 
+In order to offer fastest network failure detection, Keepalived implements BFD protocol. 
+VRRP state transition can take into account BFD hint to drive fast state transition. 
+Keepalived frameworks can be used independently or all together to provide resilient infrastructures.
+```
+
 
 ## 部署细节
 - 两台主机名：ha-nginx-01.freedom.org和ha-nginx-02.freedom.org。
