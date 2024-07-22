@@ -31,8 +31,8 @@ Keepalived frameworks can be used independently or all together to provide resil
   - global_defs.vrrp_strict，严格遵守VRRP协议。下列情况将会阻止启动Keepalived：1. 没有VIP地址。2. 单播邻居。3. 在VRRP版本2中有IPv6地址。在此次环境中，禁用此选项。
   - vrrp_instance.VI_1，为自定义vrrp组名，在每个vrrp实例组中，其vrrp_instance.virtual_router_id必须一致。在Cisco中配置过vrrp实例的话，自然能明白。
   - vrrp_instance.state的值只有"MASTER"和"BACKUP"。
-  - vrrp_instance.priority的"MASTER"和"BACKUP"的值必须不一样，值范围是1-255，数字越大优先级越高，所以在同一个vrrp组中，"MASTER"的值要大于"BACKUP"的值。
   - vrrp_instance.interface需要根据实际的网卡名称。
+  - vrrp_instance.priority的"MASTER"和"BACKUP"的值必须不一样，值范围是1-255，数字越大优先级越高**，所以在同一个vrrp组中，"MASTER"的值要大于"BACKUP"的值。
 
 
 ## 部署细节
@@ -187,7 +187,7 @@ vrrp_instance VI_2 {
 ```
 
 ## 检查keepalived是否正常运行
-- ha-nginx-01.freedom.org主机ip信息。
+- ha-nginx-1.freedom.org主机ip信息。
 ```shell
 [root@ha-nginx-01.freedom.org ~ 23:46]# 1> ip addr show
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
@@ -208,7 +208,7 @@ vrrp_instance VI_2 {
 [root@ha-nginx-01.freedom.org ~ 23:46]# 2> 
 ```
 
-- ha-nginx-02.freedom.org主机ip信息。
+- ha-nginx-2.freedom.org主机ip信息。
 ```shell
 [root@ha-nginx-02.freedom.org ~ 23:46]# 1> ip addr show
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
@@ -227,4 +227,96 @@ vrrp_instance VI_2 {
     inet6 fe80::250:56ff:fe9d:49ca/64 scope link noprefixroute 
        valid_lft forever preferred_lft forever
 [root@ha-nginx-02.freedom.org ~ 23:46]# 2> 
+```
+
+## 心跳检查失败，VIP漂移成功。
+- ip信息如下：
+```shell
+ [root@ha-nginx-1.freedom.org ~ 18:53]# 2> ip addr show
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: ens192: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 00:50:56:9d:2f:0a brd ff:ff:ff:ff:ff:ff
+    altname enp11s0
+    inet 10.255.1.9/22 brd 10.255.3.255 scope global noprefixroute ens192
+       valid_lft forever preferred_lft forever
+    inet 10.255.1.111/22 scope global secondary ens192
+       valid_lft forever preferred_lft forever
+    inet 10.255.1.222/22 scope global secondary ens192
+       valid_lft forever preferred_lft forever
+    inet6 fe80::250:56ff:fe9d:2f0a/64 scope link noprefixroute 
+       valid_lft forever preferred_lft forever
+[root@ha-nginx-1.freedom.org ~ 18:54]#
+
+
+[root@ha-nginx-2.freedom.org ~ 18:53]# 2> ip addr show
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: ens192: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 00:50:56:9d:49:ca brd ff:ff:ff:ff:ff:ff
+    altname enp11s0
+    inet 10.255.1.10/22 brd 10.255.3.255 scope global noprefixroute ens192
+       valid_lft forever preferred_lft forever
+    inet6 fe80::250:56ff:fe9d:49ca/64 scope link noprefixroute 
+       valid_lft forever preferred_lft forever
+
+[root@ha-nginx-2.freedom.org ~ 18:54]# 3> service nginx start
+Redirecting to /bin/systemctl start nginx.service
+
+[root@ha-nginx-2.freedom.org ~ 18:54]# 4> ip addr show
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: ens192: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 00:50:56:9d:49:ca brd ff:ff:ff:ff:ff:ff
+    altname enp11s0
+    inet 10.255.1.10/22 brd 10.255.3.255 scope global noprefixroute ens192
+       valid_lft forever preferred_lft forever
+    inet 10.255.1.222/22 scope global secondary ens192
+       valid_lft forever preferred_lft forever
+    inet6 fe80::250:56ff:fe9d:49ca/64 scope link noprefixroute 
+       valid_lft forever preferred_lft forever
+[root@ha-nginx-2.freedom.org ~ 18:54]# 5>
+```
+
+
+- 日志如下：
+```shell
+Jul 22 18:53:29 ha-nginx-2 Keepalived_vrrp[112954]: Script `check_nginx_pid` now returning 1
+Jul 22 18:53:29 ha-nginx-2 Keepalived_vrrp[112954]: VRRP_Script(check_nginx_pid) failed (exited with status 1)
+Jul 22 18:53:29 ha-nginx-2 Keepalived_vrrp[112954]: (VI_1) Changing effective priority from 99 to 89
+Jul 22 18:53:29 ha-nginx-2 Keepalived_vrrp[112954]: (VI_2) Changing effective priority from 100 to 90
+Jul 22 18:54:26 ha-nginx-2 Keepalived_vrrp[112954]: Script `check_nginx_pid` now returning 0
+Jul 22 18:54:29 ha-nginx-2 Keepalived_vrrp[112954]: VRRP_Script(check_nginx_pid) succeeded
+Jul 22 18:54:29 ha-nginx-2 Keepalived_vrrp[112954]: (VI_1) Changing effective priority from 89 to 99
+Jul 22 18:54:29 ha-nginx-2 Keepalived_vrrp[112954]: (VI_2) Changing effective priority from 90 to 100
+Jul 22 18:54:30 ha-nginx-2 Keepalived_vrrp[112954]: (VI_2) received lower priority (99) advert from 10.255.1.9 - discarding
+Jul 22 18:54:31 ha-nginx-2 Keepalived_vrrp[112954]: (VI_2) received lower priority (99) advert from 10.255.1.9 - discarding
+Jul 22 18:54:32 ha-nginx-2 Keepalived_vrrp[112954]: (VI_2) received lower priority (99) advert from 10.255.1.9 - discarding
+Jul 22 18:54:33 ha-nginx-2 Keepalived_vrrp[112954]: (VI_2) Receive advertisement timeout
+Jul 22 18:54:33 ha-nginx-2 Keepalived_vrrp[112954]: (VI_2) Entering MASTER STATE
+Jul 22 18:54:33 ha-nginx-2 Keepalived_vrrp[112954]: (VI_2) setting VIPs.
+Jul 22 18:54:33 ha-nginx-2 Keepalived_vrrp[112954]: (VI_2) Sending/queueing gratuitous ARPs on ens192 for 10.255.1.222
+Jul 22 18:54:33 ha-nginx-2 Keepalived_vrrp[112954]: Sending gratuitous ARP on ens192 for 10.255.1.222
+Jul 22 18:54:33 ha-nginx-2 Keepalived_vrrp[112954]: Sending gratuitous ARP on ens192 for 10.255.1.222
+Jul 22 18:54:33 ha-nginx-2 Keepalived_vrrp[112954]: Sending gratuitous ARP on ens192 for 10.255.1.222
+Jul 22 18:54:33 ha-nginx-2 Keepalived_vrrp[112954]: Sending gratuitous ARP on ens192 for 10.255.1.222
+Jul 22 18:54:33 ha-nginx-2 Keepalived_vrrp[112954]: Sending gratuitous ARP on ens192 for 10.255.1.222
+Jul 22 18:54:38 ha-nginx-2 Keepalived_vrrp[112954]: (VI_2) Sending/queueing gratuitous ARPs on ens192 for 10.255.1.222
+Jul 22 18:54:38 ha-nginx-2 Keepalived_vrrp[112954]: Sending gratuitous ARP on ens192 for 10.255.1.222
+Jul 22 18:54:38 ha-nginx-2 Keepalived_vrrp[112954]: Sending gratuitous ARP on ens192 for 10.255.1.222
+Jul 22 18:54:38 ha-nginx-2 Keepalived_vrrp[112954]: Sending gratuitous ARP on ens192 for 10.255.1.222
+Jul 22 18:54:38 ha-nginx-2 Keepalived_vrrp[112954]: Sending gratuitous ARP on ens192 for 10.255.1.222
+Jul 22 18:54:38 ha-nginx-2 Keepalived_vrrp[112954]: Sending gratuitous ARP on ens192 for 10.255.1.222
 ```
