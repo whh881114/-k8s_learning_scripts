@@ -33,6 +33,7 @@ Keepalived frameworks can be used independently or all together to provide resil
   - vrrp_instance.state的值只有"MASTER"和"BACKUP"。
   - vrrp_instance.interface需要根据实际的网卡名称。
   - vrrp_instance.priority的"MASTER"和"BACKUP"的值必须不一样，值范围是1-255，数字越大优先级越高**，所以在同一个vrrp组中，"MASTER"的值要大于"BACKUP"的值。
+  - **VIP漂移细节：在VRRP中，如果心跳检查失败了，MASTER的优先级（priority）降级后，仍然比BACKUP的优先级高，那么VIP将不会漂移。**
 
 
 ## 部署细节
