@@ -5,6 +5,7 @@
 - kubernetes-v1.30.3部署和之前的版本有点区别，比如说之前我部署的最新v1.22.2，现在此版本不使用docker引擎了，所以说区别还是很大。
 
 - 提前准备镜像，指定镜像仓库，kubeadm config images list，也可以在后面指定版本号：kubeadm config images list --kubernetes-version v1.30.3。
+  并且提前将镜像push到私有仓库。
   ```shell
   # registry.k8s.io/kube-apiserver:v1.30.3
   # registry.k8s.io/kube-controller-manager:v1.30.3
