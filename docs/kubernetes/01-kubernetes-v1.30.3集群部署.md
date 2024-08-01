@@ -26,6 +26,10 @@
   [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
     [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
       SystemdCgroup = true
+  
+      [plugins."io.containerd.grpc.v1.cri".registry.mirrors]
+        [plugins."io.containerd.grpc.v1.cri".registry.mirrors."harbor.freedom.org"]
+          endpoint = ["http://harbor.freedom.org"]
   ```
 
 - 安装高可用k8s集群（多master节点）前提，先建一个负载均衡地址，然后做TCP转到到后端的k8s master节点上的6443端口， 
