@@ -9,6 +9,13 @@
 ## 部署
 - 使用helm安装loki。
 - 部署模式为`Simple Scalable`，默认模式。
+- loki的参数配置文件values.yaml内容挺多的，所以想要一次性修改好配置文件，其实是挺有难度的，所以安装时报错，需要仔细看报错内容，
+  然后再修改。
+  - 指定镜像仓库地址。
+    ```shell
+    global.image.registry: foreman.freedom.org
+    ```
+  - 
 
 
 ## 安装结果
