@@ -20,7 +20,7 @@ istiod-d56968787-fm2jw                  1/1     Running   0          28h   10.25
 
 ## istio暴露至集群外
 - 默认安装后，在私有云中没有`LoadBalancer Providers`，所以需要创建一个NodePort服务，然后使用haproxy做tcp转发。
-- 根据默认的LoadBalancer服务修改，创建NodePort服务文件，其文件`2-istio-ingressgateway-nodeport.yml`，内容如下。
+- 根据默认的LoadBalancer服务修改，创建NodePort服务文件，其文件`istio-ingressgateway-nodeport.yml`，内容如下。
   ```shell
   apiVersion: v1
   kind: Service
