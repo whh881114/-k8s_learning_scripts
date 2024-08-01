@@ -37,8 +37,8 @@
     # kubeadm init \
              --image-repository=harbor.freedom.org/registry.k8s.io
              --kubernetes-version=v1.30.3 \
-             --pod-network-cidr=10.0.0.0/16 \
-             --service-cidr=172.16.0.0/16 \
+             --pod-network-cidr=10.251.0.0/16 \
+             --service-cidr=10.252.0.0/16 \
              --control-plane-endpoint="apiserver.k8s.bj.freedom.org:6443" \
              --upload-certs
     # mkdir -p $HOME/.kube 
