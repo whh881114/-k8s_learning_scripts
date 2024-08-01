@@ -1,4 +1,4 @@
-# 安装网络插件Cilium
+# 安装网络插件cilium
 
 ### 前言
 - https://docs.cilium.io
