@@ -1,4 +1,4 @@
-# 安装loki
+# 安装promtail
 
 ## 前言
 - https://github.com/grafana/helm-charts/releases/download/promtail-6.16.4/promtail-6.16.4.tgz
