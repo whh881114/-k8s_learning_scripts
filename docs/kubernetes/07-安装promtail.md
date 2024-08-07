@@ -94,3 +94,25 @@ ok: [10.255.1.12] => {
   如果你还有其他问题，欢迎随时提出。
   ```
 
+- `kubernetes_sd_configs`工作原理是什么？
+  ```shell
+  简单来说，promtail运行在k8s集群中，promtail会和apiserver通信，可以获取到pod的元信息，之后在relabel_configs中进一系列重写，将元
+  信息暴露出来，这些就是loki中的索引，可以用于查询。
+  
+  至此，有了这些元信息（标签/索引），如namespace=kube-system，pod=coredns-55b9c9ffdf-l2pb8，container=coredns，
+  那么如何通过这些信息，找到这个pod的日志文件在哪呢？
+  - action: replace
+    replacement: /var/log/pods/*$1/*.log
+    separator: /
+    source_labels:
+      - __meta_kubernetes_pod_uid
+      - __meta_kubernetes_pod_container_name
+    target_label: __path__
+  
+  以上的配置即可找到相对应的文件，举例来说，replacement改写后结果是`/var/log/pods/*6c4f4d7e-f548-4309-9df6-e6bde69ac222/promtail/0.log`，
+  而实际路径为`/var/log/pods/grafana_promtail-hps4b_6c4f4d7e-f548-4309-9df6-e6bde69ac222/promtail/0.log`。
+  那这里就会有一个疑问了，为什么不直接使用`/var/log/pods/*/promtail/0.log`呢？
+  
+  原因：/var/log/pods下可能有多个子目录，每个目录对应一个不同的Pod UID。使用通配符 * 匹配所有子目录中的日志文件，可能会导致日志文件
+  匹配不准确，特别是如果有多个相同容器名称的日志目录。如果匹配到多个目录下的日志文件，那么在loki中查询到的内容就是别的pod的日志了。 
+  ```
