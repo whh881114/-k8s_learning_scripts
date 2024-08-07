@@ -101,6 +101,7 @@ ok: [10.255.1.12] => {
   
   至此，有了这些元信息（标签/索引），如namespace=kube-system，pod=coredns-55b9c9ffdf-l2pb8，container=coredns，
   那么如何通过这些信息，找到这个pod的日志文件在哪呢？
+  
   - action: replace
     replacement: /var/log/pods/*$1/*.log
     separator: /
@@ -109,7 +110,8 @@ ok: [10.255.1.12] => {
       - __meta_kubernetes_pod_container_name
     target_label: __path__
   
-  以上的配置即可找到相对应的文件，举例来说，replacement改写后结果是`/var/log/pods/*6c4f4d7e-f548-4309-9df6-e6bde69ac222/promtail/0.log`，
+  以上的配置即可找到相对应的文件，注意要重写的标签是`__path__`。
+  举例来说，replacement改写后结果是`/var/log/pods/*6c4f4d7e-f548-4309-9df6-e6bde69ac222/promtail/0.log`，
   而实际路径为`/var/log/pods/grafana_promtail-hps4b_6c4f4d7e-f548-4309-9df6-e6bde69ac222/promtail/0.log`。
   那这里就会有一个疑问了，为什么不直接使用`/var/log/pods/*/promtail/0.log`呢？
   
