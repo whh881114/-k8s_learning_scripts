@@ -5,16 +5,39 @@
 
 ## 部署
 - 使用helm安装kubernetes-dashboard。
-- 配置相关参数，主要是修改镜像地址，最后启用http，因为环境中暂时没有https证书。
+
 - kong需要声明image和tag。
   ```yaml
   kong:
-  enabled: true
-  # ... 其他配置
-  image:
-    repository: kong/kong
-    tag: 3.6.x # 或指定具体的版本号
+    enabled: true
+    image:
+      repository: kong/kong
+      tag: 3.6.x # 或指定具体的版本号
+    ## Configuration reference: https://docs.konghq.com/gateway/3.6.x/reference/configuration
+    env:
+      dns_order: LAST,A,CNAME,AAAA,SRV
+      plugins: 'off'
+      nginx_worker_processes: 1
+    ingressController:
+      enabled: false
+    dblessConfig:
+      configMap: kong-dbless-config
+    proxy:
+      type: NodePort
+      http:
+        enabled: true
   ```
+
+- **因为环境中暂时没有https证书，所以启用了http，但是，这里出现问题了，必须要用https协议，否则会出现401
+  错误。所以，这里kong.proxy.type指定为NodePort，可以复现登录错误。**
+  ```shell
+  2024-08-08 11:07:31.822 E0808 03:07:31.822540       1 handler.go:33] "Could not get user" err="MSG_LOGIN_UNAUTHORIZED_ERROR"
+  2024-08-08 11:06:38.607 I0808 03:06:38.607705       1 main.go:41] "Listening and serving insecurely on" address="0.0.0.0:8000"
+  2024-08-08 11:06:38.607 I0808 03:06:38.607522       1 init.go:47] Using in-cluster config
+  2024-08-08 11:06:38.607 I0808 03:06:38.607466       1 main.go:34] "Starting Kubernetes Dashboard Auth" version="1.1.3"
+  ```
+  
+
 
 ## 安装结果
 ```shell
