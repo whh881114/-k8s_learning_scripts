@@ -7,6 +7,16 @@
 
 ## 部署
 
+## 工作流程
+```shell
+理解 Cert-Manager 的工作流程
+在 Cert-Manager 中，获取 ACME 签发的证书主要分为以下几个步骤：
+
+创建 Issuer: 定义证书颁发机构（CA），例如 Let's Encrypt。
+创建 Certificate: 定义要申请的证书，包括 DNS 名称、密钥使用等信息。
+Cert-Manager 自动申请证书: Cert-Manager 会根据 Issuer 和 Certificate 的配置，向 CA 申请证书。
+证书存储: 签发的证书会被存储在 Kubernetes Secret 中。
+```
 
 ## 结果
 ```shell
