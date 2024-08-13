@@ -27,3 +27,59 @@ ok: [10.255.1.12] => {
     ]
 }
 ```
+
+```shell
+ok: [10.255.1.12] => {
+    "msg": [
+        [
+            "release \"thanos\" uninstalled",
+            "NAME: thanos",
+            "LAST DEPLOYED: Tue Aug 13 11:46:48 2024",
+            "NAMESPACE: monitoring",
+            "STATUS: deployed",
+            "REVISION: 1",
+            "TEST SUITE: None",
+            "NOTES:",
+            "CHART NAME: thanos",
+            "CHART VERSION: 15.7.19",
+            "APP VERSION: 0.36.0",
+            "",
+            "** Please be patient while the chart is being deployed **",
+            "",
+            "Thanos chart was deployed enabling the following components:",
+            "- Thanos Query",
+            "- Thanos Compactor",
+            "- Thanos Ruler",
+            "- Thanos Store Gateway",
+            "",
+            "Thanos Query can be accessed through following DNS name from within your cluster:",
+            "",
+            "    thanos-query.monitoring.svc.cluster.local (port 9090)",
+            "",
+            "To access Thanos Query from outside the cluster execute the following commands:",
+            "",
+            "1. Get the Thanos Query URL and associate Thanos Query hostname to your cluster external IP:",
+            "",
+            "   export CLUSTER_IP=$(minikube ip) # On Minikube. Use: `kubectl cluster-info` on others K8s clusters",
+            "   echo \"Thanos Query URL: https://query-http-thanos.idc-ingress-nginx.roywong.top/\"",
+            "   echo \"$CLUSTER_IP  query-http-thanos.idc-ingress-nginx.roywong.top\" | sudo tee -a /etc/hosts",
+            "",
+            "2. Open a browser and access Thanos Query using the obtained URL.",
+            "",
+            "WARNING: There are \"resources\" sections in the chart not set. Using \"resourcesPreset\" is not recommended for production. For production installations, please set the following values according to your workload needs:",
+            "  - compactor.resources",
+            "  - query.resources",
+            "  - queryFrontend.resources",
+            "  - ruler.resources",
+            "  - storegateway.resources",
+            "+info https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/",
+            "",
+            "⚠ SECURITY WARNING: Original containers have been substituted. This Helm chart was designed, tested, and validated on multiple platforms using a specific set of Bitnami and Tanzu Application Catalog containers. Substituting other containers is likely to cause degraded security and performance, broken chart features, and missing environment variables.",
+            "",
+            "Substituted images detected:",
+            "  - docker.io/docker.io/bitnami/thanos:0.36.0-debian-12-r1"
+        ],
+        []
+    ]
+}
+```
