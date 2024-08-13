@@ -6,12 +6,33 @@
   要涉及到很多自定义配置时，那么就不太适合了。此外，目前官方更新的进展也很慢了，写此文档时，kube-prometheus最后的release时间是
   2024/09/06（v0.13.0），与现在（2024/08/12）相差近11个月。
 
-- 安装kube-prometheus-stack时，先把helm chart文件中涉及到的镜像全部push到本地镜像库，否则安装时就会报错。
+- **安装kube-prometheus-stack时，先把helm chart文件中涉及到的镜像全部push到本地镜像库，否则安装时就会报错。**
 
-- 安装思路：
-  - 先不用开启prometheus的thanos sidecar容器。
-  - 部署prometheus/alertmanager/grafana均为一个实例，并且开启持久化。
-
+- 第一阶段：
+  - 思路：
+      - 不用开启prometheus的thanos sidecar容器。
+      - 部署prometheus/alertmanager/grafana均为一个实例，并且开启持久化。
+  - 细节：
+    - 各个监控对象是否存活。
+        - kubeDns.enabled=false，默认情况下使用的是CoreDns。
+          - serviceMonitor/monitoring/kube-prometheus-stack-kube-controller-manager/0 (3/3 up)
+            - 修改对象：所有master节点。
+            - 配置文件`/etc/kubernetes/manifests/kube-controller-manager.yaml`，将`--bind-address=127.0.0.1`修改为`--bind-address=0.0.0.0`。
+          
+          - serviceMonitor/monitoring/kube-prometheus-stack-kube-etcd/0 (3/3 up)
+            - 修改对象：所有master节点。
+            - 配置文件`/etc/kubernetes/manifests/etcd.yaml`，将`--listen-metrics-urls=http://127.0.0.1:2381`修改为`--listen-metrics-urls=http://0.0.0.0:2381`。   
+            
+          - serviceMonitor/monitoring/kube-prometheus-stack-kube-scheduler/0 (3/3 up)
+            - 修改对象：所有master节点。
+            - 配置文件`/etc/kubernetes/manifests/kube-scheduler.yaml`，，将`--bind-address=127.0.0.1`修改为`--bind-address=0.0.0.0`。  
+            
+          - serviceMonitor/monitoring/kube-prometheus-stack-kube-proxy/0 (6/6 up)
+            - 修改对象：集群配置文件kube-proxy.kube-system。
+            - 将配置文件中的`metricsBindAddress: ""`修改为`metricsBindAddress: "0.0.0.0:10249"`。
+            - 重启daemonset，`kubectl rollout restart daemonset kube-proxy -n kube-system`。  
+            
+    - 验证持久化：删除kube-prometheus-stack，`helm uninstall kube-prometheus-stack -n monitoring`，查看pvc是否存在即可。
 
 
 ## 安装结果
