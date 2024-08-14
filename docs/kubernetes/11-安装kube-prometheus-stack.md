@@ -17,15 +17,18 @@
         - kubeDns.enabled=false，默认情况下使用的是CoreDns。
           - serviceMonitor/monitoring/kube-prometheus-stack-kube-controller-manager/0 (3/3 up)
             - 修改对象：所有master节点。
-            - 配置文件`/etc/kubernetes/manifests/kube-controller-manager.yaml`，将`--bind-address=127.0.0.1`修改为`--bind-address=0.0.0.0`。
+            - 配置文件`/etc/kubernetes/manifests/kube-controller-manager.yaml`，将`--bind-address=127.0.0.1`修改为
+              `--bind-address=0.0.0.0`。
           
           - serviceMonitor/monitoring/kube-prometheus-stack-kube-etcd/0 (3/3 up)
             - 修改对象：所有master节点。
-            - 配置文件`/etc/kubernetes/manifests/etcd.yaml`，将`--listen-metrics-urls=http://127.0.0.1:2381`修改为`--listen-metrics-urls=http://0.0.0.0:2381`。   
+            - 配置文件`/etc/kubernetes/manifests/etcd.yaml`，将`--listen-metrics-urls=http://127.0.0.1:2381`修改为
+              `--listen-metrics-urls=http://0.0.0.0:2381`。   
             
           - serviceMonitor/monitoring/kube-prometheus-stack-kube-scheduler/0 (3/3 up)
             - 修改对象：所有master节点。
-            - 配置文件`/etc/kubernetes/manifests/kube-scheduler.yaml`，，将`--bind-address=127.0.0.1`修改为`--bind-address=0.0.0.0`。  
+            - 配置文件`/etc/kubernetes/manifests/kube-scheduler.yaml`，，将`--bind-address=127.0.0.1`修改为
+              `--bind-address=0.0.0.0`。  
             
           - serviceMonitor/monitoring/kube-prometheus-stack-kube-proxy/0 (6/6 up)
             - 修改对象：集群配置文件kube-proxy.kube-system。
