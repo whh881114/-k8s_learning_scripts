@@ -53,6 +53,7 @@
       # The default value is 2h to match the upstream Prometheus defaults.
       blockSize: 1h
       ```
+    - 在minio上查看最近两次上传的文件间隔即可验证配置是否成功。
 
 - **第三阶段：**
   - 思路：
