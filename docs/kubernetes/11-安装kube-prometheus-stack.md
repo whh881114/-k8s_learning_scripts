@@ -8,7 +8,7 @@
 
 - **安装kube-prometheus-stack时，先把helm chart文件中涉及到的镜像全部push到本地镜像库，否则安装时就会报错。**
 
-- 第一阶段：
+- **第一阶段**：
   - 思路：
       - 不用开启prometheus的thanos sidecar容器。
       - 部署prometheus/alertmanager/grafana均为一个实例，并且开启持久化。
@@ -33,6 +33,11 @@
             - 重启daemonset，`kubectl rollout restart daemonset kube-proxy -n kube-system`。  
             
     - 验证持久化：删除kube-prometheus-stack，`helm uninstall kube-prometheus-stack -n monitoring`，查看pvc是否存在即可。
+
+- **第二阶段**：
+  - 思路：
+    - 在第一阶段的基础上，对prometheus配置thanos sidecar容器。
+
 
 
 ## 安装结果
