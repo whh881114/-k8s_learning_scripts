@@ -1,6 +1,12 @@
 # 安装kube-prometheus-stack
 
 
+## 参考资料
+- https://prometheus.io/
+- https://thanos.io/
+- https://huisebug.github.io/2023/06/28/kube-prometheus-thanos/
+
+
 ##  前言
 - 之前使用的是kube-prometheus，提供很多开箱即用的功能，非常适合萌新上手。但是，涉及到大规模集群时，收集的数据越来越多，
   要涉及到很多自定义配置时，那么就不太适合了。此外，目前官方更新的进展也很慢了，写此文档时，kube-prometheus最后的release时间是
@@ -62,6 +68,36 @@
   - 思路：
     - 恢复第二阶段的配置。
     - 安装thanos组件。
+
+
+## Thanos sidecar模式下各组件介绍
+- sidecard
+  - 和prometheus部署在一起，定期将prometheus的数据上传到对象存储中。
+
+- query
+  - 与prometheus管理界面相同功能，实现对多个prometheus进行聚合，同样是使用thnaos容器镜像，指定参数为query，并且指定endpoint使用
+    grpc协议向底层组件(边车thanos-sidecar,存储thanos-store）获取数据。
+  - 可以对监控数据自动去重。
+
+- queryFrontend
+  - 当查询的数据规模较大的时候，对query组件也会有很大的压力，queryFrontend组件来提升查询性能，queryFrontend组件连接对象是query。
+
+- compactor
+  - 将云存储中的数据进行压缩和下采样和保留。
+  - 管理对象存储中的数据（管理、压缩、删除等）。
+
+- store
+  - sidecar将prometheus数据上传到了对象存储，需要进行查询就需要经过store的处理提供给query进行查询。
+  - 并且store提供了缓存，加快查询速度的功能。
+
+- ruler
+  - 连接对象是query，经过query组件定期地获取指标数据，主要是prometheus的记录规则（record）和报警（alert）规则，
+    其本身不会抓取metrics接口数据。
+  - 可将记录规则（record）上传到对象存储中 。
+  - 可连接alertmanager服务统一将告警信息发送至alertmanager。 
+  - 建议：避免alertmanager服务告警过于复杂，报警(alert)规则还是由各kubernetes集群prometheus进行处理。
+
+
 
 
 ## 安装结果
