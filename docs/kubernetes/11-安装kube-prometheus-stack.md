@@ -36,7 +36,23 @@
 
 - **第二阶段**：
   - 思路：
-    - 在第一阶段的基础上，对prometheus配置thanos sidecar容器。
+    - 在第一阶段的基础上，对prometheus配置thanos sidecar容器。thanos会将prometheus本地的监控数据写入到cos中，并不提供其他功能。
+  - 验证：
+    - 配置prometheusSpec.retention为2h，本地只保留2小时数据，所以查询时。
+    - 配置prometheusSpec.thanos为如下值。
+      ```yaml
+        objectStorageConfig:
+        secret:
+          type: S3
+          config:
+            bucket: "[[ s3_bucket ]]"
+            endpoint: "[[ s3_endpoint ]]"
+            access_key: "[[ s3_access_key ]]"
+            secret_key: "[[ s3_secret_key ]]"
+      # BlockDuration controls the size of TSDB blocks produced by Prometheus.
+      # The default value is 2h to match the upstream Prometheus defaults.
+      blockSize: 1h
+      ```
 
 
 
