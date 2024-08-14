@@ -67,8 +67,29 @@
 - **第三阶段：**
   - 思路：
     - 恢复第二阶段的配置。
-    - 安装thanos组件。
-
+    - 安装thanos，启用compactor，query，query-frontend和storegateway组件即可，各组件只启用一个副本。
+  - 验证：
+    ```shell
+    [root@master-1.k8s.freedom.org ~ 22:33]# 17> kubectl get pods -o wide -n monitoring
+    NAME                                                        READY   STATUS    RESTARTS   AGE     IP             NODE                       NOMINATED NODE   READINESS GATES
+    alertmanager-kube-prometheus-stack-alertmanager-0           2/2     Running   0          9h      10.251.5.116   worker-3.k8s.freedom.org   <none>           <none>
+    kube-prometheus-stack-grafana-0                             3/3     Running   0          9h      10.251.3.181   worker-1.k8s.freedom.org   <none>           <none>
+    kube-prometheus-stack-kube-state-metrics-5f7476447c-tcf65   1/1     Running   0          9h      10.251.3.223   worker-1.k8s.freedom.org   <none>           <none>
+    kube-prometheus-stack-operator-8577db88d6-kkv65             1/1     Running   0          9h      10.251.3.87    worker-1.k8s.freedom.org   <none>           <none>
+    kube-prometheus-stack-prometheus-node-exporter-5hn4f        1/1     Running   0          9h      10.255.1.12    master-1.k8s.freedom.org   <none>           <none>
+    kube-prometheus-stack-prometheus-node-exporter-6xvgs        1/1     Running   0          9h      10.255.1.26    worker-3.k8s.freedom.org   <none>           <none>
+    kube-prometheus-stack-prometheus-node-exporter-7drqz        1/1     Running   0          9h      10.255.1.22    master-2.k8s.freedom.org   <none>           <none>
+    kube-prometheus-stack-prometheus-node-exporter-hnssl        1/1     Running   0          9h      10.255.1.25    worker-2.k8s.freedom.org   <none>           <none>
+    kube-prometheus-stack-prometheus-node-exporter-vcf8m        1/1     Running   0          9h      10.255.1.23    master-3.k8s.freedom.org   <none>           <none>
+    kube-prometheus-stack-prometheus-node-exporter-znd4v        1/1     Running   0          9h      10.255.1.24    worker-1.k8s.freedom.org   <none>           <none>
+    prometheus-kube-prometheus-stack-prometheus-0               3/3     Running   0          9h      10.251.5.140   worker-3.k8s.freedom.org   <none>           <none>
+    thanos-compactor-7cc778786d-tfz87                           1/1     Running   0          2m45s   10.251.3.226   worker-1.k8s.freedom.org   <none>           <none>
+    thanos-query-5dd68ffbfd-4hdg7                               1/1     Running   0          2m45s   10.251.3.193   worker-1.k8s.freedom.org   <none>           <none>
+    thanos-query-frontend-cdfb698d4-4hqrq                       1/1     Running   0          2m45s   10.251.3.1     worker-1.k8s.freedom.org   <none>           <none>
+    thanos-ruler-0                                              1/1     Running   0          2m45s   10.251.3.253   worker-1.k8s.freedom.org   <none>           <none>
+    thanos-storegateway-0                                       1/1     Running   0          2m45s   10.251.3.50    worker-1.k8s.freedom.org   <none>           <none>
+    [root@master-1.k8s.freedom.org ~ 22:34]# 18>
+    ```
 
 ## Thanos sidecar模式下各组件介绍
 - sidecard
