@@ -12,7 +12,7 @@
 - loki的参数配置文件values.yaml内容挺多的，所以想要一次性修改好配置文件，其实是挺有难度的，所以安装时报错，要放松心态，这些都是因为
   某此参数没有正确配置导致，所以需要仔细看报错内容，然后再修改。
   ```shell
-  global.image.registry: foreman.freedom.org
+  global.image.registry: harbor.idc.roywong.top
 
   loki.auth_enabled: false
   
@@ -32,7 +32,7 @@
         prefix: index_
         period: 24h
 
-  memcached.image.repository: foreman.freedom.org/docker.io/memcached
+  memcached.image.repository: harbor.idc.roywong.top/docker.io/memcached
   memcached.image.tag: 1.6.23-alpine
 
   
@@ -46,10 +46,10 @@
   backend.persistence.storageClass: infra
   backend.affinity: {}
   
-  sidecar.image.repository: foreman.freedom.org/docker.io/kiwigrid/k8s-sidecar
+  sidecar.image.repository: harbor.idc.roywong.top/docker.io/kiwigrid/k8s-sidecar
   sidecar.image.tag: 1.24.3
   
-  memcachedExporter.image.repository: foreman.freedom.org/docker.io/prom/memcached-exporter
+  memcachedExporter.image.repository: harbor.idc.roywong.top/docker.io/prom/memcached-exporter
   memcachedExporter.image.tag: v0.14.2
   ```
 
