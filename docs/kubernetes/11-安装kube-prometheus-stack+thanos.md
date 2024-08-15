@@ -1,4 +1,4 @@
-# 安装kube-prometheus-stack
+# 安装kube-prometheus-stack+thanos
 
 
 ## 参考资料
