@@ -20,45 +20,42 @@
     - 先保证能正常安装即可。loki的参数配置文件values.yaml内容挺多的，所以想要一次性修改好配置文件，其实是挺有难度的，
       所以安装时报错，要放松心态，这些都是因为某此参数没有正确配置导致，所以需要仔细看报错内容，然后再修改。
       ```shell
-        global.image.registry: harbor.idc.roywong.top
-
-        loki.auth_enabled: false
-          
-        loki.storage.bucketNames.chunks: kubernetes-loki-chunks
-        loki.storage.bucketNames.ruler: kubernetes-loki-ruler
-        loki.storage.bucketNames.admin: kubernetes-loki-admin
-        loki.storage.s3.endpoint: minio-s3.idc.roywong.top
-        loki.storage.s3.secretAccessKey: uppflsfdavutdnjgkkDuc3pjggavdlhlnsxW9vbc
-        loki.storage.s3.accessKeyId: zftKko84rusihbZotbmi
-          
-        loki.schemaConfig.configs:
-          - from: 2024-04-01
-            store: tsdb
-            object_store: s3
-            schema: v13
-            index:
-              prefix: index_
-              period: 24h
-
-        memcached.image.repository: harbor.idc.roywong.top/docker.io/memcached
-        memcached.image.tag: 1.6.23-alpine
-
-          
-        write.persistence.size: 10Gi
-        write.persistence.storageClass: infra
-        write.affinity: {}
-          
-        read.affinity: {}
-          
-        backend.persistence.size: 10Gi
-        backend.persistence.storageClass: infra
-        backend.affinity: {}
-          
-        sidecar.image.repository: harbor.idc.roywong.top/docker.io/kiwigrid/k8s-sidecar
-        sidecar.image.tag: 1.24.3
-          
-        memcachedExporter.image.repository: harbor.idc.roywong.top/docker.io/prom/memcached-exporter
-        memcachedExporter.image.tag: v0.14.2
+      global.image.registry: harbor.idc.roywong.top
+      loki.auth_enabled: false
+        
+      loki.storage.bucketNames.chunks: kubernetes-loki-chunks
+      loki.storage.bucketNames.ruler: kubernetes-loki-ruler
+      loki.storage.bucketNames.admin: kubernetes-loki-admin
+      loki.storage.s3.endpoint: minio-s3.idc.roywong.top
+      loki.storage.s3.secretAccessKey: uppflsfdavutdnjgkkDuc3pjggavdlhlnsxW9vbc
+      loki.storage.s3.accessKeyId: zftKko84rusihbZotbmi
+        
+      loki.schemaConfig.configs:
+        - from: 2024-04-01
+          store: tsdb
+          object_store: s3
+          schema: v13
+          index:
+            prefix: index_
+            period: 24h
+      memcached.image.repository: harbor.idc.roywong.top/docker.io/memcached
+      memcached.image.tag: 1.6.23-alpine
+        
+      write.persistence.size: 10Gi
+      write.persistence.storageClass: infra
+      write.affinity: {}
+        
+      read.affinity: {}
+        
+      backend.persistence.size: 10Gi
+      backend.persistence.storageClass: infra
+      backend.affinity: {}
+        
+      sidecar.image.repository: harbor.idc.roywong.top/docker.io/kiwigrid/k8s-sidecar
+      sidecar.image.tag: 1.24.3
+        
+      memcachedExporter.image.repository: harbor.idc.roywong.top/docker.io/prom/memcached-exporter
+      memcachedExporter.image.tag: v0.14.2
       ```
 
   - 验证：
