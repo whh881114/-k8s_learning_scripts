@@ -95,6 +95,6 @@
       - 在各个master节点，清除etcd本地数据，`rm -rf /var/lib/ectd`。
 
 - 添加新的worker节点，但是原来的kubeadm join忘记了，需要重新生成，参考资料：https://blog.csdn.net/liudongyang123/article/details/123731019。
-  - 添加worker节点，在master主机上执行`kubeadm toke create --print-join-command`。
-  - 添加master节点，在master主机上执行`kubeadm toke create --print-join-command`，然后在生成的结果上再添加`--control-plane`。
+  - 添加worker节点，在master主机上执行`kubeadm token create --print-join-command`。
+  - 添加master节点，在master主机上执行`kubeadm token create --print-join-command`，然后在生成的结果上再添加`--control-plane`。
     如果需要证书，则使用`kubeadm init phase upload-certs --upload-certs`，然后在生成的结果上再添加`--certificate-key <key>`即可。
