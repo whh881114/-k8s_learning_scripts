@@ -20,8 +20,8 @@
   loki.storage.bucketNames.ruler: kubernetes-loki-ruler
   loki.storage.bucketNames.admin: kubernetes-loki-admin
   loki.storage.s3.endpoint: minio-s3.freedom.org
-  loki.storage.s3.secretAccessKey: cHELtRigr1ULNFjBUXQf__FAKE
-  loki.storage.s3.accessKeyId: VrC6l3Hg9i52GaT1A7dkHCWiP9Nf16Jyd9oY6itp__FAKE
+  loki.storage.s3.secretAccessKey: uppflsfdavutdnjgkkDuc3pjggavdlhlnsxW9vbc
+  loki.storage.s3.accessKeyId: zftKko84rusihbZotbmi
   
   loki.schemaConfig.configs:
     - from: 2024-04-01
