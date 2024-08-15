@@ -137,6 +137,7 @@
 - **第二阶段：**
   - 思路：
     - 各组件正常运行后，可以先查看配置文件，明白各个配置段的意思，如果有配置不合理的，可以修改再重新部署。
+      配置文件说明：https://grafana.com/docs/loki/v3.0.x/configure/。
       ```yaml
       auth_enabled: false
       chunk_store_config:
@@ -240,3 +241,4 @@
       tracing:
         enabled: false
       ```
+
