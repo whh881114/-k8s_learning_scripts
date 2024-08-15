@@ -6,6 +6,10 @@
 - https://blog.csdn.net/weilaozongge/article/details/139267389
 
 
+## 前言
+安装完kubernetes-dashboard后，其管理界面不显示pod的cpu/mem使用情况，此时，需要安装metrics-server即可解决。
+
+
 ## 安装
 - 如果没有相对应的helm chart release的话，可以使用以下命令获取。
   ```shell
