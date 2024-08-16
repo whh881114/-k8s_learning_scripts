@@ -264,11 +264,9 @@
                  (Amazon Simple Storage Service, Google Cloud Storage, Azure Blob Storage, etc.) on the write path, 
                  and returning recently ingested, in-memory log data for queries on the read path.
 
-
   - Query Frontend: The query frontend is an optional service providing the querier’s API endpoints 
                     and can be used to accelerate the read path.
   - Querier:        The querier service is responsible for executing Log Query Language (LogQL) queries.
-
 
   - Compactor:       The compactor service is used by “shipper stores”, such as single store TSDB or single store 
                      BoltDB to compact the multiple index files produced by the ingesters and shipped to object storage 
@@ -279,3 +277,39 @@
   - Ruler:           The ruler service manages and evaluates rule and/or alert expressions provided in a rule 
                      configuration. 
 
+- pod清单。
+  - loki-chunks-cache： 此配置项归属于`chunk_store_config` -- The `chunk_store_config` block configures how chunks will 
+                        be cached and how long to wait before saving them to the backing store.
+  - loki-results-cache：此配置项归属于`query_range` -- The `query_range` block configures the query splitting and 
+                        caching in the Loki query-frontend.
+  - loki-gateway：nginx容器，反向代理loki-read/loki-write/loki-backend服务。
+  - promtail：收集容器日志服务。    
+
+  ```shell
+  [root@master-1.k8s.freedom.org ~ 11:35]# 8> kubectl -n grafana get pods -o wide
+  NAME                            READY   STATUS    RESTARTS         AGE   IP              NODE                       NOMINATED NODE   READINESS GATES
+  loki-backend-0                  2/2     Running   0                76s   10.251.11.196   worker-6.k8s.freedom.org   <none>           <none>
+  loki-backend-1                  2/2     Running   0                75s   10.251.4.148    worker-2.k8s.freedom.org   <none>           <none>
+  loki-backend-2                  2/2     Running   0                76s   10.251.9.49     worker-4.k8s.freedom.org   <none>           <none>
+  loki-chunks-cache-0             2/2     Running   0                76s   10.251.10.185   worker-5.k8s.freedom.org   <none>           <none>
+  loki-gateway-77c4cd47f6-87b54   1/1     Running   0                76s   10.251.9.120    worker-4.k8s.freedom.org   <none>           <none>
+  loki-gateway-77c4cd47f6-jtz49   1/1     Running   0                76s   10.251.11.93    worker-6.k8s.freedom.org   <none>           <none>
+  loki-gateway-77c4cd47f6-v7r26   1/1     Running   0                76s   10.251.10.249   worker-5.k8s.freedom.org   <none>           <none>
+  loki-read-6bcd4674cd-gvmvp      1/1     Running   0                76s   10.251.10.149   worker-5.k8s.freedom.org   <none>           <none>
+  loki-read-6bcd4674cd-q667l      1/1     Running   0                76s   10.251.9.117    worker-4.k8s.freedom.org   <none>           <none>
+  loki-read-6bcd4674cd-tcf5p      1/1     Running   0                76s   10.251.11.137   worker-6.k8s.freedom.org   <none>           <none>
+  loki-results-cache-0            2/2     Running   0                76s   10.251.9.233    worker-4.k8s.freedom.org   <none>           <none>
+  loki-write-0                    1/1     Running   0                76s   10.251.11.251   worker-6.k8s.freedom.org   <none>           <none>
+  loki-write-1                    1/1     Running   0                75s   10.251.4.121    worker-2.k8s.freedom.org   <none>           <none>
+  loki-write-2                    1/1     Running   0                75s   10.251.9.167    worker-4.k8s.freedom.org   <none>           <none>
+  promtail-59b92                  1/1     Running   9 (5d10h ago)    8d    10.251.3.171    worker-1.k8s.freedom.org   <none>           <none>
+  promtail-5x57h                  1/1     Running   12 (2d17h ago)   8d    10.251.0.117    master-1.k8s.freedom.org   <none>           <none>
+  promtail-g9t5w                  1/1     Running   10 (2d17h ago)   8d    10.251.2.235    master-3.k8s.freedom.org   <none>           <none>
+  promtail-gsx9k                  1/1     Running   0                19h   10.251.11.181   worker-6.k8s.freedom.org   <none>           <none>
+  promtail-mm2sh                  1/1     Running   0                19h   10.251.10.96    worker-5.k8s.freedom.org   <none>           <none>
+  promtail-pgklz                  1/1     Running   0                19h   10.251.9.193    worker-4.k8s.freedom.org   <none>           <none>
+  promtail-vlht6                  1/1     Running   9 (5d10h ago)    8d    10.251.4.144    worker-2.k8s.freedom.org   <none>           <none>
+  promtail-w6lx7                  1/1     Running   9 (5d10h ago)    8d    10.251.5.216    worker-3.k8s.freedom.org   <none>           <none>
+  promtail-zmqtv                  1/1     Running   10 (2d17h ago)   8d    10.251.1.98     master-2.k8s.freedom.org   <none>           <none>
+  [root@master-1.k8s.freedom.org ~ 11:35]# 9> 
+  ```
