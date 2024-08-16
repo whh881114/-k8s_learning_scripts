@@ -242,3 +242,42 @@
         enabled: false
       ```
 
+
+## loki主要组件介绍
+- 当前部署模式为`Simple Scalable`，所以应优先关注write/read/backend这三类pod，理解它们工作的机理。
+  - write
+    - Distributor
+    - Ingester
+  - read
+    - Query frontend
+    - Querier
+  - backend
+    - Compactor
+    - Index Gateway
+    - Query Scheduler
+    - Ruler
+
+- 功能组件介绍。 
+  - Distributor: The distributor service is responsible for handling incoming push requests from clients. 
+                 It’s the first step in the write path for log data. 
+
+  - Ingester: The ingester service is responsible for persisting data and shipping it to long-term storage 
+              (Amazon Simple Storage Service, Google Cloud Storage, Azure Blob Storage, etc.) on the write path, 
+              and returning recently ingested, in-memory log data for queries on the read path.
+
+  - Query Frontend: The query frontend is an optional service providing the querier’s API endpoints 
+                    and can be used to accelerate the read path. 
+
+  - Query Scheduler: The query scheduler is an optional service providing more advanced queuing functionality than 
+                     the query frontend. 
+
+  - Querier: The querier service is responsible for executing Log Query Language (LogQL) queries. 
+
+  - Index Gateway: The index gateway service is responsible for handling and serving metadata queries. 
+
+  - Compactor: The compactor service is used by “shipper stores”, such as single store TSDB or single store BoltDB, 
+               to compact the multiple index files produced by the ingesters and shipped to object storage into single 
+               index files per day and tenant. This makes index lookups more efficient.
+
+  - Ruler: The ruler service manages and evaluates rule and/or alert expressions provided in a rule configuration. 
+
