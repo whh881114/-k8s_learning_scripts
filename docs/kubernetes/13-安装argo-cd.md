@@ -4,6 +4,7 @@
 ## 参考资料
 - https://argo-cd.readthedocs.io/en/stable/
 - https://github.com/argoproj/argo-helm/tree/main/charts/argo-cd
+- https://github.com/DandyDeveloper/charts/blob/master/charts/redis-ha/values.yaml
 
 
 ## 前言
