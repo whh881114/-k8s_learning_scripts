@@ -5,6 +5,9 @@
 - https://argo-cd.readthedocs.io/en/stable/
 - https://github.com/argoproj/argo-helm/tree/main/charts/argo-cd
 - https://github.com/DandyDeveloper/charts/blob/master/charts/redis-ha/values.yaml
+- https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/
+- https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/
+- https://github.com/bitnami-labs/sealed-secrets
 
 
 ## 前言
@@ -19,12 +22,20 @@
 ok: [10.255.1.12] => {
     "msg": [
         [
+            "These resources were kept due to the resource policy:",
+            "[CustomResourceDefinition] applications.argoproj.io",
+            "[CustomResourceDefinition] applicationsets.argoproj.io",
+            "[CustomResourceDefinition] appprojects.argoproj.io",
+            "",
+            "release \"argo-cd\" uninstalled",
+            "customresourcedefinition.apiextensions.k8s.io \"applications.argoproj.io\" deleted",
+            "customresourcedefinition.apiextensions.k8s.io \"applicationsets.argoproj.io\" deleted",
+            "customresourcedefinition.apiextensions.k8s.io \"appprojects.argoproj.io\" deleted",
             "NAME: argo-cd",
-            "LAST DEPLOYED: Sat Aug 17 09:05:18 2024",
+            "LAST DEPLOYED: Sat Aug 17 11:39:57 2024",
             "NAMESPACE: argocd",
             "STATUS: deployed",
             "REVISION: 1",
-            "TEST SUITE: None",
             "NOTES:",
             "In order to access the server UI you have the following options:",
             "",
@@ -43,9 +54,7 @@ ok: [10.255.1.12] => {
             "",
             "(You should delete the initial secret afterwards as suggested by the Getting Started Guide: https://argo-cd.readthedocs.io/en/stable/getting_started/#4-login-using-the-cli)"
         ],
-        [
-            "Error: uninstall: Release not loaded: argo-cd: release: not found"
-        ]
+        []
     ]
 }
 ```
