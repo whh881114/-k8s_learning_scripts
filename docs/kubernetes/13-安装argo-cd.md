@@ -43,24 +43,18 @@
 ok: [10.255.1.12] => {
     "msg": [
         [
-            "These resources were kept due to the resource policy:",
-            "[CustomResourceDefinition] applications.argoproj.io",
-            "[CustomResourceDefinition] applicationsets.argoproj.io",
-            "[CustomResourceDefinition] appprojects.argoproj.io",
-            "",
-            "release \"argo-cd\" uninstalled",
             "customresourcedefinition.apiextensions.k8s.io \"applications.argoproj.io\" deleted",
             "customresourcedefinition.apiextensions.k8s.io \"applicationsets.argoproj.io\" deleted",
             "customresourcedefinition.apiextensions.k8s.io \"appprojects.argoproj.io\" deleted",
             "NAME: argo-cd",
-            "LAST DEPLOYED: Sat Aug 17 11:39:57 2024",
-            "NAMESPACE: argocd",
+            "LAST DEPLOYED: Sat Aug 17 17:16:56 2024",
+            "NAMESPACE: argo",
             "STATUS: deployed",
             "REVISION: 1",
             "NOTES:",
             "In order to access the server UI you have the following options:",
             "",
-            "1. kubectl port-forward service/argo-cd-argocd-server -n argocd 8080:443",
+            "1. kubectl port-forward service/argo-cd-argocd-server -n argo 8080:443",
             "",
             "    and then open the browser on http://localhost:8080 and accept the certificate",
             "",
@@ -71,34 +65,42 @@ ok: [10.255.1.12] => {
             "",
             "After reaching the UI the first time you can login with username: admin and the random password generated during the installation. You can find the password by running:",
             "",
-            "kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath=\"{.data.password}\" | base64 -d",
+            "kubectl -n argo get secret argocd-initial-admin-secret -o jsonpath=\"{.data.password}\" | base64 -d",
             "",
             "(You should delete the initial secret afterwards as suggested by the Getting Started Guide: https://argo-cd.readthedocs.io/en/stable/getting_started/#4-login-using-the-cli)"
         ],
-        []
+        [
+            "Error: uninstall: Release not loaded: argo-cd: release: not found"
+        ]
     ]
 }
 ```
 
 ```shell
-[root@master-1.k8s.freedom.org ~ 12:17]# 1> kubectl get pods -o wide -n argocd
-NAME                                                       READY   STATUS    RESTARTS   AGE     IP             NODE                       NOMINATED NODE   READINESS GATES
-argo-cd-argocd-application-controller-0                    1/1     Running   0          10m     10.251.3.205   worker-1.k8s.freedom.org   <none>           <none>
-argo-cd-argocd-application-controller-1                    1/1     Running   0          10m     10.251.5.137   worker-3.k8s.freedom.org   <none>           <none>
-argo-cd-argocd-application-controller-2                    1/1     Running   0          10m     10.251.4.26    worker-2.k8s.freedom.org   <none>           <none>
-argo-cd-argocd-applicationset-controller-698d7c47d-gj4cm   1/1     Running   0          10m     10.251.3.10    worker-1.k8s.freedom.org   <none>           <none>
-argo-cd-argocd-applicationset-controller-698d7c47d-kldbw   1/1     Running   0          10m     10.251.5.73    worker-3.k8s.freedom.org   <none>           <none>
-argo-cd-argocd-applicationset-controller-698d7c47d-mxrkt   1/1     Running   0          10m     10.251.4.54    worker-2.k8s.freedom.org   <none>           <none>
-argo-cd-argocd-dex-server-84fd89f84b-82xpd                 1/1     Running   0          10m     10.251.3.196   worker-1.k8s.freedom.org   <none>           <none>
-argo-cd-argocd-notifications-controller-68d4d45977-66vcq   1/1     Running   0          10m     10.251.3.111   worker-1.k8s.freedom.org   <none>           <none>
-argo-cd-argocd-repo-server-86c5f86c47-fdq7z                1/1     Running   0          10m     10.251.5.232   worker-3.k8s.freedom.org   <none>           <none>
-argo-cd-argocd-repo-server-86c5f86c47-h592l                1/1     Running   0          10m     10.251.3.37    worker-1.k8s.freedom.org   <none>           <none>
-argo-cd-argocd-repo-server-86c5f86c47-qkldm                1/1     Running   0          10m     10.251.4.136   worker-2.k8s.freedom.org   <none>           <none>
-argo-cd-argocd-server-666766b677-22xx4                     1/1     Running   0          10m     10.251.5.46    worker-3.k8s.freedom.org   <none>           <none>
-argo-cd-argocd-server-666766b677-htmmq                     1/1     Running   0          10m     10.251.3.87    worker-1.k8s.freedom.org   <none>           <none>
-argo-cd-argocd-server-666766b677-sf6dr                     1/1     Running   0          10m     10.251.4.72    worker-2.k8s.freedom.org   <none>           <none>
-argo-cd-redis-ha-server-0                                  3/3     Running   0          9m34s   10.251.3.117   worker-1.k8s.freedom.org   <none>           <none>
-argo-cd-redis-ha-server-1                                  3/3     Running   0          8m19s   10.251.5.107   worker-3.k8s.freedom.org   <none>           <none>
-argo-cd-redis-ha-server-2                                  3/3     Running   0          7m19s   10.251.4.116   worker-2.k8s.freedom.org   <none>           <none>
-[root@master-1.k8s.freedom.org ~ 12:17]# 2> 
+[root@master-1.k8s.freedom.org ~ 17:21]# 1> kubectl get pods -o wide -n argo
+NAME                                                        READY   STATUS    RESTARTS        AGE     IP             NODE                       NOMINATED NODE   READINESS GATES
+argo-cd-argocd-application-controller-0                     1/1     Running   0               4m17s   10.251.3.67    worker-1.k8s.freedom.org   <none>           <none>
+argo-cd-argocd-application-controller-1                     1/1     Running   0               4m6s    10.251.5.50    worker-3.k8s.freedom.org   <none>           <none>
+argo-cd-argocd-application-controller-2                     1/1     Running   0               3m56s   10.251.4.69    worker-2.k8s.freedom.org   <none>           <none>
+argo-cd-argocd-applicationset-controller-584986cc45-45npj   1/1     Running   0               4m17s   10.251.5.31    worker-3.k8s.freedom.org   <none>           <none>
+argo-cd-argocd-applicationset-controller-584986cc45-gb9kk   1/1     Running   0               4m17s   10.251.4.139   worker-2.k8s.freedom.org   <none>           <none>
+argo-cd-argocd-applicationset-controller-584986cc45-w9q8z   1/1     Running   0               4m17s   10.251.3.248   worker-1.k8s.freedom.org   <none>           <none>
+argo-cd-argocd-dex-server-78dbdb8587-vtfd4                  1/1     Running   2 (4m14s ago)   4m17s   10.251.3.206   worker-1.k8s.freedom.org   <none>           <none>
+argo-cd-argocd-notifications-controller-866c86f9f6-rc9br    1/1     Running   0               4m17s   10.251.3.55    worker-1.k8s.freedom.org   <none>           <none>
+argo-cd-argocd-repo-server-6cf4d7d96c-dqlm8                 1/1     Running   0               4m2s    10.251.5.176   worker-3.k8s.freedom.org   <none>           <none>
+argo-cd-argocd-repo-server-6cf4d7d96c-jrfmn                 1/1     Running   0               4m17s   10.251.3.165   worker-1.k8s.freedom.org   <none>           <none>
+argo-cd-argocd-repo-server-6cf4d7d96c-rh74l                 1/1     Running   0               4m2s    10.251.4.201   worker-2.k8s.freedom.org   <none>           <none>
+argo-cd-argocd-server-7cfd7cd965-98ntr                      1/1     Running   0               4m17s   10.251.3.141   worker-1.k8s.freedom.org   <none>           <none>
+argo-cd-argocd-server-7cfd7cd965-d4qts                      1/1     Running   0               4m2s    10.251.5.135   worker-3.k8s.freedom.org   <none>           <none>
+argo-cd-argocd-server-7cfd7cd965-j4cff                      1/1     Running   0               4m2s    10.251.4.241   worker-2.k8s.freedom.org   <none>           <none>
+argo-cd-redis-ha-server-0                                   3/3     Running   0               4m17s   10.251.3.247   worker-1.k8s.freedom.org   <none>           <none>
+argo-cd-redis-ha-server-1                                   3/3     Running   0               3m1s    10.251.5.251   worker-3.k8s.freedom.org   <none>           <none>
+argo-cd-redis-ha-server-2                                   3/3     Running   0               2m1s    10.251.4.106   worker-2.k8s.freedom.org   <none>           <none>
+argo-rollouts-d8977db6f-f7jm9                               1/1     Running   0               3m53s   10.251.5.57    worker-3.k8s.freedom.org   <none>           <none>
+argo-rollouts-d8977db6f-h6f5r                               1/1     Running   0               3m53s   10.251.4.223   worker-2.k8s.freedom.org   <none>           <none>
+argo-rollouts-d8977db6f-w5cfz                               1/1     Running   0               3m53s   10.251.3.95    worker-1.k8s.freedom.org   <none>           <none>
+argo-rollouts-dashboard-7f58bf9575-fxqbq                    1/1     Running   0               3m53s   10.251.4.231   worker-2.k8s.freedom.org   <none>           <none>
+argo-rollouts-dashboard-7f58bf9575-j9mz6                    1/1     Running   0               3m53s   10.251.5.48    worker-3.k8s.freedom.org   <none>           <none>
+argo-rollouts-dashboard-7f58bf9575-trt89                    1/1     Running   0               3m53s   10.251.3.96    worker-1.k8s.freedom.org   <none>           <none>
+[root@master-1.k8s.freedom.org ~ 17:21]# 2> 
 ```
