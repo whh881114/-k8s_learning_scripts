@@ -18,3 +18,32 @@
                      administrators can leverage flexible systems of triggers and templates to configure 
                      notifications requested by the end users.                 
 
+## 结果
+```shell
+ok: [10.255.1.12] => {
+    "msg": [
+        [
+            "These resources were kept due to the resource policy:",
+            "[CustomResourceDefinition] analysisruns.argoproj.io",
+            "[CustomResourceDefinition] analysistemplates.argoproj.io",
+            "[CustomResourceDefinition] clusteranalysistemplates.argoproj.io",
+            "[CustomResourceDefinition] experiments.argoproj.io",
+            "[CustomResourceDefinition] rollouts.argoproj.io",
+            "",
+            "release \"argo-rollouts\" uninstalled",
+            "customresourcedefinition.apiextensions.k8s.io \"analysisruns.argoproj.io\" deleted",
+            "customresourcedefinition.apiextensions.k8s.io \"analysistemplates.argoproj.io\" deleted",
+            "customresourcedefinition.apiextensions.k8s.io \"clusteranalysistemplates.argoproj.io\" deleted",
+            "customresourcedefinition.apiextensions.k8s.io \"experiments.argoproj.io\" deleted",
+            "customresourcedefinition.apiextensions.k8s.io \"rollouts.argoproj.io\" deleted",
+            "NAME: argo-rollouts",
+            "LAST DEPLOYED: Sat Aug 17 14:22:55 2024",
+            "NAMESPACE: argo-rollouts",
+            "STATUS: deployed",
+            "REVISION: 1",
+            "TEST SUITE: None"
+        ],
+        []
+    ]
+}
+```
